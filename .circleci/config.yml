@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+  codecov: codecov/codecov@3.1.1
   node: circleci/node@4.7
 
 jobs:
@@ -13,7 +14,7 @@ jobs:
           pkg-manager: yarn
       - run:
           name: Run tests
-          command: yarn test
+          command: yarn test:cov
   build:
     docker:
       - image: cimg/node:16.10
@@ -29,4 +30,7 @@ workflows:
   findme-ci:
     jobs:
       - test
+        context: findme-server
+        post-steps:
+          - codecov/upload
       - build
