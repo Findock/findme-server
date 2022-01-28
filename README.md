@@ -12,7 +12,6 @@ Written in NestJS v8
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 
 © Findock 2022
