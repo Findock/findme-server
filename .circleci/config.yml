@@ -30,8 +30,8 @@ workflows:
   findme-ci:
     jobs:
       - test:
-        context: 
-          - findme-server
-        post-steps:
-          - codecov/upload
+          context:
+            - org-global
+          post-steps:
+            - codecov/upload
       - build
