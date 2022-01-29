@@ -5,12 +5,23 @@ import figlet = require('figlet');
 import gradient = require('gradient-string');
 
 async function bootstrap() {
+  const appListenPort = process.env.LISTEN_PORT || 3002;
+  const serverEnv = process.env.ENV || 'local';
+
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  await app.listen(appListenPort);
 
   figlet('FindMe Server v' + version, (err, data) => {
-    console.log(gradient.pastel.multiline(data));
-    console.log(gradient.pastel(' © 2022 Findock'));
+    console.log(gradient.instagram.multiline(data));
+    console.log(gradient.vice(' © 2022 Findock \n'));
+    console.log(
+      gradient.vice(
+        ' Server current envirement is set to ' +
+          serverEnv.toUpperCase() +
+          ' \n',
+      ),
+      gradient.vice('Server is listening on ::' + appListenPort + '\n\n\n'),
+    );
   });
 }
 bootstrap();
