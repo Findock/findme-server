@@ -7,6 +7,7 @@ import gradient = require('gradient-string');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);
+
   figlet('FindMe Server v' + version, (err, data) => {
     console.log(gradient.pastel.multiline(data));
     console.log(gradient.pastel(' © 2022 Findock'));
