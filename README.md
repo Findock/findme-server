@@ -1,4 +1,4 @@
-![FindMeServer](https://user-images.githubusercontent.com/39082174/151655272-8db928b9-81d3-4f7c-9c0c-575a95faed5c.png)
+![FindMeServer](https://user-images.githubusercontent.com/39082174/151669418-a59f4ad7-e568-43af-9602-c3bb8a910a45.png)
 
 # 🐶💻 FindMe node.js Server
 
