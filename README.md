@@ -1,7 +1,5 @@
 ![FindMeServer](https://user-images.githubusercontent.com/39082174/151669418-a59f4ad7-e568-43af-9602-c3bb8a910a45.png)
 
-Jest nowy feature
-
 # 🐶💻 FindMe node.js Server
 
 Written in NestJS v8
