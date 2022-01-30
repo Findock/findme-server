@@ -1,6 +1,6 @@
 ![FindMeServer](https://user-images.githubusercontent.com/39082174/151669418-a59f4ad7-e568-43af-9602-c3bb8a910a45.png)
 
-JEST NOWY FEATURE
+Jest nowy feature
 
 # 🐶💻 FindMe node.js Server
 
