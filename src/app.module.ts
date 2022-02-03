@@ -3,21 +3,21 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import mongodbConfiguration from './config/mongodb.configuration';
+import mongodbConfig from './config/mongodb.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [mongodbConfiguration],
+      load: [mongodbConfig],
     }),
-    MongooseModule.forRoot(mongodbConfiguration().uri),
+    MongooseModule.forRoot(mongodbConfig().uri),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
   constructor() {
-    console.log(mongodbConfiguration().uri);
+    console.log(mongodbConfig().uri);
   }
 }
