@@ -2,9 +2,9 @@
 
 # 🐶💻 FindMe node.js Server
 
-Written in NestJS v8
+## [📖 Documentation](https://findock.github.io/findme-docs/#/backend/docker)
 
-© Findock 2022
+Written in NestJS v8
 
 [![CircleCI](https://circleci.com/gh/Findock/findme-server/tree/master.svg?style=svg)](https://circleci.com/gh/Findock/findme-server/tree/master)
 [![codecov](https://codecov.io/gh/Findock/findme-server/branch/master/graph/badge.svg?token=HCTEE8KV94)](https://codecov.io/gh/Findock/findme-server)
@@ -19,44 +19,4 @@ Written in NestJS v8
 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 
-# Running FindMe server in docker
-
-### Requirements
-
-- Docker >= v20.10
-- Docker Compose >= v1.29.2
-
-### Start
-
-First setup your .env file in root project folder (/.env)
-```bash
-# Set startup envirement to docker
-ENV = docker
-
-# Server will listen on that port (ex. http://localhost:3005/)
-LISTEN_PORT = 3005
-```
-
-Start server in terminal with logs
-
-```bash
-$> yarn docker:up
-```
-
-OR start server detached 
-
-```bash
-$> yarn docker:up -d
-```
-
-Stop server running docker containers (detached)
-
-```bash
-$> yarn docker:down
-```
-
-Remove server docker image (in case of npm dependecy mismatch)
-
-```bash
-$> yarn ocker:clear
-```
+© Findock 2022
