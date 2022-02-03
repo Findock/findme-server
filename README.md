@@ -28,26 +28,35 @@ Written in NestJS v8
 
 ### Start
 
+First setup your .env file in root project folder (/.env)
+```bash
+# Set startup envirement to docker
+ENV = docker
+
+# Server will listen on that port (ex. http://localhost:3005/)
+LISTEN_PORT = 3005
+```
+
 Start server in terminal with logs
 
-```
+```bash
 $> yarn docker:up
 ```
 
 OR start server detached 
 
-```
+```bash
 $> yarn docker:up -d
 ```
 
 Stop server running docker containers (detached)
 
-```
+```bash
 $> yarn docker:down
 ```
 
 Remove server docker image (in case of npm dependecy mismatch)
 
-```
+```bash
 $> yarn ocker:clear
 ```
