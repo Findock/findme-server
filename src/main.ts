@@ -16,7 +16,7 @@ async function bootstrap() {
     console.log(gradient.vice(' © 2022 Findock \n'));
     console.log(
       gradient.vice(
-        ' Server current envirement is set to ' +
+        ' Server current envirement running in ' +
           serverEnv.toUpperCase() +
           ' \n',
       ),

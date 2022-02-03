@@ -8,6 +8,8 @@ module.exports = {
     '!**/*.module.ts',
     '!./src/App.ts',
     '!./src/main.ts',
+    '!./src/constants/**',
+    '!./src/config/**',
   ],
   coverageReporters: ['text', 'text-summary', 'html', 'clover'],
   setupFilesAfterEnv: ['./tests/setupTests.ts'],
