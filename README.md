@@ -4,6 +4,8 @@
 
 Written in NestJS v8
 
+© Findock 2022
+
 [![CircleCI](https://circleci.com/gh/Findock/findme-server/tree/master.svg?style=svg)](https://circleci.com/gh/Findock/findme-server/tree/master)
 [![codecov](https://codecov.io/gh/Findock/findme-server/branch/master/graph/badge.svg?token=HCTEE8KV94)](https://codecov.io/gh/Findock/findme-server)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
@@ -17,4 +19,35 @@ Written in NestJS v8
 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 
-© Findock 2022
+# Running FindMe server in docker
+
+### Requirements
+
+- Docker >= v20.10
+- Docker Compose >= v1.29.2
+
+### Start
+
+Start server in terminal with logs
+
+```
+$> yarn docker:up
+```
+
+OR start server detached 
+
+```
+$> yarn docker:up -d
+```
+
+Stop server running docker containers (detached)
+
+```
+$> yarn docker:down
+```
+
+Remove server docker image (in case of npm dependecy mismatch)
+
+```
+$> yarn ocker:clear
+```
