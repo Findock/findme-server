@@ -1,8 +1,8 @@
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
-import mongoDbModelMock from 'src/tests/mocks/mongoDbModel.mock';
-import { FindmeUsersService } from './findme-users.service';
-import { FindMeUser } from './schemas/findme-user.schema';
+import { FindmeUsersService } from '@src/modules/findme-users/findme-users.service';
+import { FindMeUser } from '@src/modules/findme-users/schemas/findme-user.schema';
+import mongoDbModelMock from '@src/tests/mocks/mongoDbModel.mock';
 
 describe('FindmeUsersService', () => {
   let service: FindmeUsersService;

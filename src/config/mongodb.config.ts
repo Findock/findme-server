@@ -1,4 +1,4 @@
-import environmentConstants from 'src/constants/environment.constants';
+import environmentConstants from '@src/constants/environment.constants';
 
 const dockerMongoUri = 'mongodb://mongo/find-me-docker';
 

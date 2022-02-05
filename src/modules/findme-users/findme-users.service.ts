@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { FindMeUser, FindMeUserDocument } from '@src/modules/findme-users/schemas/findme-user.schema';
 import { Model } from 'mongoose';
-import { FindMeUser, FindMeUserDocument } from './schemas/findme-user.schema';
 
 @Injectable()
 export class FindmeUsersService {

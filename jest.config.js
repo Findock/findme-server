@@ -13,7 +13,7 @@ module.exports = {
     '!./src/config/**',
     '!./src/tests/**',
   ],
-  moduleNameMapper: { "src/(.*)": "<rootDir>/src/$1" },
+  moduleNameMapper: { "@src/(.*)": "<rootDir>/src/$1" },
   coverageReporters: [ 'text', 'text-summary', 'html', 'clover' ],
   setupFilesAfterEnv: [ './src/tests/setupTests.ts' ],
   testRegex: '.*\\.spec\\.ts$',
