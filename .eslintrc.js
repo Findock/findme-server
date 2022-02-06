@@ -51,7 +51,7 @@ module.exports = {
     'no-lone-blocks': 'error',
     'eol-last': 'error',
     'no-use-before-define': 'off',
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'off',
     'consistent-return': 'off',
     'import/prefer-default-export': 'off',
     'array-bracket-newline': ['error', { multiline: true }],
@@ -61,5 +61,6 @@ module.exports = {
     'array-bracket-spacing': ['error', 'always'], 
     'computed-property-spacing': 'error',
     'comma-dangle': ['error', 'always-multiline'],
+    'quotes': ['error', 'single']
   },
 };

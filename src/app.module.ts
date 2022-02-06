@@ -1,21 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { FindMeUsersModule } from './modules/find-me-users/find-me-users.module';
+import securityConfig from '@src/config/security.config';
+import { FindMeSecurityModule } from '@src/modules/find-me/security/find-me-security.module';
+import { FindMeUsersModule } from '@src/modules/find-me/users/find-me-users.module';
 import mongodbConfig from './config/mongodb.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [ mongodbConfig ],
+      load: [
+        mongodbConfig,
+        securityConfig,
+      ],
     }),
-    MongooseModule.forRoot(mongodbConfig().uri),
+    MongooseModule.forRoot(mongodbConfig().mongodb.uri),
     FindMeUsersModule,
+    FindMeSecurityModule,
   ],
 })
-export class AppModule {
-  constructor() {
-    console.log(mongodbConfig().uri);
-  }
-}
+export class AppModule {}

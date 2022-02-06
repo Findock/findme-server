@@ -7,3 +7,7 @@
   info: console.info,
   debug: console.debug,
 };
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
