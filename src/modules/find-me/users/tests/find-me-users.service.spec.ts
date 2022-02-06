@@ -56,12 +56,23 @@ describe('FindmeUsersService', () => {
     };
 
     try {
-      expect(await service.createUser(user)).toThrowError();
+      await service.createUser(user);
     } catch {}
 
     expect((service as any).findMeUserModel.findOne).toBeCalled();
     expect((service as any).findMeUserModel.findOne).toBeCalledWith({ email: user.email });
     expect((service as any).findMeUserModel.findOne).toBeCalledTimes(1);
     expect((service as any).findMeUserModel.create).toBeCalledTimes(0);
+  });
+
+  it('createFindMeUser - should throw exception when user with emal already exists', async () => {
+    jest.spyOn((service as any).findMeUserModel, 'findOne').mockReturnValue({ _id: 'testid1' });
+
+    const user: CreateFindMeUserDto = {
+      email: 'mail@mail.com',
+      password: 'password',
+    };
+
+    await expect(service.createUser(user)).rejects.toThrow();
   });
 });
