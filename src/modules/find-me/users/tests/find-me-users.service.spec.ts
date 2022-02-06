@@ -56,7 +56,7 @@ describe('FindmeUsersService', () => {
     };
 
     try {
-      await service.createUser(user);
+      expect(await service.createUser(user)).toThrowError();
     } catch {}
 
     expect((service as any).findMeUserModel.findOne).toBeCalled();
