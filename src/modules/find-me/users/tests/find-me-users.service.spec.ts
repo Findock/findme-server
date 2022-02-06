@@ -1,6 +1,7 @@
 import { ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateFindMeUserDto } from '@src/modules/find-me/users/dto/create-find-me-user.dto';
+import findMeUserAlreadyExistException from '@src/modules/find-me/users/exceptions/find-me-user-already-exist.exception';
 import { FindMeUsersService } from '@src/modules/find-me/users/find-me-users.service';
 import FindMeUserModelMock from '@src/tests/mocks/models/FindMeUserModelMock';
 import FindMeSecurityServiceMock from '@src/tests/mocks/services/FindMeSecurityService.mock';
@@ -75,5 +76,6 @@ describe('FindmeUsersService', () => {
     };
 
     await expect(service.createUser(user)).rejects.toThrow(ConflictException);
+    await expect(service.createUser(user)).rejects.toThrow(new ConflictException(findMeUserAlreadyExistException));
   });
 });
