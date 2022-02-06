@@ -1,3 +1,6 @@
-const mongoDbModelMock = { find: jest.fn() };
+export default {
+  find: jest.fn(),
+  findOne: jest.fn(),
+  create: jest.fn(),
+};
 
-export default mongoDbModelMock;
