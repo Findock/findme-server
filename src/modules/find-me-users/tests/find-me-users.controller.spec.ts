@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FindMeUsersController } from '@src/modules/findme-users/findme-users.controller';
+import { FindMeUsersController } from '@src/modules/find-me-users/find-me-users.controller';
 
 describe('FindmeUsersController', () => {
   let controller: FindMeUsersController;
