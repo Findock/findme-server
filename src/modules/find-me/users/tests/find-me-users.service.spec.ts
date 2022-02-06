@@ -1,3 +1,4 @@
+import { ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateFindMeUserDto } from '@src/modules/find-me/users/dto/create-find-me-user.dto';
 import { FindMeUsersService } from '@src/modules/find-me/users/find-me-users.service';
@@ -73,6 +74,6 @@ describe('FindmeUsersService', () => {
       password: 'password',
     };
 
-    await expect(service.createUser(user)).rejects.toThrow();
+    await expect(service.createUser(user)).rejects.toThrow(ConflictException);
   });
 });
