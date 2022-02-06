@@ -19,9 +19,9 @@ export class FindMeUsersService {
     const userWithThisEmail = await this.findMeUserModel.findOne({ email: createFindMeUserDto.email });
     if (!!userWithThisEmail) throw new ConflictException(findMeUserAlreadyExistException);
 
-    const encryptedPassword = await this.findMeSecurityService.encryptValue(createFindMeUserDto.password);
+    const encryptedPassword = this.findMeSecurityService.encryptValue(createFindMeUserDto.password);
 
-    return await this.findMeUserModel.create({
+    return this.findMeUserModel.create({
       ...createFindMeUserDto,
       password: encryptedPassword,
     });
