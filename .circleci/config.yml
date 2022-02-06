@@ -5,6 +5,16 @@ orbs:
   node: circleci/node@4.7
 
 jobs:
+  code-style:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Run lint tests
+          command: yarn test:lint
   test:
     docker:
       - image: cimg/node:16.10
@@ -13,7 +23,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: Run tests
+          name: Run unit/integration tests
           command: yarn test:cov
   build:
     docker:
@@ -29,6 +39,7 @@ jobs:
 workflows:
   findme-ci:
     jobs:
+      - code-style
       - test:
           context:
             - findme-server
