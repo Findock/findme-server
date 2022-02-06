@@ -24,7 +24,6 @@ describe('SecurityService', () => {
     const value = 'test';
 
     const encrypted = service.encryptValue(value);
-    console.log(encrypted);
 
     expect(value).not.toEqual(encrypted);
   });
