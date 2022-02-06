@@ -61,5 +61,6 @@ module.exports = {
     'array-bracket-spacing': ['error', 'always'], 
     'computed-property-spacing': 'error',
     'comma-dangle': ['error', 'always-multiline'],
+    'quotes': ['error', 'single']
   },
 };
