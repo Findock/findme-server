@@ -1,6 +1,6 @@
 export default {
-  find: jest.fn(),
-  findOne: jest.fn(),
-  create: jest.fn(),
+  find: jest.fn().mockReturnValue([]),
+  findOne: jest.fn().mockReturnValue(null),
+  create: jest.fn().mockReturnValue({}),
 };
 
