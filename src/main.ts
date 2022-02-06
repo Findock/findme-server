@@ -12,7 +12,7 @@ async function bootstrap() {
   await app.listen(appListenPort);
 
   figlet('FindMe Server v' + version, (err, data) => {
-      console.log(gradient.instagram.multiline(data));
+    console.log(gradient.instagram.multiline(data));
     console.log(gradient.vice(' © 2022 Findock \n'));
     console.log(
       gradient.vice(
