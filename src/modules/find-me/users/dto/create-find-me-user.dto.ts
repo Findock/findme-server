@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAlpha, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MaxLength, MinLength } from 'class-validator';
 
 export class CreateFindMeUserDto {
   @ApiProperty({
@@ -24,21 +24,11 @@ export class CreateFindMeUserDto {
   @ApiProperty({
     default: '',
     required: false,
-    example: 'Joahn',
+    example: 'Joahn Kovalsky',
   })
   @IsOptional()
   @IsNotEmpty()
-  @IsAlpha()
   name?: string;
-
-  @ApiProperty({
-    default: '',
-    required: false,
-    example: 'Kovalsky',
-  })
-  @IsOptional()
-  @IsAlpha()
-  surname?: string;
 
   @ApiProperty({
     default: '',
