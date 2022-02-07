@@ -21,10 +21,6 @@ export class FindMeUser {
 
   @ApiProperty()
   @Prop({ default: '' })
-  surname: string;
-
-  @ApiProperty()
-  @Prop({ default: '' })
   phoneNumber: string;
 
   @ApiProperty()
