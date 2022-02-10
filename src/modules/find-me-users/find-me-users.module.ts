@@ -17,5 +17,6 @@ import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.ser
   ],
   controllers: [ FindMeUsersController ],
   providers: [ FindMeUsersService ],
+  exports: [ FindMeUsersService ],
 })
 export class FindMeUsersModule {}
