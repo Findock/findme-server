@@ -18,15 +18,18 @@ export class FindMeSeederService {
     private readonly findMeSecurityService: FindMeSecurityService,
     private readonly configService: ConfigService
   ) {
+    if (![
+      environmentConstants.DOCKER,
+      environmentConstants.LOCAL,
+    ].includes(this.configService.get<string>('env'))) {
+      Logger.log('Seeder service is disabled in production', this.constructor.name);
+      return;
+    }
+
     this.seedFindMeUsers(configService.get<number>('seeder.usersSeedCount')).then();
   }
 
   public async seedFindMeUsers(amount: number): Promise<void> {
-    if (![
-      environmentConstants.DOCKER,
-      environmentConstants.LOCAL,
-    ].includes(this.configService.get<string>('env'))) return;
-
     if (!await this.checkIfSeederLogExists(seederKeysConstants.USERS)) {
       await this.createSeederLog(seederKeysConstants.USERS);
       for (let i = 0; i < amount; i++) {
