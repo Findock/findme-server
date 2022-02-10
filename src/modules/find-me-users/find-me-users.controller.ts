@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiConflictResponse, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import pathConstants from '@src/constants/path.constants';
-import { CreateFindMeUserDto } from '@src/modules/find-me/users/dto/create-find-me-user.dto';
-import { FindMeUsersService } from '@src/modules/find-me/users/find-me-users.service';
-import { FindMeUser, FindMeUserDocument } from '@src/modules/find-me/users/schemas/find-me-user.schema';
+import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
+import { CreateFindMeUserDto } from '@src/modules/find-me-users/dto/create-find-me-user.dto';
+import { FindMeUser, FindMeUserDocument } from '@src/modules/find-me-users/schemas/find-me-user.schema';
 
 @ApiTags('users')
 @Controller(pathConstants.USERS)
