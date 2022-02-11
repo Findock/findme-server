@@ -3,18 +3,18 @@ import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MaxLength, MinLength } 
 
 export class CreateFindMeUserDto {
   @ApiProperty({
-    required: true,
-    example: 'user@mail.com',
+      required: true,
+      example: 'user@mail.com',
   })
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
   @ApiProperty({
-    required: true,
-    minLength: 6,
-    maxLength: 64,
-    example: 'passw@1',
+      required: true,
+      minLength: 6,
+      maxLength: 64,
+      example: 'passw@1',
   })
   @IsNotEmpty()
   @MinLength(6)
@@ -22,18 +22,18 @@ export class CreateFindMeUserDto {
   password: string;
 
   @ApiProperty({
-    default: '',
-    required: false,
-    example: 'Joahn Kovalsky',
+      default: '',
+      required: false,
+      example: 'Joahn Kovalsky',
   })
   @IsOptional()
   @IsNotEmpty()
   name?: string;
 
   @ApiProperty({
-    default: '',
-    required: false,
-    example: '353566433',
+      default: '',
+      required: false,
+      example: '353566433',
   })
   @IsOptional()
   @IsPhoneNumber()

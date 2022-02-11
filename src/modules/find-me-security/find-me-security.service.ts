@@ -4,11 +4,11 @@ import CryptoJS from 'crypto-js';
 
 @Injectable()
 export class FindMeSecurityService {
-  public constructor(
+    public constructor(
     private readonly configService: ConfigService
-  ) {}
+    ) {}
 
-  public encryptValue(value: string): string {
-    return CryptoJS.AES.encrypt(value, this.configService.get<string>('security.encryptKey')).toString();
-  }
+    public encryptValue(value: string): string {
+        return CryptoJS.AES.encrypt(value, this.configService.get<string>('security.encryptKey')).toString();
+    }
 }

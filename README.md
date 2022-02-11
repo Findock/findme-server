@@ -7,7 +7,6 @@
 Written in NestJS v8
 
 [![CircleCI](https://circleci.com/gh/Findock/findme-server/tree/master.svg?style=svg)](https://circleci.com/gh/Findock/findme-server/tree/master)
-[![codecov](https://codecov.io/gh/Findock/findme-server/branch/master/graph/badge.svg?token=HCTEE8KV94)](https://codecov.io/gh/Findock/findme-server)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
 
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Findock_findme-server&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Findock_findme-server)
