@@ -6,16 +6,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FindMeSeederLog, FindMeSeederLogSchema } from '@src/modules/find-me-seeder/schemas/find-me-seeder-log';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      {
-        name: FindMeSeederLog.name,
-        schema: FindMeSeederLogSchema,
-      },
-    ]),
-    FindMeUsersModule,
-    FindMeSecurityModule,
-  ],
-  providers: [ FindMeSeederService ],
+    imports: [
+        MongooseModule.forFeature([
+            {
+                name: FindMeSeederLog.name,
+                schema: FindMeSeederLogSchema,
+            },
+        ]),
+        FindMeUsersModule,
+        FindMeSecurityModule,
+    ],
+    providers: [ FindMeSeederService ],
 })
 export class FindMeSeederModule {}

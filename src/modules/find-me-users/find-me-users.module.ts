@@ -6,17 +6,17 @@ import { FindMeUsersController } from '@src/modules/find-me-users/find-me-users.
 import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      {
-        name: FindMeUser.name,
-        schema: FindMeUserSchema,
-      },
-    ]),
-    FindMeSecurityModule,
-  ],
-  controllers: [ FindMeUsersController ],
-  providers: [ FindMeUsersService ],
-  exports: [ FindMeUsersService ],
+    imports: [
+        MongooseModule.forFeature([
+            {
+                name: FindMeUser.name,
+                schema: FindMeUserSchema,
+            },
+        ]),
+        FindMeSecurityModule,
+    ],
+    controllers: [ FindMeUsersController ],
+    providers: [ FindMeUsersService ],
+    exports: [ FindMeUsersService ],
 })
 export class FindMeUsersModule {}

@@ -10,21 +10,21 @@ import seederConfig from '@src/config/seeder.config';
 import envConfig from '@src/config/env.config';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [
-        mongodbConfig,
-        securityConfig,
-        seederConfig,
-        envConfig,
-      ],
-    }),
-    MongooseModule.forRoot(mongodbConfig().mongodb.uri),
-    FindMeUsersModule,
-    FindMeSecurityModule,
-    FindMeSeederModule,
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [
+                mongodbConfig,
+                securityConfig,
+                seederConfig,
+                envConfig,
+            ],
+        }),
+        MongooseModule.forRoot(mongodbConfig().mongodb.uri),
+        FindMeUsersModule,
+        FindMeSecurityModule,
+        FindMeSeederModule,
+    ],
 })
 export class AppModule {
 }

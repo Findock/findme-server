@@ -8,23 +8,23 @@ import { FindMeUser, FindMeUserDocument } from '@src/modules/find-me-users/schem
 @ApiTags('users')
 @Controller(pathConstants.USERS)
 export class FindMeUsersController {
-  public constructor(
+    public constructor(
     private readonly findMeUsersService: FindMeUsersService
-  ) {}
+    ) {}
 
   @ApiOperation({
-    summary: 'Create new user',
-    description: 'Only allows to create a new user when email is unique',
+      summary: 'Create new user',
+      description: 'Only allows to create a new user when email is unique',
   })
   @ApiCreatedResponse({
-    description: 'User was successfully created',
-    type: FindMeUser,
+      description: 'User was successfully created',
+      type: FindMeUser,
   })
   @ApiConflictResponse({ description: 'User with provided email exists' })
   @Post()
-  public async createFindMeUser(
+    public async createFindMeUser(
     @Body() createFindMeUserDto: CreateFindMeUserDto
-  ): Promise<FindMeUserDocument> {
-    return this.findMeUsersService.createUser(createFindMeUserDto);
-  }
+    ): Promise<FindMeUserDocument> {
+        return this.findMeUsersService.createUser(createFindMeUserDto);
+    }
 }

@@ -12,55 +12,55 @@ import environmentConstants from '@src/constants/environment.constants';
 
 @Injectable()
 export class FindMeSeederService {
-  constructor(
+    constructor(
     @InjectModel(FindMeSeederLog.name) private readonly findMeSeederLogModel: Model<FindMeSeederLogDocument>,
     private readonly findMeUsersService: FindMeUsersService,
     private readonly findMeSecurityService: FindMeSecurityService,
     private readonly configService: ConfigService
-  ) {
-    if (![
-      environmentConstants.DOCKER,
-      environmentConstants.LOCAL,
-    ].includes(this.configService.get<string>('env'))) {
-      Logger.log('Seeder service is disabled in production', this.constructor.name);
-      return;
+    ) {
+        if (![
+            environmentConstants.DOCKER,
+            environmentConstants.LOCAL,
+        ].includes(this.configService.get<string>('env'))) {
+            Logger.log('Seeder service is disabled in production', this.constructor.name);
+            return;
+        }
+
+        this.seedFindMeUsers(configService.get<number>('seeder.usersSeedCount')).then();
     }
 
-    this.seedFindMeUsers(configService.get<number>('seeder.usersSeedCount')).then();
-  }
-
-  public async seedFindMeUsers(amount: number): Promise<void> {
-    if (!await this.checkIfSeederLogExists(seederKeysConstants.USERS)) {
-      await this.createSeederLog(seederKeysConstants.USERS);
-      for (let i = 0; i < amount; i++) {
-        const user: FindMeUser = {
-          name: faker.name.firstName() + ' ' + faker.name.lastName(),
-          email: 'u' + i + '@email.com',
-          password: this.findMeSecurityService.encryptValue('password'),
-          phoneNumber: faker.phone.phoneNumber(),
-          lastLogin: new Date(),
-          created: new Date(),
-          profileImageUrl: 'https://picsum.photos/300/300',
-        };
-        await this.findMeUsersService.createUser(user);
-      }
-      Logger.log('Seeded users collection', this.constructor.name);
-    } else {
-      Logger.log('Users collection is already seeded', this.constructor.name);
+    public async seedFindMeUsers(amount: number): Promise<void> {
+        if (!await this.checkIfSeederLogExists(seederKeysConstants.USERS)) {
+            await this.createSeederLog(seederKeysConstants.USERS);
+            for (let i = 0; i < amount; i++) {
+                const user: FindMeUser = {
+                    name: faker.name.firstName() + ' ' + faker.name.lastName(),
+                    email: 'u' + i + '@email.com',
+                    password: this.findMeSecurityService.encryptValue('password'),
+                    phoneNumber: faker.phone.phoneNumber(),
+                    lastLogin: new Date(),
+                    created: new Date(),
+                    profileImageUrl: 'https://picsum.photos/300/300',
+                };
+                await this.findMeUsersService.createUser(user);
+            }
+            Logger.log('Seeded users collection', this.constructor.name);
+        } else {
+            Logger.log('Users collection is already seeded', this.constructor.name);
+        }
     }
-  }
 
-  private async checkIfSeederLogExists(key: string): Promise<boolean> {
-    return !!(await this.findMeSeederLogModel.findOne({
-      key,
-      seeded: true,
-    }));
-  }
+    private async checkIfSeederLogExists(key: string): Promise<boolean> {
+        return !!(await this.findMeSeederLogModel.findOne({
+            key,
+            seeded: true,
+        }));
+    }
 
-  private async createSeederLog(key: string): Promise<void> {
-    await this.findMeSeederLogModel.create({
-      key,
-      seeded: true,
-    });
-  }
+    private async createSeederLog(key: string): Promise<void> {
+        await this.findMeSeederLogModel.create({
+            key,
+            seeded: true,
+        });
+    }
 }

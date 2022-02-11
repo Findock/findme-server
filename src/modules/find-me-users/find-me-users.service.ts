@@ -8,22 +8,22 @@ import findMeUserAlreadyExistException from '@src/modules/find-me-users/exceptio
 
 @Injectable()
 export class FindMeUsersService {
-  public constructor(
+    public constructor(
     @InjectModel(FindMeUser.name) private readonly findMeUserModel: Model<FindMeUserDocument>,
     private readonly findMeSecurityService: FindMeSecurityService
-  ) {}
+    ) {}
 
-  public async createUser(
-    createFindMeUserDto: CreateFindMeUserDto
-  ): Promise<FindMeUserDocument> {
-    const userWithThisEmail = await this.findMeUserModel.findOne({ email: createFindMeUserDto.email });
-    if (userWithThisEmail !== null) throw new ConflictException(findMeUserAlreadyExistException);
+    public async createUser(
+        createFindMeUserDto: CreateFindMeUserDto
+    ): Promise<FindMeUserDocument> {
+        const userWithThisEmail = await this.findMeUserModel.findOne({ email: createFindMeUserDto.email });
+        if (userWithThisEmail !== null) throw new ConflictException(findMeUserAlreadyExistException);
 
-    const encryptedPassword = this.findMeSecurityService.encryptValue(createFindMeUserDto.password);
+        const encryptedPassword = this.findMeSecurityService.encryptValue(createFindMeUserDto.password);
 
-    return this.findMeUserModel.create({
-      ...createFindMeUserDto,
-      password: encryptedPassword,
-    });
-  }
+        return this.findMeUserModel.create({
+            ...createFindMeUserDto,
+            password: encryptedPassword,
+        });
+    }
 }
