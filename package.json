@@ -21,7 +21,7 @@
         "docker:up": "docker-compose up",
         "docker:up -d": "docker-compose up -d",
         "docker:down": "docker-compose down",
-        "docker:clear": "docker rmi findme-server_app"
+        "docker:clear": "docker rmi mvtthew/findme-server"
     },
     "dependencies": {
         "@nestjs/common": "^8.0.0",
