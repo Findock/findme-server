@@ -17,9 +17,7 @@ export class FindMeAuthService {
     async validateUser(email: string, password: string): Promise<any> {
         const user = await this.usersService.findOneByEmail(email);
         if (user && this.securityService.encryptValue(password) === user.password) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { password, ...result } = user;
-            return result;
+            return user;
         }
         return null;
     }
@@ -27,8 +25,9 @@ export class FindMeAuthService {
     async login(loginDto: LoginDto) {
         const user = await this.validateUser(loginDto.email, loginDto.password);
         if (!user) throw new UnauthorizedException(errorMessagesConstants.WRONG_CREDENTIALS);
+
         return {
-            access_token: this.jwtService.sign(user),
+            access_token: this.jwtService.sign(user._id.toString()),
             token_type: 'Bearer',
         };
     }

@@ -5,6 +5,7 @@ import { FindMeUsersModule } from '@src/modules/find-me-users/find-me-users.modu
 import { FindMeAuthService } from './find-me-auth.service';
 import { FindMeAuthController } from './find-me-auth.controller';
 import envConfig from '@src/config/env.config';
+import { JwtStrategy } from '@src/modules/find-me-auth/find-me-jwt.strategy';
 
 const secret = envConfig().encryptKey;
 
@@ -14,7 +15,7 @@ const secret = envConfig().encryptKey;
         FindMeUsersModule,
         JwtModule.register({ secret }),
     ],
-    providers: [ FindMeAuthService ],
+    providers: [ FindMeAuthService, JwtStrategy ],
     controllers: [ FindMeAuthController ],
 })
 export class FindMeAuthModule {}
