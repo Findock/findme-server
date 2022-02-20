@@ -9,6 +9,6 @@ export class FindMeSecurityService {
     ) {}
 
     public encryptValue(value: string): string {
-        return CryptoJS.AES.encrypt(value, this.configService.get<string>('security.encryptKey')).toString();
+        return CryptoJS.SHA256(value).toString();
     }
 }
