@@ -18,10 +18,10 @@ export class FindMeAuthService {
     async validateUser(email: string, password: string): Promise<any> {
         const user = await this.usersService.findOneByEmail(email);
         if (!user) {
-            throw new UnauthorizedException(errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST);
+            throw new UnauthorizedException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         }
         if (this.securityService.encryptValue(password) !== user.password) {
-            throw new UnauthorizedException(errorMessagesConstants.WRONG_PASSWORD);
+            throw new UnauthorizedException([ errorMessagesConstants.WRONG_PASSWORD ]);
         }
         return user;
     }
