@@ -35,8 +35,8 @@ export class FindMeSeederService {
             for (let i = 0; i < amount; i++) {
                 const user: FindMeUser = {
                     name: faker.name.firstName() + ' ' + faker.name.lastName(),
-                    email: 'u' + i + '@email.com',
-                    password: 'password',
+                    email: 'bunia' + (i > 0 ? i : '') + '@gmail.com',
+                    password: 'bunia',
                     phoneNumber: faker.phone.phoneNumber(),
                     lastLogin: new Date(),
                     created: new Date(),
