@@ -4,6 +4,7 @@ import pathConstants from '@src/constants/path.constants';
 import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
 import { CreateFindMeUserDto } from '@src/modules/find-me-users/dto/create-find-me-user.dto';
 import { FindMeUser, FindMeUserDocument } from '@src/modules/find-me-users/schemas/find-me-user.schema';
+import ErrorExceptionDto from '@src/dto/error-exception.dto';
 
 @ApiTags('users')
 @Controller(pathConstants.USERS)
@@ -20,7 +21,10 @@ export class FindMeUsersController {
       description: 'User was successfully created',
       type: FindMeUser,
   })
-  @ApiConflictResponse({ description: 'User with provided email exists' })
+  @ApiConflictResponse({
+      description: 'User with provided email exists',
+      type: ErrorExceptionDto,
+  })
   @Post()
     public async createFindMeUser(
     @Body() createFindMeUserDto: CreateFindMeUserDto
