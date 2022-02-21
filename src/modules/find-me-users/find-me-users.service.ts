@@ -26,4 +26,12 @@ export class FindMeUsersService {
             password: encryptedPassword,
         });
     }
+
+    public async findOneByEmail(email: string): Promise<FindMeUserDocument> {
+        return this.findMeUserModel.findOne({ email });
+    }
+
+    public async findOneById(id: string): Promise<FindMeUserDocument> {
+        return this.findMeUserModel.findById(id);
+    }
 }

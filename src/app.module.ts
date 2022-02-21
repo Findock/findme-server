@@ -6,6 +6,7 @@ import { FindMeSecurityModule } from '@src/modules/find-me-security/find-me-secu
 import mongodbConfig from './config/mongodb.config';
 import { FindMeUsersModule } from '@src/modules/find-me-users/find-me-users.module';
 import { FindMeSeederModule } from '@src/modules/find-me-seeder/find-me-seeder.module';
+import { FindMeAuthModule } from './modules/find-me-auth/find-me-auth.module';
 import seederConfig from '@src/config/seeder.config';
 import envConfig from '@src/config/env.config';
 
@@ -24,6 +25,7 @@ import envConfig from '@src/config/env.config';
         FindMeUsersModule,
         FindMeSecurityModule,
         FindMeSeederModule,
+        FindMeAuthModule,
     ],
 })
 export class AppModule {

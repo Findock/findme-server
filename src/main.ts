@@ -7,6 +7,7 @@ import figlet = require('figlet');
 import gradient = require('gradient-string');
 
 async function bootstrap() {
+
     const appListenPort = process.env.LISTEN_PORT || 3002;
     const serverEnv = process.env.ENV || 'local';
 
