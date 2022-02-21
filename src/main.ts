@@ -25,15 +25,15 @@ async function bootstrap() {
 
     await app.listen(appListenPort);
 
-    figlet('FindMe Server v' + version, (err, data) => {
+    figlet('FindMe Server', (err, data) => {
         const year = new Date().getFullYear();
-        console.log(gradient.instagram.multiline(data));
-        console.log(gradient.vice(' © ' + year + ' Findock \n'));
+        console.log(gradient.instagram.multiline(data), 'v' + version);
+        console.log(gradient.vice(' © ' + year + ' Findock \n '));
         console.log(
             gradient.vice(
                 ' Server current envirement running in ' +
-          serverEnv.toUpperCase() +
-          ' \n',
+                serverEnv.toUpperCase() +
+                ' \n',
             ),
             gradient.vice('Server is listening on ::' + appListenPort + '\n\n\n'),
         );
