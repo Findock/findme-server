@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import errorMessagesConstants from '@src/constants/error-messages.constants';
+import { AuthTokenDto } from '@src/modules/find-me-auth/dto/auth-token.dto';
 import { LoginDto } from '@src/modules/find-me-auth/dto/login.dto';
 import { FindMeSecurityService } from '@src/modules/find-me-security/find-me-security.service';
 import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
@@ -16,16 +17,17 @@ export class FindMeAuthService {
 
     async validateUser(email: string, password: string): Promise<any> {
         const user = await this.usersService.findOneByEmail(email);
-        if (user && this.securityService.encryptValue(password) === user.password) {
-            return user;
+        if (!user) {
+            throw new UnauthorizedException(errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST);
         }
-        return null;
+        if (this.securityService.encryptValue(password) !== user.password) {
+            throw new UnauthorizedException(errorMessagesConstants.WRONG_PASSWORD);
+        }
+        return user;
     }
 
-    async login(loginDto: LoginDto) {
+    async login(loginDto: LoginDto): Promise<AuthTokenDto> {
         const user = await this.validateUser(loginDto.email, loginDto.password);
-        if (!user) throw new UnauthorizedException(errorMessagesConstants.WRONG_CREDENTIALS);
-
         return {
             access_token: this.jwtService.sign(user._id.toString()),
             token_type: 'Bearer',
