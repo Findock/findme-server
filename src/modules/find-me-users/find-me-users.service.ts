@@ -9,8 +9,8 @@ import errorMessagesConstants from '@src/constants/error-messages.constants';
 @Injectable()
 export class FindMeUsersService {
     public constructor(
-    @InjectModel(FindMeUser.name) private readonly findMeUserModel: Model<FindMeUserDocument>,
-    private readonly findMeSecurityService: FindMeSecurityService
+        @InjectModel(FindMeUser.name) private readonly findMeUserModel: Model<FindMeUserDocument>,
+        private readonly findMeSecurityService: FindMeSecurityService
     ) {}
 
     public async createUser(
