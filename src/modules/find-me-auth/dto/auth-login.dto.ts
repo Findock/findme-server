@@ -1,19 +1,19 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEmail, IsNotEmpty } from "class-validator";
 
 export class AuthLoginDto {
     @ApiProperty({
         required: true,
-        example: 'u0@email.com',
+        example: "u0@email.com",
     })
     @IsNotEmpty()
     @IsEmail()
-    email: string;
+    public email: string;
 
     @ApiProperty({
         required: true,
-        example: 'password',
+        example: "password",
     })
     @IsNotEmpty()
-    password: string;
+    public password: string;
 }

@@ -1,12 +1,12 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import pathConstants from '@src/constants/path.constants';
-import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
-import { CreateFindMeUserDto } from '@src/modules/find-me-users/dto/create-find-me-user.dto';
-import { FindMeUser, FindMeUserDocument } from '@src/modules/find-me-users/schemas/find-me-user.schema';
-import ErrorExceptionDto from '@src/dto/error-exception.dto';
+import { Body, Controller, Post } from "@nestjs/common";
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import pathConstants from "@src/constants/path.constants";
+import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.service";
+import { CreateFindMeUserDto } from "@src/modules/find-me-users/dto/create-find-me-user.dto";
+import { FindMeUser, FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
+import ErrorExceptionDto from "@src/dto/error-exception.dto";
 
-@ApiTags('users')
+@ApiTags("users")
 @Controller(pathConstants.USERS)
 export class FindMeUsersController {
     public constructor(
@@ -14,19 +14,19 @@ export class FindMeUsersController {
     ) {}
 
   @ApiOperation({
-      summary: 'Create new user',
-      description: 'Only allows to create a new user when email is unique',
+      summary: "Create new user",
+      description: "Only allows to create a new user when email is unique",
   })
   @ApiCreatedResponse({
-      description: 'User was successfully created',
+      description: "User was successfully created",
       type: FindMeUser,
   })
   @ApiBadRequestResponse({
-      description: 'Not all fields were presented or form validation errors',
+      description: "Not all fields were presented or form validation errors",
       type: FindMeUser,
   })
   @ApiConflictResponse({
-      description: 'User with provided email exists',
+      description: "User with provided email exists",
       type: ErrorExceptionDto,
   })
   @Post()

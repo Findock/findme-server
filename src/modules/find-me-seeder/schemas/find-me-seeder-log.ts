@@ -1,13 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 @Schema()
 export class FindMeSeederLog {
   @Prop({ required: true })
-  key: string;
+  public key: string;
 
   @Prop({ default: false })
-  seeded: boolean;
+  public seeded: boolean;
 }
 
 export type FindMeSeederLogDocument = FindMeSeederLog & Document;

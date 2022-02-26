@@ -1,5 +1,5 @@
 export default {
-    USERS: 'users',
-    LOGIN: 'login',
-    VALIDATE_TOKEN: 'validate-token',
+    USERS: "users",
+    LOGIN: "login",
+    VALIDATE_TOKEN: "validate-token",
 };

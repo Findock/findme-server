@@ -1,1 +1,5 @@
-export default () => ({ seeder: { usersSeedCount: 50 } });
+export default (): {
+    seeder: {
+        usersSeedCount: number;
+    };
+} => ({ seeder: { usersSeedCount: 50 } });

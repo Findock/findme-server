@@ -1,1 +1,1 @@
-export default { TOKEN_IS_VALID: 'Token is valid.' };
+export default { TOKEN_IS_VALID: "Token is valid." };

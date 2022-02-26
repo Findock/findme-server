@@ -1,13 +1,13 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
-import envConfig from '@src/config/env.config';
-import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
-import { FindMeUserDocument } from '@src/modules/find-me-users/schemas/find-me-user.schema';
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { PassportStrategy } from "@nestjs/passport";
+import { Injectable } from "@nestjs/common";
+import envConfig from "@src/config/env.config";
+import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.service";
+import { FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(
+    public constructor(
         private readonly usersService: FindMeUsersService
     ) {
         super({
@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: any): Promise<FindMeUserDocument> {
+    public async validate(payload: any): Promise<FindMeUserDocument> {
         return this.usersService.findOneById(payload);
     }
 }
