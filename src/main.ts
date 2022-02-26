@@ -17,6 +17,11 @@ async function bootstrap() {
         .setTitle('FindMe API')
         .setDescription('FindMe API description')
         .setVersion(version)
+        .addSecurity('bearer', {
+            type: 'http',
+            scheme: 'bearer',
+        })
+        .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);

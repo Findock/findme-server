@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiConflictResponse, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import pathConstants from '@src/constants/path.constants';
 import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
 import { CreateFindMeUserDto } from '@src/modules/find-me-users/dto/create-find-me-user.dto';
@@ -19,6 +19,10 @@ export class FindMeUsersController {
   })
   @ApiCreatedResponse({
       description: 'User was successfully created',
+      type: FindMeUser,
+  })
+  @ApiBadRequestResponse({
+      description: 'Not all fields were presented or form validation errors',
       type: FindMeUser,
   })
   @ApiConflictResponse({
