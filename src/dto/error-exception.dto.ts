@@ -5,7 +5,7 @@ export default class ErrorExceptionDto {
     statusCode: number;
 
     @ApiProperty({ example: [ 'User with this email does not exist.' ] })
-    message: string[] | string;
+    message: string[];
 
     @ApiProperty({ example: 'Unauthorized' })
     error: string;

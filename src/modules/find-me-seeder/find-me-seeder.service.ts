@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
 import { FindMeUser } from '@src/modules/find-me-users/schemas/find-me-user.schema';
 import faker from 'faker';
-import { FindMeSecurityService } from '@src/modules/find-me-security/find-me-security.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { FindMeSeederLog, FindMeSeederLogDocument } from '@src/modules/find-me-seeder/schemas/find-me-seeder-log';
 import { Model } from 'mongoose';
@@ -15,7 +14,6 @@ export class FindMeSeederService {
     constructor(
     @InjectModel(FindMeSeederLog.name) private readonly findMeSeederLogModel: Model<FindMeSeederLogDocument>,
     private readonly findMeUsersService: FindMeUsersService,
-    private readonly findMeSecurityService: FindMeSecurityService,
     private readonly configService: ConfigService
     ) {
         if (![

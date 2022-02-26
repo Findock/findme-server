@@ -7,7 +7,6 @@ import { AuthLoginDto } from '@src/modules/find-me-auth/dto/auth-login.dto';
 import { FindMeAuthService } from '@src/modules/find-me-auth/find-me-auth.service';
 import { CurrentUser } from '@src/modules/find-me-auth/find-me-current-user.decorator';
 import { JwtAuthGuard } from '@src/modules/find-me-auth/find-me-jwt-auth.guard';
-import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
 import successMessagesConstant from '@src/constants/success-messages.constant';
 import OkMessageDto from '@src/dto/ok-message.dto';
 import UnauthorizedExceptionDto from '@src/dto/unauthorized-exception.dto';
@@ -17,8 +16,7 @@ import UnauthorizedExceptionDto from '@src/dto/unauthorized-exception.dto';
 export class FindMeAuthController {
 
     constructor(
-        private readonly authService: FindMeAuthService,
-        private readonly usersService: FindMeUsersService
+        private readonly authService: FindMeAuthService
     ) {}
 
     @ApiOperation({
