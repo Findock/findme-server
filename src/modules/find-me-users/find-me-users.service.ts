@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { FindMeSecurityService } from "@src/modules/find-me-security/find-me-security.service";
 import { Model } from "mongoose";
@@ -16,6 +16,8 @@ export class FindMeUsersService {
     public async createUser(
         createFindMeUserDto: CreateFindMeUserDto
     ): Promise<FindMeUserDocument> {
+        if (!createFindMeUserDto.termsAccepted) throw new BadRequestException([ errorMessagesConstants.TERMS_NEED_TO_BE_ACCEPTED ]);
+
         const userWithThisEmail = await this.findMeUserModel.findOne({ email: createFindMeUserDto.email });
         if (userWithThisEmail !== null) throw new ConflictException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST ]);
 
