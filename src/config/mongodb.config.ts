@@ -1,12 +1,15 @@
-import environmentConstants from '@src/constants/environment.constants';
+import environmentConstants from "@src/constants/environment.constants";
 
-const dockerMongoUri = 'mongodb://mongo/find-me-docker';
+const dockerMongoUri = "mongodb://mongo/find-me-docker";
 
-export default () => ({
+export default (): {
     mongodb: {
-        uri:
-    process.env.ENV === environmentConstants.DOCKER
-        ? dockerMongoUri
-        : process.env.MONGO_URI,
+        uri: string;
+    };
+} => ({
+    mongodb: {
+        uri: process.env.ENV === environmentConstants.DOCKER
+            ? dockerMongoUri
+            : process.env.MONGO_URI,
     },
 });

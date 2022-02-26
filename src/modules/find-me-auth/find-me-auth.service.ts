@@ -1,15 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import errorMessagesConstants from '@src/constants/error-messages.constants';
-import { AuthTokenDto } from '@src/modules/find-me-auth/dto/auth-token.dto';
-import { AuthLoginDto } from '@src/modules/find-me-auth/dto/auth-login.dto';
-import { FindMeSecurityService } from '@src/modules/find-me-security/find-me-security.service';
-import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import errorMessagesConstants from "@src/constants/error-messages.constants";
+import { AuthTokenDto } from "@src/modules/find-me-auth/dto/auth-token.dto";
+import { AuthLoginDto } from "@src/modules/find-me-auth/dto/auth-login.dto";
+import { FindMeSecurityService } from "@src/modules/find-me-security/find-me-security.service";
+import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.service";
 
 @Injectable()
 export class FindMeAuthService {
 
-    constructor(
+    public constructor(
         private securityService: FindMeSecurityService,
         private usersService: FindMeUsersService,
         private jwtService: JwtService
@@ -30,7 +30,7 @@ export class FindMeAuthService {
         const user = await this.validateUser(loginDto.email, loginDto.password);
         return {
             access_token: this.jwtService.sign(user._id.toString()),
-            token_type: 'Bearer',
+            token_type: "Bearer",
         };
     }
 }

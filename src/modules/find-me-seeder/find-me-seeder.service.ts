@@ -1,30 +1,30 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { FindMeUsersService } from '@src/modules/find-me-users/find-me-users.service';
-import { FindMeUser } from '@src/modules/find-me-users/schemas/find-me-user.schema';
-import faker from 'faker';
-import { InjectModel } from '@nestjs/mongoose';
-import { FindMeSeederLog, FindMeSeederLogDocument } from '@src/modules/find-me-seeder/schemas/find-me-seeder-log';
-import { Model } from 'mongoose';
-import seederKeysConstants from '@src/modules/find-me-seeder/constants/seeder-keys.constants';
-import { ConfigService } from '@nestjs/config';
-import environmentConstants from '@src/constants/environment.constants';
+import { Injectable, Logger } from "@nestjs/common";
+import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.service";
+import { FindMeUser } from "@src/modules/find-me-users/schemas/find-me-user.schema";
+import faker from "faker";
+import { InjectModel } from "@nestjs/mongoose";
+import { FindMeSeederLog, FindMeSeederLogDocument } from "@src/modules/find-me-seeder/schemas/find-me-seeder-log";
+import { Model } from "mongoose";
+import seederKeysConstants from "@src/modules/find-me-seeder/constants/seeder-keys.constants";
+import { ConfigService } from "@nestjs/config";
+import environmentConstants from "@src/constants/environment.constants";
 
 @Injectable()
 export class FindMeSeederService {
-    constructor(
-    @InjectModel(FindMeSeederLog.name) private readonly findMeSeederLogModel: Model<FindMeSeederLogDocument>,
-    private readonly findMeUsersService: FindMeUsersService,
-    private readonly configService: ConfigService
+    public constructor(
+        @InjectModel(FindMeSeederLog.name) private readonly findMeSeederLogModel: Model<FindMeSeederLogDocument>,
+        private readonly findMeUsersService: FindMeUsersService,
+        private readonly configService: ConfigService
     ) {
         if (![
             environmentConstants.DOCKER,
             environmentConstants.LOCAL,
-        ].includes(this.configService.get<string>('env'))) {
-            Logger.log('Seeder service is disabled in production', this.constructor.name);
+        ].includes(this.configService.get<string>("env"))) {
+            Logger.log("Seeder service is disabled in production", this.constructor.name);
             return;
         }
 
-        this.seedFindMeUsers(configService.get<number>('seeder.usersSeedCount')).then();
+        this.seedFindMeUsers(configService.get<number>("seeder.usersSeedCount")).then();
     }
 
     public async seedFindMeUsers(amount: number): Promise<void> {
@@ -32,19 +32,19 @@ export class FindMeSeederService {
             await this.createSeederLog(seederKeysConstants.USERS);
             for (let i = 0; i < amount; i++) {
                 const user: FindMeUser = {
-                    name: faker.name.firstName() + ' ' + faker.name.lastName(),
-                    email: 'bunia' + (i > 0 ? i : '') + '@gmail.com',
-                    password: 'bunia1',
+                    name: faker.name.firstName() + " " + faker.name.lastName(),
+                    email: "bunia" + (i > 0 ? i : "") + "@gmail.com",
+                    password: "bunia1",
                     phoneNumber: faker.phone.phoneNumber(),
                     lastLogin: new Date(),
                     created: new Date(),
-                    profileImageUrl: 'https://picsum.photos/300/300',
+                    profileImageUrl: "https://picsum.photos/300/300",
                 };
                 await this.findMeUsersService.createUser(user);
             }
-            Logger.log('Seeded users collection', this.constructor.name);
+            Logger.log("Seeded users collection", this.constructor.name);
         } else {
-            Logger.log('Users collection is already seeded', this.constructor.name);
+            Logger.log("Users collection is already seeded", this.constructor.name);
         }
     }
 

@@ -1,5 +1,5 @@
-import { Module } from '@nestjs/common';
-import { FindMeSecurityService } from '@src/modules/find-me-security/find-me-security.service';
+import { Module } from "@nestjs/common";
+import { FindMeSecurityService } from "@src/modules/find-me-security/find-me-security.service";
 
 @Module({
     providers: [ FindMeSecurityService ],

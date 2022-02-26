@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { ApiProperty } from "@nestjs/swagger";
+import { Document } from "mongoose";
 
 @Schema()
 export class FindMeUser {
@@ -9,31 +9,31 @@ export class FindMeUser {
       required: true,
       unique: true,
   })
-  email: string;
+  public email: string;
 
   @ApiProperty()
   @Prop({ required: true })
-  password: string;
+  public password: string;
 
   @ApiProperty()
-  @Prop({ default: '' })
-  name: string;
+  @Prop({ default: "" })
+  public name: string;
 
   @ApiProperty()
-  @Prop({ default: '' })
-  phoneNumber: string;
+  @Prop({ default: "" })
+  public phoneNumber: string;
 
   @ApiProperty()
-  @Prop({ default: '' })
-  profileImageUrl: string;
-
-  @ApiProperty()
-  @Prop({ default: new Date() })
-  created: Date;
+  @Prop({ default: "" })
+  public profileImageUrl: string;
 
   @ApiProperty()
   @Prop({ default: new Date() })
-  lastLogin: Date;
+  public created: Date;
+
+  @ApiProperty()
+  @Prop({ default: new Date() })
+  public lastLogin: Date;
 }
 
 export type FindMeUserDocument = FindMeUser & Document;

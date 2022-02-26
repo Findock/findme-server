@@ -1,1 +1,1 @@
-export default { USERS: 'users' };
+export default { USERS: "users" };
