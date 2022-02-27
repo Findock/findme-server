@@ -40,7 +40,10 @@ export class FindMeSeederService {
                     created: new Date(),
                     profileImageUrl: "https://picsum.photos/300/300",
                 };
-                await this.findMeUsersService.createUser(user);
+                await this.findMeUsersService.createUser({
+                    ...user,
+                    termsAccepted: true,
+                });
             }
             Logger.log("Seeded users collection", this.constructor.name);
         } else {
