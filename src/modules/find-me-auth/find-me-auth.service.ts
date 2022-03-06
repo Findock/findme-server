@@ -50,7 +50,7 @@ export class FindMeAuthService {
     }
 
     public async validateToken(token: string): Promise<boolean> {
-        return await !!await this.authTokenModel.findOne({ token });
+        return !!await this.authTokenModel.findOne({ token });
     }
 
     public async logout(token: string): Promise<void> {
