@@ -9,8 +9,8 @@ import errorMessagesConstants from "@src/constants/error-messages.constants";
 @Injectable()
 export class FindMeUsersService {
     public constructor(
-        @InjectModel(FindMeUser.name) private readonly findMeUserModel: Model<FindMeUserDocument>,
-        private readonly findMeSecurityService: FindMeSecurityService
+        @InjectModel(FindMeUser.name) private readonly userModel: Model<FindMeUserDocument>,
+        private readonly securityService: FindMeSecurityService
     ) {}
 
     public async createUser(
@@ -18,22 +18,22 @@ export class FindMeUsersService {
     ): Promise<FindMeUserDocument> {
         if (!createFindMeUserDto.termsAccepted) throw new BadRequestException([ errorMessagesConstants.TERMS_NEED_TO_BE_ACCEPTED ]);
 
-        const userWithThisEmail = await this.findMeUserModel.findOne({ email: createFindMeUserDto.email });
+        const userWithThisEmail = await this.userModel.findOne({ email: createFindMeUserDto.email });
         if (userWithThisEmail !== null) throw new ConflictException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST ]);
 
-        const encryptedPassword = this.findMeSecurityService.encryptValue(createFindMeUserDto.password);
+        const encryptedPassword = this.securityService.encryptValue(createFindMeUserDto.password);
 
-        return this.findMeUserModel.create({
+        return this.userModel.create({
             ...createFindMeUserDto,
             password: encryptedPassword,
         });
     }
 
     public async findOneByEmail(email: string): Promise<FindMeUserDocument> {
-        return this.findMeUserModel.findOne({ email });
+        return this.userModel.findOne({ email });
     }
 
     public async findOneById(id: string): Promise<FindMeUserDocument> {
-        return this.findMeUserModel.findById(id);
+        return this.userModel.findById(id);
     }
 }

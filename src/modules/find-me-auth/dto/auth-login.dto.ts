@@ -16,4 +16,18 @@ export class AuthLoginDto {
     })
     @IsNotEmpty()
     public password: string;
+
+    @ApiProperty({
+        required: true,
+        example: "Apple iPhone 11 Pro Max",
+    })
+    @IsNotEmpty()
+    public deviceName: string;
+
+    @ApiProperty({
+        required: true,
+        example: "Cracow, Poland",
+    })
+    @IsNotEmpty()
+    public localizationDescription: string;
 }

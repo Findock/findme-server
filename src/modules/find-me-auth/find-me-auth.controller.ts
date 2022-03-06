@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import errorMessagesConstants from "@src/constants/error-messages.constants";
 import pathConstants from "@src/constants/path.constants";
@@ -36,6 +36,27 @@ export class FindMeAuthController {
         @Body() loginDto: AuthLoginDto
     ): Promise<AuthTokenDto> {
         return this.authService.login(loginDto);
+    }
+
+    @ApiOperation({
+        summary: "Logout user and remove used authorization token",
+        description: "You need to logout user to prevent login history dump",
+    })
+    @ApiOkResponse({
+        description: "Authorization token was successfully removed from db and user is now logged out",
+        type: OkMessageDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Authorization token is not valid",
+        type: UnauthorizedExceptionDto,
+    })
+    @UseGuards(JwtAuthGuard)
+    @Post(pathConstants.LOGOUT)
+    public async logout(
+        @Request() req: Request
+    ): Promise<OkMessageDto> {
+        this.authService.logout(req.headers["authorization"]);
+        return { message: "User was successfully logged out." };
     }
 
     @ApiOperation({
