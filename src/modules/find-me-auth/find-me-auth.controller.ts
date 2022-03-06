@@ -13,7 +13,7 @@ import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
 import { UserAuthTokensDto } from "@src/modules/find-me-auth/dto/user-auth-tokens";
 
 @ApiTags("auth")
-@Controller("auth")
+@Controller(pathConstants.AUTH)
 export class FindMeAuthController {
 
     public constructor(
