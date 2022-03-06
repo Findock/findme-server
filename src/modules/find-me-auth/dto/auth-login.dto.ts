@@ -23,4 +23,11 @@ export class AuthLoginDto {
     })
     @IsNotEmpty()
     public deviceName: string;
+
+    @ApiProperty({
+        required: true,
+        example: "Cracow, Poland",
+    })
+    @IsNotEmpty()
+    public localizationDescription: string;
 }

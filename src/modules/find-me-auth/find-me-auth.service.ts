@@ -40,6 +40,7 @@ export class FindMeAuthService {
 
         await this.authTokenModel.create({
             deviceName: loginDto.deviceName,
+            localizationDescription: loginDto.localizationDescription,
             token: "Bearer " + authToken,
         });
 
@@ -51,6 +52,10 @@ export class FindMeAuthService {
 
     public async validateToken(token: string): Promise<boolean> {
         return !!await this.authTokenModel.findOne({ token });
+    }
+
+    public async bumpTokenLastUse(token: string): Promise<void> {
+        await this.authTokenModel.findOneAndUpdate({ token }, { lastUse: new Date() });
     }
 
     public async logout(token: string): Promise<void> {

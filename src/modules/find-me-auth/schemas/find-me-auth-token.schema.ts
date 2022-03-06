@@ -9,11 +9,15 @@ export class FindMeAuthToken {
 
     @ApiProperty()
     @Prop({ required: true })
+    public localizationDescription: string;
+
+    @ApiProperty()
+    @Prop({ required: true })
     public token: string;
 
     @ApiProperty()
     @Prop({ default: new Date() })
-    public lastUsed: Date;
+    public lastUse: Date;
 }
 
 export type FindMeAuthTokenDocument = FindMeAuthToken & Document;
