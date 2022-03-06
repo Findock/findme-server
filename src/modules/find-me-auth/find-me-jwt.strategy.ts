@@ -22,9 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     public async validate(req: Request, payload: any): Promise<FindMeUserDocument> {
         const token = req.headers["authorization"];
         if (!await this.authService.validateToken(token)) throw new UnauthorizedException();
-
         await this.authService.bumpTokenLastUse(token);
-
-        return this.usersService.findOneById(payload);
+        return this.usersService.findOneById(payload._id);
     }
 }

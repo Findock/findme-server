@@ -53,7 +53,10 @@ export class FindMeAuthService {
     }
 
     public async validateToken(token: string): Promise<boolean> {
-        return !!await this.authTokenModel.findOne({ token });
+        return !!await this.authTokenModel.findOne({
+            token,
+            active: true,
+        });
     }
 
     public async bumpTokenLastUse(token: string): Promise<void> {
@@ -61,11 +64,11 @@ export class FindMeAuthService {
     }
 
     public async logout(token: string): Promise<void> {
-        await this.authTokenModel.findOneAndRemove({ token });
+        await this.authTokenModel.findOneAndUpdate({ token }, { active: false });
     }
 
-    public async getActiveAuthTokensForUser(userId: string): Promise<FindMeAuthToken[]> {
-        return (await this.authTokenModel.find({ userId }).lean()).map(authToken => {
+    public async getAuthTokensForUser(userId: string): Promise<FindMeAuthToken[]> {
+        return (await this.authTokenModel.find({ userId }).sort({ lastUse: -1 }).lean()).map(authToken => {
             const object = { ...authToken };
             delete object.token;
             return object;

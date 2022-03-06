@@ -3,5 +3,5 @@ export default {
     LOGIN: "login",
     LOGOUT: "logout",
     VALIDATE_TOKEN: "validate-token",
-    MY_ACTIVE_TOKENS: "my-active-tokens",
+    MY_AUTH_TOKENS: "my-auth-tokens",
 };

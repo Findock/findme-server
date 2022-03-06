@@ -10,7 +10,7 @@ import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
 import successMessagesConstant from "@src/constants/success-messages.constant";
 import OkMessageDto from "@src/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
-import { ActiveAuthTokensDto } from "@src/modules/find-me-auth/dto/active-auth-tokens.dto";
+import { UserAuthTokensDto } from "@src/modules/find-me-auth/dto/user-auth-tokens";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -44,7 +44,7 @@ export class FindMeAuthController {
         description: "You need to logout user to prevent login history dump",
     })
     @ApiOkResponse({
-        description: "Authorization token was successfully removed from db and user is now logged out",
+        description: "Authorization token was successfully removed from dadabase and user is now logged out",
         type: OkMessageDto,
     })
     @ApiUnauthorizedResponse({
@@ -87,16 +87,20 @@ export class FindMeAuthController {
         summary: "Validate authorization token",
         description: "Check if user authorization token is valid or not",
     })
+    @ApiOkResponse({
+        description: "Returns active authorization tokens of user",
+        type: UserAuthTokensDto,
+    })
     @ApiUnauthorizedResponse({
         description: "Authorization token is not valid",
         type: UnauthorizedExceptionDto,
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(pathConstants.MY_ACTIVE_TOKENS)
+    @Get(pathConstants.MY_AUTH_TOKENS)
     public async myActiveTokens(
         @CurrentUser() user
-    ): Promise<ActiveAuthTokensDto> {
-        return { activeAuthTokens: await this.authService.getActiveAuthTokensForUser(user._id) };
+    ): Promise<UserAuthTokensDto> {
+        return { authTokens: await this.authService.getAuthTokensForUser(user._id) };
     }
 }

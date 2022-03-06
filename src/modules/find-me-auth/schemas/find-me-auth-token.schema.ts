@@ -21,6 +21,10 @@ export class FindMeAuthToken {
     @ApiProperty()
     @Prop({ default: new Date() })
     public lastUse: Date;
+
+    @ApiProperty()
+    @Prop({ default: true })
+    public active: boolean;
 }
 
 export type FindMeAuthTokenDocument = FindMeAuthToken & Document;
