@@ -1,5 +1,7 @@
 export default {
     USERS: "users",
+    AUTH: "auth",
+    ME: "me",
     LOGIN: "login",
     LOGOUT: "logout",
     VALIDATE_TOKEN: "validate-token",

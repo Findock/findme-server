@@ -4,7 +4,7 @@ import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, MaxLength, M
 export class CreateFindMeUserDto {
     @ApiProperty({
         required: true,
-        example: "user@mail.com",
+        example: "bunia@gmail.com",
     })
     @IsNotEmpty()
     @IsEmail()
@@ -14,7 +14,7 @@ export class CreateFindMeUserDto {
         required: true,
         minLength: 6,
         maxLength: 64,
-        example: "passw@1",
+        example: "bunia1",
     })
     @IsNotEmpty()
     @MinLength(6)
