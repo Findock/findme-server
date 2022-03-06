@@ -10,6 +10,7 @@ import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
 import successMessagesConstant from "@src/constants/success-messages.constant";
 import OkMessageDto from "@src/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
+import { ActiveAuthTokensDto } from "@src/modules/find-me-auth/dto/active-auth-tokens.dto";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -50,6 +51,7 @@ export class FindMeAuthController {
         description: "Authorization token is not valid",
         type: UnauthorizedExceptionDto,
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Post(pathConstants.LOGOUT)
     public async logout(
@@ -79,5 +81,22 @@ export class FindMeAuthController {
     ): Promise<OkMessageDto> {
         if (!user) throw new UnauthorizedException();
         return { message: successMessagesConstant.TOKEN_IS_VALID };
+    }
+
+    @ApiOperation({
+        summary: "Validate authorization token",
+        description: "Check if user authorization token is valid or not",
+    })
+    @ApiUnauthorizedResponse({
+        description: "Authorization token is not valid",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get(pathConstants.MY_ACTIVE_TOKENS)
+    public async myActiveTokens(
+        @CurrentUser() user
+    ): Promise<ActiveAuthTokensDto> {
+        return { activeAuthTokens: await this.authService.getActiveAuthTokensForUser(user._id) };
     }
 }

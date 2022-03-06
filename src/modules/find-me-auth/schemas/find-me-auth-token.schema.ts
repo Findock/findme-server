@@ -11,9 +11,12 @@ export class FindMeAuthToken {
     @Prop({ required: true })
     public localizationDescription: string;
 
-    @ApiProperty()
     @Prop({ required: true })
     public token: string;
+
+    @ApiProperty()
+    @Prop({ required: true })
+    public userId: string;
 
     @ApiProperty()
     @Prop({ default: new Date() })
