@@ -8,6 +8,7 @@ import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.ser
 import { InjectModel } from "@nestjs/mongoose";
 import { FindMeAuthToken, FindMeAuthTokenDocument } from "@src/modules/find-me-auth/schemas/find-me-auth-token.schema";
 import { Model } from "mongoose";
+import { FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
 
 @Injectable()
 export class FindMeAuthService {
@@ -19,7 +20,7 @@ export class FindMeAuthService {
         private jwtService: JwtService
     ) {}
 
-    public async validateUser(email: string, password: string): Promise<any> {
+    public async validateUser(email: string, password: string): Promise<FindMeUserDocument> {
         const user = await this.usersService.findOneByEmail(email);
         if (!user) {
             throw new UnauthorizedException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
@@ -42,6 +43,7 @@ export class FindMeAuthService {
             deviceName: loginDto.deviceName,
             localizationDescription: loginDto.localizationDescription,
             token: "Bearer " + authToken,
+            userId: user._id.toString(),
         });
 
         return {
@@ -51,7 +53,10 @@ export class FindMeAuthService {
     }
 
     public async validateToken(token: string): Promise<boolean> {
-        return !!await this.authTokenModel.findOne({ token });
+        return !!await this.authTokenModel.findOne({
+            token,
+            active: true,
+        });
     }
 
     public async bumpTokenLastUse(token: string): Promise<void> {
@@ -59,7 +64,15 @@ export class FindMeAuthService {
     }
 
     public async logout(token: string): Promise<void> {
-        await this.authTokenModel.findOneAndRemove({ token });
+        await this.authTokenModel.findOneAndUpdate({ token }, { active: false });
+    }
+
+    public async getAuthTokensForUser(userId: string): Promise<FindMeAuthToken[]> {
+        return (await this.authTokenModel.find({ userId }).sort({ lastUse: -1 }).lean()).map(authToken => {
+            const object = { ...authToken };
+            delete object.token;
+            return object;
+        });
     }
 }
 
