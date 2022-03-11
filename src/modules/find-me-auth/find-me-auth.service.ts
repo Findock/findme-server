@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import errorMessagesConstants from "@src/constants/error-messages.constants";
 import { AuthTokenDto } from "@src/modules/find-me-auth/dto/auth-token.dto";
@@ -73,6 +73,16 @@ export class FindMeAuthService {
             delete object.token;
             return object;
         });
+    }
+
+    public async removeAuthTokenByIdForUser(tokenId: string, user: FindMeUserDocument): Promise<void> {
+        const authToken = await this.authTokenModel.findById(tokenId);
+        if (!authToken || authToken.active === false) {
+            throw new BadRequestException([ errorMessagesConstants.TOKEN_DOES_NOT_EXISTS_OR_IS_INACTIVE ]);
+        }
+        if (authToken.userId !== user._id.toString()) throw new UnauthorizedException();
+        authToken.active = false;
+        await authToken.save();
     }
 }
 
