@@ -78,7 +78,7 @@ export class FindMeAuthService {
     public async removeAuthTokenByIdForUser(tokenId: string, user: FindMeUserDocument): Promise<void> {
         const authToken = await this.authTokenModel.findById(tokenId);
         if (!authToken || authToken.active === false) {
-            throw new BadRequestException([ errorMessagesConstants.TOKEN_DOES_NOT_EXISTS_OR_IS_INACTIVE ]);
+            throw new BadRequestException([ errorMessagesConstants.TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE ]);
         }
         if (authToken.userId !== user._id.toString()) throw new UnauthorizedException();
         authToken.active = false;
