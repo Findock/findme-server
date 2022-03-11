@@ -17,7 +17,8 @@ import ErrorExceptionDto from "@src/dto/error-exception.dto";
 import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
 import { CurrentUser } from "@src/modules/find-me-auth/find-me-current-user.decorator";
 import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
-import { GetFindMeUserDto } from "@src/modules/find-me-users/dto/get-find-me-user.dto copy";
+import { GetFindMeUserDto } from "@src/modules/find-me-users/dto/get-find-me-user.dto";
+import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
 
 @ApiTags("users")
 @Controller(pathConstants.USERS)
@@ -35,8 +36,8 @@ export class FindMeUsersController {
         type: FindMeUser,
     })
     @ApiBadRequestResponse({
-        description: "Not all fields were presented or form validation errors",
-        type: FindMeUser,
+        description: "Not all fields were presented / form validation errors",
+        type: BadRequestExceptionDto,
     })
     @ApiConflictResponse({
         description: "User with provided email exists",
@@ -54,11 +55,11 @@ export class FindMeUsersController {
         description: "You can access user information via authorization token",
     })
     @ApiOkResponse({
-        description: "",
+        description: "Returns authorized user object",
         type: GetFindMeUserDto,
     })
     @ApiUnauthorizedResponse({
-        description: "",
+        description: "Bad authorization",
         type: UnauthorizedExceptionDto,
     })
     @ApiBearerAuth()

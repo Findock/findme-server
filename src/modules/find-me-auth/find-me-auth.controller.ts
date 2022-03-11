@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import errorMessagesConstants from "@src/constants/error-messages.constants";
 import pathConstants from "@src/constants/path.constants";
 import { AuthTokenDto } from "@src/modules/find-me-auth/dto/auth-token.dto";
@@ -7,10 +7,11 @@ import { AuthLoginDto } from "@src/modules/find-me-auth/dto/auth-login.dto";
 import { FindMeAuthService } from "@src/modules/find-me-auth/find-me-auth.service";
 import { CurrentUser } from "@src/modules/find-me-auth/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
-import successMessagesConstant from "@src/constants/success-messages.constant";
+import successMessagesConstants from "@src/constants/success-messages.constants";
 import OkMessageDto from "@src/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
 import { UserAuthTokensDto } from "@src/modules/find-me-auth/dto/user-auth-tokens";
+import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
 
 @ApiTags("auth")
 @Controller(pathConstants.AUTH)
@@ -27,6 +28,10 @@ export class FindMeAuthController {
     @ApiOkResponse({
         description: "Returns authorization token",
         type: AuthTokenDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Wrong login form / incorrect form sanitization / bad credentials",
+        type: BadRequestExceptionDto,
     })
     @ApiUnauthorizedResponse({
         description: `'${errorMessagesConstants.WRONG_PASSWORD}' / '${errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST}'`,
@@ -80,12 +85,12 @@ export class FindMeAuthController {
         @CurrentUser() user
     ): Promise<OkMessageDto> {
         if (!user) throw new UnauthorizedException();
-        return { message: successMessagesConstant.TOKEN_IS_VALID };
+        return { message: successMessagesConstants.TOKEN_IS_VALID };
     }
 
     @ApiOperation({
-        summary: "Validate authorization token",
-        description: "Check if user authorization token is valid or not",
+        summary: "Get list of all user authorization tokens",
+        description: "Gets list of all user authorization tokens (active and not)",
     })
     @ApiOkResponse({
         description: "Returns active authorization tokens of user",
@@ -102,5 +107,37 @@ export class FindMeAuthController {
         @CurrentUser() user
     ): Promise<UserAuthTokensDto> {
         return { authTokens: await this.authService.getAuthTokensForUser(user._id) };
+    }
+
+    @ApiOperation({
+        summary: "Remove authorization token for user by token id",
+        description: "Remove user authorization token - user can only remove token he created",
+    })
+    @ApiOkResponse({
+        description: "Returns active authorization tokens of user",
+        type: OkMessageDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Token does not exists / token is inactive / bad token Id",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Authorization token is not valid",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Authorization token is not valid",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Delete(pathConstants.AUTH_TOKEN + pathConstants.ID_PARAM)
+    public async removeAuthToken(
+        @Param("id") id: string,
+        @CurrentUser() user
+    ): Promise<OkMessageDto> {
+        if (!id || typeof id !== "string") throw new BadRequestException();
+        await this.authService.removeAuthTokenByIdForUser(id, user);
+        return { message: successMessagesConstants.TOKEN_REMOVED };
     }
 }
