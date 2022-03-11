@@ -111,7 +111,7 @@ export class FindMeAuthController {
 
     @ApiOperation({
         summary: "Remove authorization token for user by token id",
-        description: "Check if user authorization token is valid or not",
+        description: "Remove user authorization token - user can only remove token he created",
     })
     @ApiOkResponse({
         description: "Returns active authorization tokens of user",
