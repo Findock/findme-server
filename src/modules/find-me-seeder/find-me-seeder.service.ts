@@ -39,6 +39,9 @@ export class FindMeSeederService {
                     lastLogin: new Date(),
                     created: new Date(),
                     profileImageUrl: "https://picsum.photos/300/300",
+                    bio: faker.lorem.words(10),
+                    city: faker.address.city(),
+                    street: faker.address.streetName(),
                 };
                 await this.findMeUsersService.createUser({
                     ...user,

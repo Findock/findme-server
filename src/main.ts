@@ -14,8 +14,8 @@ async function bootstrap(): Promise<void> {
     const app = await NestFactory.create(AppModule);
 
     const config = new DocumentBuilder()
-        .setTitle("FindMe API")
-        .setDescription("FindMe API description")
+        .setTitle("🐶 FindMe API")
+        .setDescription("FindMe API OAS3 documentation.")
         .setVersion(version)
         .addSecurity("bearer", {
             type: "http",
@@ -24,7 +24,7 @@ async function bootstrap(): Promise<void> {
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup("api", app, document);
+    SwaggerModule.setup("api", app, document, { customSiteTitle: "FindMe :: Swagger v" + version });
 
     app.useGlobalPipes(new ValidationPipe());
 

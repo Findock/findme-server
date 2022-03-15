@@ -34,6 +34,18 @@ export class FindMeUser {
   @ApiProperty()
   @Prop({ default: new Date() })
   public lastLogin: Date;
+
+  @ApiProperty()
+  @Prop({ default: "" })
+  public street: string;
+
+  @ApiProperty()
+  @Prop({ default: "" })
+  public city: string;
+
+  @ApiProperty()
+  @Prop({ default: "" })
+  public bio: string;
 }
 
 export type FindMeUserDocument = FindMeUser & Document;

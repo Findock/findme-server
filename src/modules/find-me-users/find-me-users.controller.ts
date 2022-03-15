@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, UseGuards } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -19,12 +19,13 @@ import { CurrentUser } from "@src/modules/find-me-auth/find-me-current-user.deco
 import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
 import { GetFindMeUserDto } from "@src/modules/find-me-users/dto/get-find-me-user.dto";
 import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
+import { UpdateFindMeUserDto } from "@src/modules/find-me-users/dto/update-find-me-user.dto";
 
 @ApiTags("users")
 @Controller(pathConstants.USERS)
 export class FindMeUsersController {
     public constructor(
-        private readonly findMeUsersService: FindMeUsersService
+        private readonly usersService: FindMeUsersService
     ) { }
 
     @ApiOperation({
@@ -47,7 +48,7 @@ export class FindMeUsersController {
     public async createFindMeUser(
         @Body() createFindMeUserDto: CreateFindMeUserDto
     ): Promise<FindMeUserDocument> {
-        return this.findMeUsersService.createUser(createFindMeUserDto);
+        return this.usersService.createUser(createFindMeUserDto);
     }
 
     @ApiOperation({
@@ -69,5 +70,27 @@ export class FindMeUsersController {
         @CurrentUser() user
     ): Promise<FindMeUserDocument> {
         return user;
+    }
+
+    @ApiOperation({
+        summary: "Update authorized user account information",
+        description: "You can update only authorized user information",
+    })
+    @ApiOkResponse({
+        description: "Returns updated user object",
+        type: GetFindMeUserDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(pathConstants.ME)
+    public async updateMe(
+        @CurrentUser() user,
+        @Body() updateDto: UpdateFindMeUserDto
+    ): Promise<FindMeUser> {
+        return this.usersService.updateUser(user._id, updateDto);
     }
 }
