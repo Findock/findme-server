@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 import { CreateFindMeUserDto } from "@src/modules/find-me-users/dto/create-find-me-user.dto";
 import { FindMeUser, FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
 import errorMessagesConstants from "@src/constants/error-messages.constants";
+import { UpdateFindMeUserDto } from "@src/modules/find-me-users/dto/update-find-me-user.dto";
 
 @Injectable()
 export class FindMeUsersService {
@@ -27,6 +28,19 @@ export class FindMeUsersService {
             ...createFindMeUserDto,
             password: encryptedPassword,
         });
+    }
+
+    public async updateUser(userId: string, updateDto: UpdateFindMeUserDto): Promise<FindMeUser> {
+        const { bio, city, name, street, phoneNumber } = updateDto;
+        const user = await this.userModel.findByIdAndUpdate(userId, {
+            bio,
+            city,
+            name,
+            street,
+            phoneNumber,
+        }, { new: true }).lean();
+        delete user.password;
+        return user;
     }
 
     public async findOneByEmail(email: string): Promise<FindMeUserDocument> {

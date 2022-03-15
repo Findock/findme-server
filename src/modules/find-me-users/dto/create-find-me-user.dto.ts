@@ -33,7 +33,7 @@ export class CreateFindMeUserDto {
     @ApiProperty({
         default: "",
         required: false,
-        example: "353566433",
+        example: "+48 353 566 433",
     })
     @IsOptional()
     @IsPhoneNumber()
