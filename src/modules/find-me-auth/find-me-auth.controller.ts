@@ -12,6 +12,7 @@ import OkMessageDto from "@src/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
 import { UserAuthTokensDto } from "@src/modules/find-me-auth/dto/user-auth-tokens";
 import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
+import { FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
 
 @ApiTags("auth")
 @Controller(pathConstants.AUTH)
@@ -82,7 +83,7 @@ export class FindMeAuthController {
     @UseGuards(JwtAuthGuard)
     @Get(pathConstants.VALIDATE_TOKEN)
     public async validateToken(
-        @CurrentUser() user
+        @CurrentUser() user: FindMeUserDocument
     ): Promise<OkMessageDto> {
         if (!user) throw new UnauthorizedException();
         return { message: successMessagesConstants.TOKEN_IS_VALID };
@@ -104,7 +105,7 @@ export class FindMeAuthController {
     @UseGuards(JwtAuthGuard)
     @Get(pathConstants.MY_AUTH_TOKENS)
     public async myActiveTokens(
-        @CurrentUser() user
+        @CurrentUser() user: FindMeUserDocument
     ): Promise<UserAuthTokensDto> {
         return { authTokens: await this.authService.getAuthTokensForUser(user._id) };
     }
@@ -134,7 +135,7 @@ export class FindMeAuthController {
     @Delete(pathConstants.AUTH_TOKEN + pathConstants.ID_PARAM)
     public async removeAuthToken(
         @Param("id") id: string,
-        @CurrentUser() user
+        @CurrentUser() user: FindMeUserDocument
     ): Promise<OkMessageDto> {
         if (!id || typeof id !== "string") throw new BadRequestException();
         await this.authService.removeAuthTokenByIdForUser(id, user);

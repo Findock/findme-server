@@ -5,10 +5,7 @@ import { Document } from "mongoose";
 @Schema()
 export class FindMeUser {
   @ApiProperty()
-  @Prop({
-      required: true,
-      unique: true,
-  })
+  @Prop({ required: true })
   public email: string;
 
   @ApiProperty()

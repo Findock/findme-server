@@ -6,11 +6,13 @@ import { CreateFindMeUserDto } from "@src/modules/find-me-users/dto/create-find-
 import { FindMeUser, FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
 import errorMessagesConstants from "@src/constants/error-messages.constants";
 import { UpdateFindMeUserDto } from "@src/modules/find-me-users/dto/update-find-me-user.dto";
+import { FindMeUserDeleteLog, FindMeUserDeleteLogDocument } from "@src/modules/find-me-users/schemas/find-me-user-delete-log.schema";
 
 @Injectable()
 export class FindMeUsersService {
     public constructor(
         @InjectModel(FindMeUser.name) private readonly userModel: Model<FindMeUserDocument>,
+        @InjectModel(FindMeUserDeleteLog.name) private readonly userDeleteLogModel: Model<FindMeUserDeleteLogDocument>,
         private readonly securityService: FindMeSecurityService
     ) {}
 
@@ -49,5 +51,20 @@ export class FindMeUsersService {
 
     public async findOneById(id: string): Promise<FindMeUserDocument> {
         return this.userModel.findById(id);
+    }
+
+    public async anonymizeUserData(userId: string): Promise<void> {
+        const anonymizedUserData = {
+            email: "",
+            password: "",
+            name: "deleted",
+            phoneNumber: "",
+            profileImageUrl: "",
+            street: "",
+            city: "",
+            bio: "",
+        };
+        await this.userModel.findByIdAndUpdate(userId, anonymizedUserData);
+        await this.userDeleteLogModel.create({ user: userId });
     }
 }

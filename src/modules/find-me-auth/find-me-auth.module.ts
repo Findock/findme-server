@@ -25,5 +25,6 @@ const secret = envConfig().encryptKey;
     ],
     providers: [ FindMeAuthService, JwtStrategy ],
     controllers: [ FindMeAuthController ],
+    exports: [ FindMeAuthService ],
 })
 export class FindMeAuthModule {}
