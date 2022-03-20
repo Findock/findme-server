@@ -105,6 +105,10 @@ export class FindMeUsersController {
         description: "Returns ok message",
         type: OkMessageDto,
     })
+    @ApiBadRequestResponse({
+        description: "User account is already deleted",
+        type: BadRequestExceptionDto,
+    })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
         type: UnauthorizedExceptionDto,
