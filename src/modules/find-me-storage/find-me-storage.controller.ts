@@ -9,6 +9,7 @@ import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.ser
 import { FindMeUser } from "@src/modules/find-me-users/schemas/find-me-user.schema";
 import { diskStorage } from "multer";
 import { extname } from "path";
+import { v4 as uuid } from "uuid";
 
 @ApiTags("storage")
 @Controller(pathConstants.STORAGE)
@@ -50,7 +51,7 @@ export class FindMeStorageController {
             destination: "./storage/profile-images",
             filename: (req, file, callback) => {
                 const fileExtName = extname(file.originalname);
-                const fileName = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString();
+                const fileName = uuid();
                 callback(null, `${fileName}-profile-image${fileExtName}`);
             },
         }),

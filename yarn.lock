@@ -1206,6 +1206,11 @@
   resolved "https://registry.npmjs.org/@types/tinycolor2/-/tinycolor2-1.4.3.tgz"
   integrity sha512-Kf1w9NE5HEgGxCRyIcRXR/ZYtDv0V8FVPtYHwLxl0O+maGX0erE77pQlD0gpP+/KByMZ87mOA79SjifhSB3PjQ==
 
+"@types/uuid@^8.3.4":
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
+
 "@types/webidl-conversions@*":
   version "6.1.1"
   resolved "https://registry.npmjs.org/@types/webidl-conversions/-/webidl-conversions-6.1.1.tgz"
