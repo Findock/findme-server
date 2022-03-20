@@ -123,4 +123,25 @@ export class FindMeUsersController {
         this.usersService.anonymizeUserData(user._id);
         return { message: successMessagesConstants.USER_ACCOUNT_REMOVED };
     }
+
+    @ApiOperation({
+        summary: "Removes user profile image",
+        description: "Removes user profile image and returns updated user object",
+    })
+    @ApiOkResponse({
+        description: "Returns ok message",
+        type: GetFindMeUserDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Delete(pathConstants.ME + "/" + pathConstants.PROFILE_IMAGE)
+    public async removeMyProfileImage(
+        @CurrentUser() user: FindMeUserDocument
+    ): Promise<FindMeUser> {
+        return this.usersService.removeUserProfileImage(user._id);
+    }
 }

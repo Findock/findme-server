@@ -66,6 +66,7 @@ module.exports = {
         "comma-dangle": [ "error", "always-multiline" ],
         "quotes": [ "error", "double" ],
         "@typescript-eslint/explicit-function-return-type": "error",
-        "@typescript-eslint/explicit-member-accessibility": "error"
+        "@typescript-eslint/explicit-member-accessibility": "error",
+        "function-call-argument-newline": ["error", "consistent"]
     },
 };
