@@ -67,4 +67,10 @@ export class FindMeUsersService {
         await this.userModel.findByIdAndUpdate(userId, anonymizedUserData);
         await this.userDeleteLogModel.create({ user: userId });
     }
+
+    public async updateUserProfileImage(userId: string, imageUrl: string): Promise<FindMeUser> {
+        const user = await this.userModel.findByIdAndUpdate(userId, { profileImageUrl: imageUrl },{ new: true }).lean();
+        delete user.password;
+        return user;
+    }
 }
