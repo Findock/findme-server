@@ -23,7 +23,7 @@ export class FindMeAuthController {
     ) {}
 
     @ApiOperation({
-        summary: "Generate authorization token / login user",
+        summary: "Generate new user authorization token",
         description: "Only allows token generation when valid credentials are provided",
     })
     @ApiOkResponse({
@@ -68,7 +68,7 @@ export class FindMeAuthController {
     }
 
     @ApiOperation({
-        summary: "Validate authorization token",
+        summary: "Validate user authorization token",
         description: "Check if user authorization token is valid or not",
     })
     @ApiOkResponse({
@@ -91,7 +91,7 @@ export class FindMeAuthController {
 
     @ApiOperation({
         summary: "Get list of all user authorization tokens",
-        description: "Gets list of all user authorization tokens (active and not)",
+        description: "Gets list of all user authorization tokens (valid and invalidated)",
     })
     @ApiOkResponse({
         description: "Returns active authorization tokens of user",
@@ -111,8 +111,8 @@ export class FindMeAuthController {
     }
 
     @ApiOperation({
-        summary: "Remove authorization token for user by token id",
-        description: "Remove user authorization token - user can only remove token he created",
+        summary: "Invalidate authorization token for user by token id",
+        description: "Invalidate user authorization token - user can only remove token he created",
     })
     @ApiOkResponse({
         description: "Returns active authorization tokens of user",
