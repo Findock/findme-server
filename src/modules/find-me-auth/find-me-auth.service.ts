@@ -84,5 +84,13 @@ export class FindMeAuthService {
         authToken.active = false;
         await authToken.save();
     }
+
+    public async removeAllUserAuthTokens(userId: string): Promise<void> {
+        const user = await this.usersService.findOneById(userId);
+        if (!user) throw new BadRequestException();
+
+        const userTokens = await this.getAuthTokensForUser(userId);
+        userTokens.forEach(async (tokenObj) => await this.removeAuthTokenByIdForUser(tokenObj.token, user));
+    }
 }
 

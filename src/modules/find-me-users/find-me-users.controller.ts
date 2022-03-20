@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Post, Put, UseGuards } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -20,13 +20,16 @@ import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
 import { GetFindMeUserDto } from "@src/modules/find-me-users/dto/get-find-me-user.dto";
 import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
 import { UpdateFindMeUserDto } from "@src/modules/find-me-users/dto/update-find-me-user.dto";
+import OkMessageDto from "@src/dto/ok-message.dto";
+import successMessagesConstants from "@src/constants/success-messages.constants";
+import errorMessagesConstants from "@src/constants/error-messages.constants";
 
 @ApiTags("users")
 @Controller(pathConstants.USERS)
 export class FindMeUsersController {
     public constructor(
         private readonly usersService: FindMeUsersService
-    ) { }
+    ) {}
 
     @ApiOperation({
         summary: "Create new user",
@@ -67,7 +70,7 @@ export class FindMeUsersController {
     @UseGuards(JwtAuthGuard)
     @Get(pathConstants.ME)
     public async getMe(
-        @CurrentUser() user
+        @CurrentUser() user: FindMeUserDocument
     ): Promise<FindMeUserDocument> {
         return user;
     }
@@ -88,9 +91,32 @@ export class FindMeUsersController {
     @UseGuards(JwtAuthGuard)
     @Put(pathConstants.ME)
     public async updateMe(
-        @CurrentUser() user,
+        @CurrentUser() user: FindMeUserDocument,
         @Body() updateDto: UpdateFindMeUserDto
     ): Promise<FindMeUser> {
         return this.usersService.updateUser(user._id, updateDto);
+    }
+
+    @ApiOperation({
+        summary: "Removes and anonymizes authorized user account information",
+        description: "You can do it only once and operation is IRREVERSABLE",
+    })
+    @ApiOkResponse({
+        description: "Returns ok message",
+        type: OkMessageDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Delete(pathConstants.ME)
+    public async deleteMe(
+        @CurrentUser() user: FindMeUserDocument
+    ): Promise<OkMessageDto> {
+        if (user.email === "") throw new BadRequestException([ errorMessagesConstants.ACCOUNT_IS_ALREADY_DELETED ]);
+        this.usersService.anonymizeUserData(user._id);
+        return { message: successMessagesConstants.USER_ACCOUNT_REMOVED };
     }
 }
