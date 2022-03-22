@@ -32,7 +32,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         MongooseModule.forRoot(mongodbConfig().mongodb.uri),
         MulterModule.register({ dest: "./storage" }),
         ServeStaticModule.forRoot({
-            rootPath: join(__dirname, "../..", "storage"),
+            rootPath: join(__dirname, "../../..", "storage"),
             serveRoot: "/storage",
         }),
         FindMeCommonsModule,
