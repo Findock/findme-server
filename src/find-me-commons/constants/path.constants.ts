@@ -11,4 +11,5 @@ export default {
     MY_AUTH_TOKENS: "my-auth-tokens",
     AUTH_TOKEN: "auth-token",
     PROFILE_IMAGE: "profile-image",
+    SEND_RESET_PASSWORD_EMAIL: "send-reset-password-email",
 };

@@ -86,6 +86,9 @@
         "semi": [
             "error"
         ],
+        "@typescript-eslint/semi": [
+            "error"
+        ],
         "linebreak-style": "off",
         "object-curly-spacing": [
             "error",
@@ -124,6 +127,10 @@
         "brace-style": [
             "error",
             "1tbs"
+        ],
+        "function-paren-newline": [
+            "error",
+            "consistent"
         ]
     }
 }

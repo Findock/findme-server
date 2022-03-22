@@ -20,6 +20,7 @@ import successMessagesConstants from "@/find-me-commons/constants/success-messag
 import BadRequestExceptionDto from "@/find-me-commons/dto/bad-request-exception.dto";
 import OkMessageDto from "@/find-me-commons/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-exception.dto";
+import { PasswordResetRequestDto } from "@/find-me-users/dto/password-reset-request.dto";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 
 @ApiTags(apiTagsConstants.AUTH)
@@ -149,5 +150,26 @@ export class FindMeAuthController {
         if (!id || typeof id !== "string") throw new BadRequestException();
         await this.authService.removeAuthTokenByIdForUser(id, user);
         return { message: successMessagesConstants.TOKEN_REMOVED };
+    }
+
+     @ApiOperation({
+         summary: "Generates new reset password link (and token) then sends email with it",
+         description: "You can send emails only for accounts which exist in application",
+     })
+    @ApiOkResponse({
+        description: "Sends email and returns ok message",
+        type: OkMessageDto,
+    })
+    @ApiBadRequestResponse({
+        description: "User with this email address was not found - email is not sent",
+        type: BadRequestExceptionDto,
+    })
+    @Post(pathConstants.SEND_RESET_PASSWORD_EMAIL)
+    public async sendPasswordResetLinkEmail(
+        @Body() passwordResetRequestDto: PasswordResetRequestDto
+    ): Promise<OkMessageDto> {
+        const { email } = passwordResetRequestDto;
+        this.authService.sendResetPasswordLink(email);
+        return { message: "Email with password reset link successfully sent!" };
     }
 }
