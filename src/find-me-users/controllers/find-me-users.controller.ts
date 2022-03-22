@@ -23,6 +23,7 @@ import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-excepti
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
 import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
+import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
@@ -85,6 +86,10 @@ export class FindMeUsersController {
         description: "Returns updated user object",
         type: GetFindMeUserDto,
     })
+    @ApiBadRequestResponse({
+        description: "Form validation errors",
+        type: BadRequestExceptionDto,
+    })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
         type: UnauthorizedExceptionDto,
@@ -145,5 +150,36 @@ export class FindMeUsersController {
         @CurrentUser() user: FindMeUserDocument
     ): Promise<FindMeUser> {
         return this.usersService.removeUserProfileImage(user._id);
+    }
+
+    @ApiOperation({
+        summary: "Updates authorized user password",
+        description: "Requires old password and new password to update user password",
+    })
+    @ApiOkResponse({
+        description: "Returns updated user object",
+        type: GetFindMeUserDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Invalid old password parameter or form validation errors",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(pathConstants.ME + "/" + pathConstants.UPDATE_PASSWORD)
+    public async updateMyPassword(
+        @Body() updateFindMeUserPasswordDto: UpdateFindMeUserPasswordDto,
+        @CurrentUser() user: FindMeUserDocument
+    ): Promise<FindMeUser> {
+        const { oldPassword, newPassword } = updateFindMeUserPasswordDto;
+        return this.usersService.updateUserPassword(
+            user._id,
+            oldPassword,
+            newPassword
+        );
     }
 }

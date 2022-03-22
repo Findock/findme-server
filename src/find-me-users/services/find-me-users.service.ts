@@ -98,4 +98,18 @@ export class FindMeUsersService {
         delete user.password;
         return user;
     }
+
+    public async updateUserPassword(
+        userId: string,
+        oldPassword: string,
+        newPassword: string
+    ): Promise<FindMeUser> {
+        const user = await this.userModel.findById(userId).lean();
+        if(user.password !== this.securityService.encryptValue(oldPassword)) {
+            throw new BadRequestException([ errorMessagesConstants.INVALID_OLD_PASSWORD ]);
+        }
+        await this.userModel.findByIdAndUpdate(userId, { password: this.securityService.encryptValue(newPassword) });
+        delete user.password;
+        return user;
+    }
 }

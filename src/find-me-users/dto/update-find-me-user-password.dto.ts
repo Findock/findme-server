@@ -1,19 +1,19 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, MaxLength, MinLength } from "class-validator";
 
-export class PasswordResetByTokenDto {
+export class UpdateFindMeUserPasswordDto {
     @ApiProperty({
-        example: "hbGciOiJIUzI1NiIsInR5cCI6IkpeyJfaWQiOiI2MjE5ZGViYjk0MzRjNGI3YWRmYWU4MTYiLCJ0IjoxNjQ3OTcwNzI1MTU",
+        example: "bunia1",
         required: true,
     })
     @IsNotEmpty()
-    public token: string;
+    @MinLength(6)
+    @MaxLength(64)
+    public oldPassword: string;
 
     @ApiProperty({
+        example: "bunia2",
         required: true,
-        minLength: 6,
-        maxLength: 64,
-        example: "bunia1",
     })
     @IsNotEmpty()
     @MinLength(6)
