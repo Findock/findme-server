@@ -30,11 +30,7 @@ module.exports = {
                 ArrayPattern: { minItems: 2 },
             },
         ],
-        "object-property-newline": [
-            "error", {
-                allowMultiplePropertiesPerLine: false,
-            },
-        ],
+        "object-property-newline": ["error", { allowMultiplePropertiesPerLine: false, },],
         "object-curly-newline": ["error", { "multiline": true }],
         "no-multi-spaces": "error",
         "no-irregular-whitespace": "error",
@@ -71,9 +67,7 @@ module.exports = {
         "function-call-argument-newline": ["error", "consistent"],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
-        "no-multiple-empty-lines": ["error", {
-            max: 1
-        }],
+        "no-multiple-empty-lines": ["error", { max: 1 }],
         "no-return-await": "error"
     },
 };
