@@ -1,12 +1,19 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { v4 as uuid } from "uuid";
 
 import { AuthLoginDto } from "@/find-me-auth/dto/auth-login.dto";
 import { AuthTokenDto } from "@/find-me-auth/dto/auth-token.dto";
 import { FindMeAuthToken, FindMeAuthTokenDocument } from "@/find-me-auth/schemas/find-me-auth-token.schema";
+import {
+    FindMeResetPasswordToken,
+    FindMeResetPasswordTokenDocument,
+} from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
 import errorMessagesConstants from "@/find-me-commons/constants/error-messages.constants";
+import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
 import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
@@ -16,9 +23,13 @@ export class FindMeAuthService {
 
     public constructor(
         @InjectModel(FindMeAuthToken.name) private readonly authTokenModel: Model<FindMeAuthTokenDocument>,
-        private securityService: FindMeSecurityService,
-        private usersService: FindMeUsersService,
-        private jwtService: JwtService
+        @InjectModel(FindMeResetPasswordToken.name)
+            private readonly resetPasswordTokenModel: Model<FindMeResetPasswordTokenDocument>,
+        private readonly securityService: FindMeSecurityService,
+        private readonly usersService: FindMeUsersService,
+        private readonly jwtService: JwtService,
+        private readonly mailerService: FindMeMailerService,
+        private readonly configService: ConfigService
     ) {}
 
     public async validateUser(email: string, password: string): Promise<FindMeUserDocument> {
@@ -84,6 +95,26 @@ export class FindMeAuthService {
         if (authToken.userId !== user._id.toString()) throw new UnauthorizedException();
         authToken.active = false;
         await authToken.save();
+    }
+
+    public async sendResetPasswordLink(userEmail: string): Promise<void> {
+        const user = await this.usersService.findOneByEmail(userEmail);
+        if (!user) throw new BadRequestException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
+        const link = await this.generateResetPasswordLinkForUser(user._id);
+        await this.mailerService.sendResetPasswordLink(
+            userEmail,
+            user.name,
+            link
+        );
+    }
+
+    private async generateResetPasswordLinkForUser(userId: string): Promise<string> {
+        const token = this.securityService.encryptValue(uuid());
+        await this.resetPasswordTokenModel.create({
+            user: userId,
+            token,
+        });
+        return `${this.configService.get<string>("rootUrl")}static/reset-password?token=${token}`;
     }
 }
 

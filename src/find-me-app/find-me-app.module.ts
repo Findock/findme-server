@@ -11,6 +11,7 @@ import mongodbConfig from "@/find-me-commons/configurations/mongodb.config";
 import securityConfig from "@/find-me-commons/configurations/security.config";
 import seederConfig from "@/find-me-commons/configurations/seeder.config";
 import { FindMeCommonsModule } from "@/find-me-commons/find-me-commons.module";
+import { FindMeMailerModule } from "@/find-me-mailer/find-me-mailer.module";
 import { FindMeSecurityModule } from "@/find-me-security/find-me-security.module";
 import { FindMeSeederModule } from "@/find-me-seeder/find-me-seeder.module";
 import { FindMeStorageModule } from "@/find-me-storage/find-me-storage.module";
@@ -36,6 +37,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         }),
         FindMeCommonsModule,
         FindMeSecurityModule,
+        FindMeMailerModule,
         // Global modules end
 
         // Application modules start

@@ -100,8 +100,8 @@ export class FindMeUsersController {
     }
 
     @ApiOperation({
-        summary: "Removes and anonymizes authorized user account information",
-        description: "You can do it only once and operation is IRREVERSABLE",
+        summary: "Removes and anonymize authorized user account information",
+        description: "You can do it only once and operation is !IRREVERSABLE!",
     })
     @ApiOkResponse({
         description: "Returns ok message",
