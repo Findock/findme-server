@@ -108,6 +108,20 @@ export class FindMeAuthService {
         );
     }
 
+    public async resetUserPasswordWithToken(token: string, newPassword: string): Promise<void> {
+        const passwordResetTokenObject = await this.resetPasswordTokenModel.findOne({ token }).populate("user");
+        if (!passwordResetTokenObject) {
+            throw new BadRequestException([ errorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
+        }
+        const user = await this.usersService.findOneById(passwordResetTokenObject.user._id);
+        if (!user) {
+            throw new BadRequestException([ errorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
+        }
+        user.password = this.securityService.encryptValue(newPassword);
+        await user.save();
+        await passwordResetTokenObject.delete();
+    }
+
     private async generateResetPasswordLinkForUser(userId: string): Promise<string> {
         const token = this.securityService.encryptValue(uuid());
         await this.resetPasswordTokenModel.create({
