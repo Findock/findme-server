@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
 import { Document, Types } from "mongoose";
 
-import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 
 @Schema()
 export class FindMeUserDeleteLog {
@@ -12,7 +12,7 @@ export class FindMeUserDeleteLog {
       type: Types.ObjectId,
       ref: "FindMeUser",
   })
-  public user: FindMeUser;
+  public user: FindMeUserDocument;
 
   @ApiProperty()
   @Prop({ default: new Date() })

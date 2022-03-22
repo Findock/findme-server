@@ -10,6 +10,8 @@ import {
 import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
 import { AuthLoginDto } from "@/find-me-auth/dto/auth-login.dto";
 import { AuthTokenDto } from "@/find-me-auth/dto/auth-token.dto";
+import { PasswordResetByTokenDto } from "@/find-me-auth/dto/password-reset-by-token.dto";
+import { PasswordResetRequestDto } from "@/find-me-auth/dto/password-reset-request.dto";
 import { UserAuthTokensDto } from "@/find-me-auth/dto/user-auth-tokens";
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
@@ -20,7 +22,6 @@ import successMessagesConstants from "@/find-me-commons/constants/success-messag
 import BadRequestExceptionDto from "@/find-me-commons/dto/bad-request-exception.dto";
 import OkMessageDto from "@/find-me-commons/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-exception.dto";
-import { PasswordResetRequestDto } from "@/find-me-users/dto/password-reset-request.dto";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 
 @ApiTags(apiTagsConstants.AUTH)
@@ -152,10 +153,10 @@ export class FindMeAuthController {
         return { message: successMessagesConstants.TOKEN_REMOVED };
     }
 
-     @ApiOperation({
-         summary: "Generates new reset password link (and token) then sends email with it",
-         description: "You can send emails only for accounts which exist in application",
-     })
+    @ApiOperation({
+        summary: "Generates new reset password link (and token) then sends email with it",
+        description: "You can send emails only for accounts which exist in application",
+    })
     @ApiOkResponse({
         description: "Sends email and returns ok message",
         type: OkMessageDto,
@@ -171,5 +172,26 @@ export class FindMeAuthController {
         const { email } = passwordResetRequestDto;
         this.authService.sendResetPasswordLink(email);
         return { message: "Email with password reset link successfully sent!" };
+    }
+
+    @ApiOperation({
+        summary: "Reset user password by password reset token",
+        description: "After password reset password reset token is deleted",
+    })
+    @ApiOkResponse({
+        description: "Password successfully set to new password",
+        type: OkMessageDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Bad password reset token",
+        type: BadRequestExceptionDto,
+    })
+    @Post(pathConstants.RESET_PASSWORD)
+    public async resetUserPasswordByResetToken(
+        @Body() passwordResetByTokenDto: PasswordResetByTokenDto
+    ): Promise<OkMessageDto> {
+        const { token, newPassword } = passwordResetByTokenDto;
+        await this.authService.resetUserPasswordWithToken(token, newPassword);
+        return { message: "Password was successfully changed" };
     }
 }

@@ -5,4 +5,5 @@ export default {
     TERMS_NEED_TO_BE_ACCEPTED: "Terms need to be accepted.",
     TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE: "Token does not exist or is inactive.",
     ACCOUNT_IS_ALREADY_DELETED: "Account is already deleted.",
+    INVALID_PASSWORD_RESET_TOKEN: "Invalid password reset token",
 };
