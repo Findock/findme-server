@@ -1,5 +1,11 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
-import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import {
+    BadRequestException,
+    Body, Controller, Delete, Get, Param, Post, Request, UnauthorizedException, UseGuards,
+} from "@nestjs/common";
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
 import { CurrentUser } from "@src/find-me-auth/decorators/find-me-current-user.decorator";
 import { AuthLoginDto } from "@src/find-me-auth/dto/auth-login.dto";
 import { AuthTokenDto } from "@src/find-me-auth/dto/auth-token.dto";
@@ -35,7 +41,8 @@ export class FindMeAuthController {
         type: BadRequestExceptionDto,
     })
     @ApiUnauthorizedResponse({
-        description: `'${errorMessagesConstants.WRONG_PASSWORD}' / '${errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST}'`,
+        description: `'${errorMessagesConstants.WRONG_PASSWORD}' / 
+            '${errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST}'`,
         type: UnauthorizedExceptionDto,
     })
     @Post(pathConstants.LOGIN)

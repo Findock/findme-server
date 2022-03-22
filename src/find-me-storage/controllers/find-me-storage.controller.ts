@@ -1,6 +1,9 @@
 import { Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import {
+    ApiBearerAuth,
+    ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
 import { CurrentUser } from "@src/find-me-auth/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@src/find-me-auth/guards/find-me-jwt-auth.guard";
 import pathConstants from "@src/find-me-commons/constants/path.constants";
