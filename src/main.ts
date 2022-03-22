@@ -37,7 +37,7 @@ async function bootstrap(): Promise<void> {
         console.log(gradient.vice(" © " + year + " Findock \n "));
         console.log(
             gradient.vice(
-                " Server current envirement running in " +
+                " Server current environment running in " +
                 serverEnv.toUpperCase() +
                 " \n",
             ),

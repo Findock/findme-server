@@ -11,6 +11,7 @@ import {
 } from "@nestjs/swagger";
 import { CurrentUser } from "@src/find-me-auth/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@src/find-me-auth/guards/find-me-jwt-auth.guard";
+import apiTagsConstants from "@src/find-me-commons/constants/api-tags.constants";
 import errorMessagesConstants from "@src/find-me-commons/constants/error-messages.constants";
 import pathConstants from "@src/find-me-commons/constants/path.constants";
 import successMessagesConstants from "@src/find-me-commons/constants/success-messages.constants";
@@ -24,7 +25,7 @@ import { UpdateFindMeUserDto } from "@src/find-me-users/dto/update-find-me-user.
 import { FindMeUser, FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@src/find-me-users/services/find-me-users.service";
 
-@ApiTags("users")
+@ApiTags(apiTagsConstants.USERS)
 @Controller(pathConstants.USERS)
 export class FindMeUsersController {
     public constructor(

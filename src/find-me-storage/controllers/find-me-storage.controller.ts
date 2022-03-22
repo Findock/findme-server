@@ -6,6 +6,7 @@ import {
 } from "@nestjs/swagger";
 import { CurrentUser } from "@src/find-me-auth/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@src/find-me-auth/guards/find-me-jwt-auth.guard";
+import apiTagsConstants from "@src/find-me-commons/constants/api-tags.constants";
 import pathConstants from "@src/find-me-commons/constants/path.constants";
 import UnauthorizedExceptionDto from "@src/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUser, FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
@@ -14,7 +15,7 @@ import { diskStorage } from "multer";
 import { extname } from "path";
 import { v4 as uuid } from "uuid";
 
-@ApiTags("storage")
+@ApiTags(apiTagsConstants.STORAGE)
 @Controller(pathConstants.STORAGE)
 export class FindMeStorageController {
     public constructor(

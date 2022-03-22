@@ -12,6 +12,7 @@ import { AuthTokenDto } from "@src/find-me-auth/dto/auth-token.dto";
 import { UserAuthTokensDto } from "@src/find-me-auth/dto/user-auth-tokens";
 import { JwtAuthGuard } from "@src/find-me-auth/guards/find-me-jwt-auth.guard";
 import { FindMeAuthService } from "@src/find-me-auth/services/find-me-auth.service";
+import apiTagsConstants from "@src/find-me-commons/constants/api-tags.constants";
 import errorMessagesConstants from "@src/find-me-commons/constants/error-messages.constants";
 import pathConstants from "@src/find-me-commons/constants/path.constants";
 import successMessagesConstants from "@src/find-me-commons/constants/success-messages.constants";
@@ -20,7 +21,7 @@ import OkMessageDto from "@src/find-me-commons/dto/ok-message.dto";
 import UnauthorizedExceptionDto from "@src/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
 
-@ApiTags("auth")
+@ApiTags(apiTagsConstants.AUTH)
 @Controller(pathConstants.AUTH)
 export class FindMeAuthController {
 
