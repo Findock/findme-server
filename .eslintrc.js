@@ -6,6 +6,7 @@ module.exports = {
     },
     plugins: [
         "@typescript-eslint",
+        "simple-import-sort"
     ],
     extends: [
         "plugin:@typescript-eslint/recommended",
@@ -15,11 +16,11 @@ module.exports = {
         node: true,
         jest: true,
     },
-    ignorePatterns: [ ".eslintrc.js" ],
+    ignorePatterns: [".eslintrc.js"],
     rules: {
         "@typescript-eslint/interface-name-prefix": "off",
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/explicit-function-return-type": "error",
+        "@typescript-eslint/explicit-module-boundary-types": "error",
         "@typescript-eslint/no-explicit-any": "off",
         "no-undef": "off",
         "func-names": "off",
@@ -29,12 +30,8 @@ module.exports = {
                 ArrayPattern: { minItems: 2 },
             },
         ],
-        "object-property-newline": [
-            "error", {
-                allowMultiplePropertiesPerLine: false,
-            },
-        ],
-        "object-curly-newline": [ "error", { "multiline": true } ],
+        "object-property-newline": ["error", { allowMultiplePropertiesPerLine: false, },],
+        "object-curly-newline": ["error", { "multiline": true }],
         "no-multi-spaces": "error",
         "no-irregular-whitespace": "error",
         "no-trailing-spaces": "error",
@@ -46,10 +43,10 @@ module.exports = {
                 tabWidth: 4,
             },
         ],
-        "indent": [ "error", 4, {
+        "indent": ["error", 4, {
             "SwitchCase": 1,
-            "ignoredNodes": [ "PropertyDefinition" ],
-        } ],
+            "ignoredNodes": ["PropertyDefinition"],
+        }],
         "no-tabs": "error",
         "no-lone-blocks": "error",
         "eol-last": "error",
@@ -57,16 +54,20 @@ module.exports = {
         "no-unused-vars": "off",
         "consistent-return": "off",
         "import/prefer-default-export": "off",
-        "array-bracket-newline": [ "error", { multiline: true } ],
-        semi: [ "error" ],
+        "array-bracket-newline": ["error", { multiline: true }],
+        semi: ["error"],
         "linebreak-style": "off",
-        "object-curly-spacing": [ "error", "always" ],
-        "array-bracket-spacing": [ "error", "always" ],
+        "object-curly-spacing": ["error", "always"],
+        "array-bracket-spacing": ["error", "always"],
         "computed-property-spacing": "error",
-        "comma-dangle": [ "error", "always-multiline" ],
-        "quotes": [ "error", "double" ],
+        "comma-dangle": ["error", "always-multiline"],
+        "quotes": ["error", "double"],
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/explicit-member-accessibility": "error",
-        "function-call-argument-newline": ["error", "consistent"]
+        "function-call-argument-newline": ["error", "consistent"],
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "no-multiple-empty-lines": ["error", { max: 1 }],
+        "no-return-await": "error"
     },
 };

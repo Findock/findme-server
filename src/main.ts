@@ -1,8 +1,9 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { version } from "../package.json";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
+import { NestFactory } from "@nestjs/core";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+
+import { version } from "../package.json";
+import { FindMeAppModule } from "./find-me-app/find-me-app.module";
 import figlet = require("figlet");
 import gradient = require("gradient-string");
 
@@ -11,7 +12,7 @@ async function bootstrap(): Promise<void> {
     const appListenPort = process.env.LISTEN_PORT || 3002;
     const serverEnv = process.env.ENV || "local";
 
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(FindMeAppModule);
 
     const config = new DocumentBuilder()
         .setTitle("🐶 FindMe API")
