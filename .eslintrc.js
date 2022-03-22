@@ -73,6 +73,7 @@ module.exports = {
         "simple-import-sort/exports": "error",
         "no-multiple-empty-lines": ["error", {
             max: 1
-        }]
+        }],
+        "no-return-await": "error"
     },
 };
