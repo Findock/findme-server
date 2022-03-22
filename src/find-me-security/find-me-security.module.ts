@@ -1,5 +1,5 @@
 import { Global, Module } from "@nestjs/common";
-import { FindMeSecurityService } from "@src/find-me-security/find-me-security.service";
+import { FindMeSecurityService } from "@src/find-me-security/services/find-me-security.service";
 
 @Global()
 @Module({

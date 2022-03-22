@@ -1,8 +1,9 @@
-import { NestFactory } from "@nestjs/core";
-import { FindMeAppModule } from "./find-me-app/find-me-app.module";
-import { version } from "../package.json";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
+import { NestFactory } from "@nestjs/core";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+
+import { version } from "../package.json";
+import { FindMeAppModule } from "./find-me-app/find-me-app.module";
 import figlet = require("figlet");
 import gradient = require("gradient-string");
 

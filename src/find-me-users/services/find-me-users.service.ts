@@ -1,12 +1,12 @@
 import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { FindMeSecurityService } from "@src/find-me-security/find-me-security.service";
-import { Model } from "mongoose";
-import { CreateFindMeUserDto } from "@src/find-me-users/dto/create-find-me-user.dto";
-import { FindMeUser, FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
 import errorMessagesConstants from "@src/find-me-commons/constants/error-messages.constants";
+import { FindMeSecurityService } from "@src/find-me-security/services/find-me-security.service";
+import { CreateFindMeUserDto } from "@src/find-me-users/dto/create-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@src/find-me-users/dto/update-find-me-user.dto";
+import { FindMeUser, FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
 import { FindMeUserDeleteLog, FindMeUserDeleteLogDocument } from "@src/find-me-users/schemas/find-me-user-delete-log.schema";
+import { Model } from "mongoose";
 
 @Injectable()
 export class FindMeUsersService {

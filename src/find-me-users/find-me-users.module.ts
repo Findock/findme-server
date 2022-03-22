@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
+import { FindMeUsersController } from "@src/find-me-users/controllers/find-me-users.controller";
 import { FindMeUser, FindMeUserSchema } from "@src/find-me-users/schemas/find-me-user.schema";
-import { FindMeUsersController } from "@src/find-me-users/find-me-users.controller";
-import { FindMeUsersService } from "@src/find-me-users/find-me-users.service";
 import { FindMeUserDeleteLog, FindMeUserDeleteLogSchema } from "@src/find-me-users/schemas/find-me-user-delete-log.schema";
+import { FindMeUsersService } from "@src/find-me-users/services/find-me-users.service";
 
 @Module({
     imports: [

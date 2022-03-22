@@ -1,10 +1,10 @@
-import { ExtractJwt, Strategy } from "passport-jwt";
-import { PassportStrategy } from "@nestjs/passport";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import envConfig from "@src/find-me-commons/config/env.config";
-import { FindMeUsersService } from "@src/find-me-users/find-me-users.service";
+import { PassportStrategy } from "@nestjs/passport";
+import { FindMeAuthService } from "@src/find-me-auth/services/find-me-auth.service";
+import envConfig from "@src/find-me-commons/configurations/env.config";
 import { FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
-import { FindMeAuthService } from "@src/find-me-auth/find-me-auth.service";
+import { FindMeUsersService } from "@src/find-me-users/services/find-me-users.service";
+import { ExtractJwt, Strategy } from "passport-jwt";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +19,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    public async validate(req: Request, payload: any): Promise<FindMeUserDocument> {
+    public async validate(req: Request, payload: {
+        _id: string
+    }): Promise<FindMeUserDocument> {
         const token = req.headers["authorization"];
         if (!await this.authService.validateToken(token)) throw new UnauthorizedException();
         await this.authService.bumpTokenLastUse(token);
