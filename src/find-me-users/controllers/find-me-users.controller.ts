@@ -86,6 +86,10 @@ export class FindMeUsersController {
         description: "Returns updated user object",
         type: GetFindMeUserDto,
     })
+    @ApiBadRequestResponse({
+        description: "Form validation errors",
+        type: BadRequestExceptionDto,
+    })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
         type: UnauthorizedExceptionDto,
@@ -149,12 +153,16 @@ export class FindMeUsersController {
     }
 
     @ApiOperation({
-        summary: "Removes user profile image",
-        description: "Removes user profile image and returns updated user object",
+        summary: "Updates authorized user password",
+        description: "Requires old password and new password to update user password",
     })
     @ApiOkResponse({
-        description: "Returns ok message",
+        description: "Returns updated user object",
         type: GetFindMeUserDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Invalid old password parameter or form validation errors",
+        type: BadRequestExceptionDto,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
