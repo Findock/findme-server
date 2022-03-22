@@ -6,4 +6,5 @@ export default {
     TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE: "Token does not exist or is inactive.",
     ACCOUNT_IS_ALREADY_DELETED: "Account is already deleted.",
     INVALID_PASSWORD_RESET_TOKEN: "Invalid password reset token",
+    INVALID_OLD_PASSWORD: "Invalid old password",
 };
