@@ -12,7 +12,7 @@ export class UpdateFindMeUserPasswordDto {
     public oldPassword: string;
 
     @ApiProperty({
-        example: "bunia1",
+        example: "bunia2",
         required: true,
     })
     @IsNotEmpty()
