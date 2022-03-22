@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { FindMeSeederLog, FindMeSeederLogSchema } from "@src/find-me-seeder/schemas/find-me-seeder-log";
-import { FindMeSeederService } from "@src/find-me-seeder/services/find-me-seeder.service";
-import { FindMeUsersModule } from "@src/find-me-users/find-me-users.module";
+
+import { FindMeSeederLog, FindMeSeederLogSchema } from "@/find-me-seeder/schemas/find-me-seeder-log";
+import { FindMeSeederService } from "@/find-me-seeder/services/find-me-seeder.service";
+import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
 
 @Module({
     imports: [

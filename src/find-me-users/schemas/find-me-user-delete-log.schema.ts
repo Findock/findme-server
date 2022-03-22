@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
-import { FindMeUser } from "@src/find-me-users/schemas/find-me-user.schema";
 import { Document, Types } from "mongoose";
+
+import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
 
 @Schema()
 export class FindMeUserDeleteLog {

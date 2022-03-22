@@ -1,14 +1,15 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
-import { AuthLoginDto } from "@src/find-me-auth/dto/auth-login.dto";
-import { AuthTokenDto } from "@src/find-me-auth/dto/auth-token.dto";
-import { FindMeAuthToken, FindMeAuthTokenDocument } from "@src/find-me-auth/schemas/find-me-auth-token.schema";
-import errorMessagesConstants from "@src/find-me-commons/constants/error-messages.constants";
-import { FindMeSecurityService } from "@src/find-me-security/services/find-me-security.service";
-import { FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
-import { FindMeUsersService } from "@src/find-me-users/services/find-me-users.service";
 import { Model } from "mongoose";
+
+import { AuthLoginDto } from "@/find-me-auth/dto/auth-login.dto";
+import { AuthTokenDto } from "@/find-me-auth/dto/auth-token.dto";
+import { FindMeAuthToken, FindMeAuthTokenDocument } from "@/find-me-auth/schemas/find-me-auth-token.schema";
+import errorMessagesConstants from "@/find-me-commons/constants/error-messages.constants";
+import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
+import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @Injectable()
 export class FindMeAuthService {

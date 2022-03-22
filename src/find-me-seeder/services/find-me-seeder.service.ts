@@ -1,13 +1,14 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectModel } from "@nestjs/mongoose";
-import environmentConstants from "@src/find-me-commons/constants/environment.constants";
-import seederKeysConstants from "@src/find-me-seeder/constants/seeder-keys.constants";
-import { FindMeSeederLog, FindMeSeederLogDocument } from "@src/find-me-seeder/schemas/find-me-seeder-log";
-import { FindMeUser } from "@src/find-me-users/schemas/find-me-user.schema";
-import { FindMeUsersService } from "@src/find-me-users/services/find-me-users.service";
 import faker from "faker";
 import { Model } from "mongoose";
+
+import environmentConstants from "@/find-me-commons/constants/environment.constants";
+import seederKeysConstants from "@/find-me-seeder/constants/seeder-keys.constants";
+import { FindMeSeederLog, FindMeSeederLogDocument } from "@/find-me-seeder/schemas/find-me-seeder-log";
+import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @Injectable()
 export class FindMeSeederService {

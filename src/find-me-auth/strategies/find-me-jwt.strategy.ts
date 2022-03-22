@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
-import { FindMeAuthService } from "@src/find-me-auth/services/find-me-auth.service";
-import envConfig from "@src/find-me-commons/configurations/env.config";
-import { FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
-import { FindMeUsersService } from "@src/find-me-users/services/find-me-users.service";
 import { ExtractJwt, Strategy } from "passport-jwt";
+
+import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
+import envConfig from "@/find-me-commons/configurations/env.config";
+import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

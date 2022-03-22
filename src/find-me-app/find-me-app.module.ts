@@ -3,17 +3,18 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { MulterModule } from "@nestjs/platform-express";
 import { ServeStaticModule } from "@nestjs/serve-static";
-import { FindMeAuthModule } from "@src/find-me-auth/find-me-auth.module";
-import envConfig from "@src/find-me-commons/configurations/env.config";
-import mongodbConfig from "@src/find-me-commons/configurations/mongodb.config";
-import securityConfig from "@src/find-me-commons/configurations/security.config";
-import seederConfig from "@src/find-me-commons/configurations/seeder.config";
-import { FindMeCommonsModule } from "@src/find-me-commons/find-me-commons.module";
-import { FindMeSecurityModule } from "@src/find-me-security/find-me-security.module";
-import { FindMeSeederModule } from "@src/find-me-seeder/find-me-seeder.module";
-import { FindMeStorageModule } from "@src/find-me-storage/find-me-storage.module";
-import { FindMeUsersModule } from "@src/find-me-users/find-me-users.module";
 import { join } from "path";
+
+import { FindMeAuthModule } from "@/find-me-auth/find-me-auth.module";
+import envConfig from "@/find-me-commons/configurations/env.config";
+import mongodbConfig from "@/find-me-commons/configurations/mongodb.config";
+import securityConfig from "@/find-me-commons/configurations/security.config";
+import seederConfig from "@/find-me-commons/configurations/seeder.config";
+import { FindMeCommonsModule } from "@/find-me-commons/find-me-commons.module";
+import { FindMeSecurityModule } from "@/find-me-security/find-me-security.module";
+import { FindMeSeederModule } from "@/find-me-seeder/find-me-seeder.module";
+import { FindMeStorageModule } from "@/find-me-storage/find-me-storage.module";
+import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
 
 @Module({
     imports: [
