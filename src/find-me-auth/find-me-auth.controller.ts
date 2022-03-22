@@ -1,18 +1,18 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Request, UnauthorizedException, UseGuards } from "@nestjs/common";
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
-import errorMessagesConstants from "@src/constants/error-messages.constants";
-import pathConstants from "@src/constants/path.constants";
-import { AuthTokenDto } from "@src/modules/find-me-auth/dto/auth-token.dto";
-import { AuthLoginDto } from "@src/modules/find-me-auth/dto/auth-login.dto";
-import { FindMeAuthService } from "@src/modules/find-me-auth/find-me-auth.service";
-import { CurrentUser } from "@src/modules/find-me-auth/find-me-current-user.decorator";
-import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
-import successMessagesConstants from "@src/constants/success-messages.constants";
-import OkMessageDto from "@src/dto/ok-message.dto";
-import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
-import { UserAuthTokensDto } from "@src/modules/find-me-auth/dto/user-auth-tokens";
-import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
-import { FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
+import errorMessagesConstants from "@src/find-me-commons/constants/error-messages.constants";
+import pathConstants from "@src/find-me-commons/constants/path.constants";
+import { AuthTokenDto } from "@src/find-me-auth/dto/auth-token.dto";
+import { AuthLoginDto } from "@src/find-me-auth/dto/auth-login.dto";
+import { FindMeAuthService } from "@src/find-me-auth/find-me-auth.service";
+import { CurrentUser } from "@src/find-me-auth/find-me-current-user.decorator";
+import { JwtAuthGuard } from "@src/find-me-auth/find-me-jwt-auth.guard";
+import successMessagesConstants from "@src/find-me-commons/constants/success-messages.constants";
+import OkMessageDto from "@src/find-me-commons/dto/ok-message.dto";
+import UnauthorizedExceptionDto from "@src/find-me-commons/dto/unauthorized-exception.dto";
+import { UserAuthTokensDto } from "@src/find-me-auth/dto/user-auth-tokens";
+import BadRequestExceptionDto from "@src/find-me-commons/dto/bad-request-exception.dto";
+import { FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
 
 @ApiTags("auth")
 @Controller(pathConstants.AUTH)

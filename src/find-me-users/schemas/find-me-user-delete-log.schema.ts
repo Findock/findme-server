@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { ApiProperty } from "@nestjs/swagger";
-import { FindMeUser } from "@src/modules/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@src/find-me-users/schemas/find-me-user.schema";
 import { Document, Types } from "mongoose";
 
 @Schema()

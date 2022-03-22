@@ -1,12 +1,12 @@
 import { Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
-import pathConstants from "@src/constants/path.constants";
-import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
-import { CurrentUser } from "@src/modules/find-me-auth/find-me-current-user.decorator";
-import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
-import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.service";
-import { FindMeUser } from "@src/modules/find-me-users/schemas/find-me-user.schema";
+import pathConstants from "@src/find-me-commons/constants/path.constants";
+import UnauthorizedExceptionDto from "@src/find-me-commons/dto/unauthorized-exception.dto";
+import { CurrentUser } from "@src/find-me-auth/find-me-current-user.decorator";
+import { JwtAuthGuard } from "@src/find-me-auth/find-me-jwt-auth.guard";
+import { FindMeUsersService } from "@src/find-me-users/find-me-users.service";
+import { FindMeUser } from "@src/find-me-users/schemas/find-me-user.schema";
 import { diskStorage } from "multer";
 import { extname } from "path";
 import { v4 as uuid } from "uuid";

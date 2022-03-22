@@ -9,20 +9,20 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
-import pathConstants from "@src/constants/path.constants";
-import { FindMeUsersService } from "@src/modules/find-me-users/find-me-users.service";
-import { CreateFindMeUserDto } from "@src/modules/find-me-users/dto/create-find-me-user.dto";
-import { FindMeUser, FindMeUserDocument } from "@src/modules/find-me-users/schemas/find-me-user.schema";
-import ErrorExceptionDto from "@src/dto/error-exception.dto";
-import { JwtAuthGuard } from "@src/modules/find-me-auth/find-me-jwt-auth.guard";
-import { CurrentUser } from "@src/modules/find-me-auth/find-me-current-user.decorator";
-import UnauthorizedExceptionDto from "@src/dto/unauthorized-exception.dto";
-import { GetFindMeUserDto } from "@src/modules/find-me-users/dto/get-find-me-user.dto";
-import BadRequestExceptionDto from "@src/dto/bad-request-exception.dto";
-import { UpdateFindMeUserDto } from "@src/modules/find-me-users/dto/update-find-me-user.dto";
-import OkMessageDto from "@src/dto/ok-message.dto";
-import successMessagesConstants from "@src/constants/success-messages.constants";
-import errorMessagesConstants from "@src/constants/error-messages.constants";
+import pathConstants from "@src/find-me-commons/constants/path.constants";
+import { FindMeUsersService } from "@src/find-me-users/find-me-users.service";
+import { CreateFindMeUserDto } from "@src/find-me-users/dto/create-find-me-user.dto";
+import { FindMeUser, FindMeUserDocument } from "@src/find-me-users/schemas/find-me-user.schema";
+import ErrorExceptionDto from "@src/find-me-commons/dto/error-exception.dto";
+import { JwtAuthGuard } from "@src/find-me-auth/find-me-jwt-auth.guard";
+import { CurrentUser } from "@src/find-me-auth/find-me-current-user.decorator";
+import UnauthorizedExceptionDto from "@src/find-me-commons/dto/unauthorized-exception.dto";
+import { GetFindMeUserDto } from "@src/find-me-users/dto/get-find-me-user.dto";
+import BadRequestExceptionDto from "@src/find-me-commons/dto/bad-request-exception.dto";
+import { UpdateFindMeUserDto } from "@src/find-me-users/dto/update-find-me-user.dto";
+import OkMessageDto from "@src/find-me-commons/dto/ok-message.dto";
+import successMessagesConstants from "@src/find-me-commons/constants/success-messages.constants";
+import errorMessagesConstants from "@src/find-me-commons/constants/error-messages.constants";
 
 @ApiTags("users")
 @Controller(pathConstants.USERS)
