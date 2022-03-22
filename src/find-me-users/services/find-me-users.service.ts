@@ -80,7 +80,8 @@ export class FindMeUsersService {
     }
 
     public async updateUserProfileImage(userId: string, imageUrl: string): Promise<FindMeUser> {
-        const user = await this.userModel.findByIdAndUpdate(userId,
+        const user = await this.userModel.findByIdAndUpdate(
+            userId,
             { profileImageUrl: imageUrl },
             { new: true }
         ).lean();
@@ -89,7 +90,8 @@ export class FindMeUsersService {
     }
 
     public async removeUserProfileImage(userId: string): Promise<FindMeUser> {
-        const user = await this.userModel.findByIdAndUpdate(userId,
+        const user = await this.userModel.findByIdAndUpdate(
+            userId,
             { profileImageUrl: "" },
             { new: true }
         ).lean();
