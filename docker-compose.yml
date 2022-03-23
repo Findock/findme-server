@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: mvtthew/findme-server:0.33.1
+    image: mvtthew/findme-server:0.34.1
     restart: always
     env_file: ./.env
     ports:
