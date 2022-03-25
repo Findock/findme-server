@@ -2,6 +2,7 @@ export class PathConstants {
     public static ID_PARAM = "/:id";
 
     public static USERS = "users";
+    public static OTHER = "other";
     public static AUTH = "auth";
     public static STORAGE = "storage";
     public static ME = "me";

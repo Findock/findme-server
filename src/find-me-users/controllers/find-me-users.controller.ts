@@ -66,7 +66,7 @@ export class FindMeUsersController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(PathConstants.ID_PARAM)
+    @Get(PathConstants.OTHER + PathConstants.ID_PARAM)
     public async getUser(
         @Param("id") userId: string,
         @CurrentUser() user: FindMeUserDocument
