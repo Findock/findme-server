@@ -8,6 +8,7 @@ import { Model } from "mongoose";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
+import { GetOtherFindMeUserDto } from "@/find-me-users/dto/get-other-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import {
@@ -110,6 +111,14 @@ export class FindMeUsersService {
         }
         await this.userModel.findByIdAndUpdate(userId, { password: this.securityService.encryptValue(newPassword) });
         delete user.password;
+        return user;
+    }
+
+    public async getOtherUser(userId: string): Promise<GetOtherFindMeUserDto> {
+        const user = await this.userModel.findById(userId).lean();
+        if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
+        delete user.password;
+        delete user.phoneNumber;
         return user;
     }
 }

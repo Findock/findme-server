@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Post, Put, UseGuards } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -22,6 +22,7 @@ import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
 import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
+import { GetOtherFindMeUserDto } from "@/find-me-users/dto/get-other-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
@@ -181,5 +182,24 @@ export class FindMeUsersController {
             oldPassword,
             newPassword
         );
+    }
+
+    @ApiOperation({
+        summary: "Get other find me user data",
+        description: "Returns other find me user data",
+    })
+    @ApiOkResponse({
+        description: "Returns user object",
+        type: GetOtherFindMeUserDto,
+    })
+    @ApiBadRequestResponse({
+        description: "User does not exists",
+        type: BadRequestExceptionDto,
+    })
+    @Get(PathConstants.ID_PARAM)
+    public async getUser(
+        @Param("id") userId: string
+    ): Promise<GetOtherFindMeUserDto> {
+        return this.usersService.getOtherUser(userId);
     }
 }

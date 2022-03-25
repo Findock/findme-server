@@ -1,6 +1,7 @@
 export class ErrorMessagesConstants {
     public static USER_WITH_THIS_EMAIL_ALREADY_EXIST = "User with this email already exist.";
     public static USER_WITH_THIS_EMAIL_DOES_NOT_EXIST = "User with this email does not exist.";
+    public static USER_WITH_THIS_ID_DOES_NOT_EXIST = "User with this id does not exist.";
     public static WRONG_PASSWORD = "Wrong password.";
     public static TERMS_NEED_TO_BE_ACCEPTED = "Terms need to be accepted.";
     public static TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE = "Token does not exist or is inactive.";

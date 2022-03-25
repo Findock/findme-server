@@ -1,5 +1,5 @@
 export class PathConstants {
-    public static ID_PARAM= "/=id";
+    public static ID_PARAM= "/:id";
 
     public static USERS= "users";
     public static AUTH= "auth";
