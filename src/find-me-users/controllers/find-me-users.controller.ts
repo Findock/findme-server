@@ -12,10 +12,10 @@ import {
 
 import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
-import { ApiTagsConstants } from "@/find-me-commons/constants/ApiTagsConstants";
-import { ErrorMessagesConstants } from "@/find-me-commons/constants/ErrorMessagesConstants";
-import { PathConstants } from "@/find-me-commons/constants/PathConstants";
-import { SuccessMessagesConstants } from "@/find-me-commons/constants/SuccessMessagesConstants";
+import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
+import { PathConstants } from "@/find-me-commons/constants/path.constants";
+import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-messages.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { ErrorExceptionDto } from "@/find-me-commons/dto/error-exception.dto";
 import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";

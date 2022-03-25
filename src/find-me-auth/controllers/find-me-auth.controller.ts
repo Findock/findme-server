@@ -15,10 +15,10 @@ import { PasswordResetRequestDto } from "@/find-me-auth/dto/password-reset-reque
 import { UserAuthTokensDto } from "@/find-me-auth/dto/user-auth-tokens";
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
-import { ApiTagsConstants } from "@/find-me-commons/constants/ApiTagsConstants";
-import { ErrorMessagesConstants } from "@/find-me-commons/constants/ErrorMessagesConstants";
-import { PathConstants } from "@/find-me-commons/constants/PathConstants";
-import { SuccessMessagesConstants } from "@/find-me-commons/constants/SuccessMessagesConstants";
+import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
+import { PathConstants } from "@/find-me-commons/constants/path.constants";
+import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-messages.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";

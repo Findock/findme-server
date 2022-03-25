@@ -12,7 +12,7 @@ import {
     FindMeResetPasswordToken,
     FindMeResetPasswordTokenDocument,
 } from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
-import { ErrorMessagesConstants } from "@/find-me-commons/constants/ErrorMessagesConstants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
 import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";

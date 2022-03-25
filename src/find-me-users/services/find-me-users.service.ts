@@ -5,7 +5,7 @@ import {
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 
-import { ErrorMessagesConstants } from "@/find-me-commons/constants/ErrorMessagesConstants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";

@@ -4,7 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import faker from "faker";
 import { Model } from "mongoose";
 
-import { EnvironmentConstants } from "@/find-me-commons/constants/EnvironmentConstants";
+import { EnvironmentConstants } from "@/find-me-commons/constants/environment.constants";
 import { SeederKeysConstants } from "@/find-me-seeder/constants/SeederKeysConstants";
 import { FindMeSeederLog, FindMeSeederLogDocument } from "@/find-me-seeder/schemas/find-me-seeder-log";
 import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
