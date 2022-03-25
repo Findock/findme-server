@@ -13,6 +13,8 @@ import {
 } from "@/find-me-users/schemas/find-me-user-delete-log.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-users-access-log.service";
+import { FindMeUsersAnonymizeService } from "@/find-me-users/services/find-me-users-anonymize.service";
+import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @Module({
     imports: [
@@ -34,8 +36,15 @@ import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-us
     controllers: [ FindMeUsersController ],
     providers: [
         FindMeUsersService,
+        FindMeUsersProfileImagesService,
+        FindMeUsersAnonymizeService,
         FindMeUsersAccessLogService,
     ],
-    exports: [ FindMeUsersService ],
+    exports: [
+        FindMeUsersService,
+        FindMeUsersProfileImagesService,
+        FindMeUsersAnonymizeService,
+        FindMeUsersAccessLogService,
+    ],
 })
 export class FindMeUsersModule {}

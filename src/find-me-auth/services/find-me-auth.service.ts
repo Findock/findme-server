@@ -14,7 +14,7 @@ import {
 } from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
-import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
+import { FindMeSecurityEncryptionService } from "@/find-me-security/services/find-me-security-encryption.service";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
@@ -25,7 +25,7 @@ export class FindMeAuthService {
         @InjectModel(FindMeAuthToken.name) private readonly authTokenModel: Model<FindMeAuthTokenDocument>,
         @InjectModel(FindMeResetPasswordToken.name)
             private readonly resetPasswordTokenModel: Model<FindMeResetPasswordTokenDocument>,
-        private readonly securityService: FindMeSecurityService,
+        private readonly securityEncryptionService: FindMeSecurityEncryptionService,
         private readonly usersService: FindMeUsersService,
         private readonly jwtService: JwtService,
         private readonly mailerService: FindMeMailerService,
@@ -37,7 +37,7 @@ export class FindMeAuthService {
         if (!user) {
             throw new UnauthorizedException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         }
-        if (this.securityService.encryptValue(password) !== user.password) {
+        if (this.securityEncryptionService.encryptValue(password) !== user.password) {
             throw new UnauthorizedException([ ErrorMessagesConstants.WRONG_PASSWORD ]);
         }
         return user;
@@ -117,13 +117,13 @@ export class FindMeAuthService {
         if (!user) {
             throw new BadRequestException([ ErrorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
         }
-        user.password = this.securityService.encryptValue(newPassword);
+        user.password = this.securityEncryptionService.encryptValue(newPassword);
         await user.save();
         await passwordResetTokenObject.delete();
     }
 
     private async generateResetPasswordLinkForUser(userId: string): Promise<string> {
-        const token = this.securityService.encryptValue(uuid());
+        const token = this.securityEncryptionService.encryptValue(uuid());
         await this.resetPasswordTokenModel.create({
             user: userId,
             token,

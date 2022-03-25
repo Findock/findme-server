@@ -28,12 +28,16 @@ import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-users-access-log.service";
+import { FindMeUsersAnonymizeService } from "@/find-me-users/services/find-me-users-anonymize.service";
+import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @ApiTags(ApiTagsConstants.USERS)
 @Controller(PathConstants.USERS)
 export class FindMeUsersController {
     public constructor(
         private readonly usersService: FindMeUsersService,
+        private readonly findMeUsersProfileImagesService: FindMeUsersProfileImagesService,
+        private readonly usersAnonymizeService: FindMeUsersAnonymizeService,
         private readonly usersAccessLogService: FindMeUsersAccessLogService
     ) {}
 
@@ -130,7 +134,7 @@ export class FindMeUsersController {
         @CurrentUser() user: FindMeUserDocument
     ): Promise<OkMessageDto> {
         if (user.email === "") throw new BadRequestException([ ErrorMessagesConstants.ACCOUNT_IS_ALREADY_DELETED ]);
-        this.usersService.anonymizeUserData(user._id);
+        this.usersAnonymizeService.anonymizeUserData(user._id);
         return { message: SuccessMessagesConstants.USER_ACCOUNT_REMOVED };
     }
 
@@ -152,7 +156,7 @@ export class FindMeUsersController {
     public async removeMyProfileImage(
         @CurrentUser() user: FindMeUserDocument
     ): Promise<FindMeUser> {
-        return this.usersService.removeUserProfileImage(user._id);
+        return this.findMeUsersProfileImagesService.removeUserProfileImage(user._id);
     }
 
     @ApiOperation({
