@@ -5,7 +5,7 @@ import faker from "faker";
 import { Model } from "mongoose";
 
 import { EnvironmentConstants } from "@/find-me-commons/constants/EnvironmentConstants";
-import seederKeysConstants from "@/find-me-seeder/constants/seeder-keys.constants";
+import { SeederKeysConstants } from "@/find-me-seeder/constants/SeederKeysConstants";
 import { FindMeSeederLog, FindMeSeederLogDocument } from "@/find-me-seeder/schemas/find-me-seeder-log";
 import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
@@ -29,8 +29,8 @@ export class FindMeSeederService {
     }
 
     public async seedFindMeUsers(amount: number): Promise<void> {
-        if (!await this.checkIfSeederLogExists(seederKeysConstants.USERS)) {
-            await this.createSeederLog(seederKeysConstants.USERS);
+        if (!await this.checkIfSeederLogExists(SeederKeysConstants.USERS)) {
+            await this.createSeederLog(SeederKeysConstants.USERS);
             for (let i = 0; i < amount; i++) {
                 const user: FindMeUser = {
                     name: faker.name.firstName() + " " + faker.name.lastName(),

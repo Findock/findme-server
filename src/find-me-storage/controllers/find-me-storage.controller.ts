@@ -12,7 +12,7 @@ import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.deco
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { ApiTagsConstants } from "@/find-me-commons/constants/ApiTagsConstants";
 import { PathConstants } from "@/find-me-commons/constants/PathConstants";
-import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-exception.dto";
+import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 

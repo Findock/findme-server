@@ -6,7 +6,8 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "simple-import-sort"
+        "simple-import-sort",
+        "eslint-plugin-import"
     ],
     "extends": [
         "plugin:@typescript-eslint/recommended"
@@ -131,6 +132,7 @@
         "function-paren-newline": [
             "error",
             "consistent"
-        ]
+        ],
+        "import/no-default-export": "error"
     }
 }

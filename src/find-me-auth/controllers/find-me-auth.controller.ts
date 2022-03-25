@@ -19,9 +19,9 @@ import { ApiTagsConstants } from "@/find-me-commons/constants/ApiTagsConstants";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/ErrorMessagesConstants";
 import { PathConstants } from "@/find-me-commons/constants/PathConstants";
 import { SuccessMessagesConstants } from "@/find-me-commons/constants/SuccessMessagesConstants";
-import BadRequestExceptionDto from "@/find-me-commons/dto/bad-request-exception.dto";
-import OkMessageDto from "@/find-me-commons/dto/ok-message.dto";
-import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-exception.dto";
+import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
+import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
+import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 
 @ApiTags(ApiTagsConstants.AUTH)

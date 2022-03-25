@@ -1,4 +1,4 @@
-export default (): {
+export const seederConfig = (): {
     seeder: {
         usersSeedCount: number;
     };

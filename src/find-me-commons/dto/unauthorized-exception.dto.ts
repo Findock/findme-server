@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export default class UnauthorizedExceptionDto {
+export class UnauthorizedExceptionDto {
     @ApiProperty({ example: 401 })
     public statusCode: number;
 

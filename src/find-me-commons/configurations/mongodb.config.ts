@@ -2,7 +2,7 @@ import { EnvironmentConstants } from "@/find-me-commons/constants/EnvironmentCon
 
 const dockerMongoUri = "mongodb://mongo/find-me-docker";
 
-export default (): {
+export const mongoDbConfig = (): {
     mongodb: {
         uri: string;
     };

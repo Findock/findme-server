@@ -6,10 +6,10 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 
 import { FindMeAuthModule } from "@/find-me-auth/find-me-auth.module";
-import envConfig from "@/find-me-commons/configurations/env.config";
-import mongodbConfig from "@/find-me-commons/configurations/mongodb.config";
-import securityConfig from "@/find-me-commons/configurations/security.config";
-import seederConfig from "@/find-me-commons/configurations/seeder.config";
+import { envConfig } from "@/find-me-commons/configurations/env.config";
+import { mongoDbConfig } from "@/find-me-commons/configurations/mongodb.config";
+import { securityConfig } from "@/find-me-commons/configurations/security.config";
+import { seederConfig } from "@/find-me-commons/configurations/seeder.config";
 import { FindMeCommonsModule } from "@/find-me-commons/find-me-commons.module";
 import { FindMeMailerModule } from "@/find-me-mailer/find-me-mailer.module";
 import { FindMeSecurityModule } from "@/find-me-security/find-me-security.module";
@@ -23,13 +23,13 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         ConfigModule.forRoot({
             isGlobal: true,
             load: [
-                mongodbConfig,
+                mongoDbConfig,
                 securityConfig,
                 seederConfig,
                 envConfig,
             ],
         }),
-        MongooseModule.forRoot(mongodbConfig().mongodb.uri),
+        MongooseModule.forRoot(mongoDbConfig().mongodb.uri),
         MulterModule.register({ dest: "./storage" }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "../../..", "storage"),

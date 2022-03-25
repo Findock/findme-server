@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { MailerService } from "@nestjs-modules/mailer";
 
-import mailerSubjectsConstants from "@/find-me-mailer/constants/mailer-subjects.constants";
+import { MailerSubjectsConstants } from "@/find-me-mailer/constants/MailerSubjectsConstants";
 
 @Injectable()
 export class FindMeMailerService {
@@ -16,7 +16,7 @@ export class FindMeMailerService {
     ): Promise<void> {
         await this.mailerService.sendMail({
             to: recipientEmail,
-            subject: mailerSubjectsConstants.RESET_PASSWORD,
+            subject: MailerSubjectsConstants.RESET_PASSWORD,
             template: "reset-password",
             context: {
                 name,

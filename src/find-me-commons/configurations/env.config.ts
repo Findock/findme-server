@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
-export default (): {
+export const envConfig = (): {
     env: string;
     encryptKey: string;
     rootUrl: string;
