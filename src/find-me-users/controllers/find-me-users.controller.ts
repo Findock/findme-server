@@ -27,12 +27,14 @@ import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
+import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-users-access-log.service";
 
 @ApiTags(ApiTagsConstants.USERS)
 @Controller(PathConstants.USERS)
 export class FindMeUsersController {
     public constructor(
-        private readonly usersService: FindMeUsersService
+        private readonly usersService: FindMeUsersService,
+        private readonly usersAccessLogService: FindMeUsersAccessLogService
     ) {}
 
     @ApiOperation({
@@ -196,10 +198,20 @@ export class FindMeUsersController {
         description: "User does not exists",
         type: BadRequestExceptionDto,
     })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
     @Get(PathConstants.ID_PARAM)
     public async getUser(
-        @Param("id") userId: string
+        @Param("id") userId: string,
+        @CurrentUser() user: FindMeUserDocument
     ): Promise<GetOtherFindMeUserDto> {
-        return this.usersService.getOtherUser(userId);
+        const otherUser = await this.usersService.getOtherUser(userId);
+        if (otherUser._id.toString() !== user._id.toString()) {
+            this.usersAccessLogService.logUserAccessByAnotherUser(
+                otherUser._id,
+                user._id
+            );
+        }
+        return otherUser;
     }
 }
