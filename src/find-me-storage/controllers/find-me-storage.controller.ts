@@ -10,14 +10,14 @@ import { v4 as uuid } from "uuid";
 
 import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
-import apiTagsConstants from "@/find-me-commons/constants/api-tags.constants";
-import pathConstants from "@/find-me-commons/constants/path.constants";
+import { ApiTagsConstants } from "@/find-me-commons/constants/ApiTagsConstants";
+import { PathConstants } from "@/find-me-commons/constants/PathConstants";
 import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
-@ApiTags(apiTagsConstants.STORAGE)
-@Controller(pathConstants.STORAGE)
+@ApiTags(ApiTagsConstants.STORAGE)
+@Controller(PathConstants.STORAGE)
 export class FindMeStorageController {
     public constructor(
         private readonly usersService: FindMeUsersService
@@ -48,7 +48,7 @@ export class FindMeStorageController {
         type: UnauthorizedExceptionDto,
     })
     @ApiBearerAuth()
-    @Post(pathConstants.PROFILE_IMAGE)
+    @Post(PathConstants.PROFILE_IMAGE)
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor("file", {
         storage: diskStorage({

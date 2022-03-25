@@ -1,4 +1,4 @@
-import environmentConstants from "@/find-me-commons/constants/environment.constants";
+import { EnvironmentConstants } from "@/find-me-commons/constants/EnvironmentConstants";
 
 const dockerMongoUri = "mongodb://mongo/find-me-docker";
 
@@ -8,7 +8,7 @@ export default (): {
     };
 } => ({
     mongodb: {
-        uri: process.env.ENV === environmentConstants.DOCKER
+        uri: process.env.ENV === EnvironmentConstants.DOCKER
             ? dockerMongoUri
             : process.env.MONGO_URI,
     },

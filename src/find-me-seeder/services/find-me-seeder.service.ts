@@ -4,7 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import faker from "faker";
 import { Model } from "mongoose";
 
-import environmentConstants from "@/find-me-commons/constants/environment.constants";
+import { EnvironmentConstants } from "@/find-me-commons/constants/EnvironmentConstants";
 import seederKeysConstants from "@/find-me-seeder/constants/seeder-keys.constants";
 import { FindMeSeederLog, FindMeSeederLogDocument } from "@/find-me-seeder/schemas/find-me-seeder-log";
 import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
@@ -18,8 +18,8 @@ export class FindMeSeederService {
         private readonly configService: ConfigService
     ) {
         if (![
-            environmentConstants.DOCKER,
-            environmentConstants.LOCAL,
+            EnvironmentConstants.DOCKER,
+            EnvironmentConstants.LOCAL,
         ].includes(this.configService.get<string>("env"))) {
             Logger.log("Seeder service is disabled in production", this.constructor.name);
             return;

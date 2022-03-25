@@ -1,0 +1,10 @@
+export class ErrorMessagesConstants {
+    public static USER_WITH_THIS_EMAIL_ALREADY_EXIST = "User with this email already exist.";
+    public static USER_WITH_THIS_EMAIL_DOES_NOT_EXIST = "User with this email does not exist.";
+    public static WRONG_PASSWORD = "Wrong password.";
+    public static TERMS_NEED_TO_BE_ACCEPTED = "Terms need to be accepted.";
+    public static TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE = "Token does not exist or is inactive.";
+    public static ACCOUNT_IS_ALREADY_DELETED = "Account is already deleted.";
+    public static INVALID_PASSWORD_RESET_TOKEN = "Invalid password reset token";
+    public static INVALID_OLD_PASSWORD = "Invalid old password";
+}

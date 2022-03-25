@@ -12,10 +12,10 @@ import {
 
 import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
-import apiTagsConstants from "@/find-me-commons/constants/api-tags.constants";
-import errorMessagesConstants from "@/find-me-commons/constants/error-messages.constants";
-import pathConstants from "@/find-me-commons/constants/path.constants";
-import successMessagesConstants from "@/find-me-commons/constants/success-messages.constants";
+import { ApiTagsConstants } from "@/find-me-commons/constants/ApiTagsConstants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/ErrorMessagesConstants";
+import { PathConstants } from "@/find-me-commons/constants/PathConstants";
+import { SuccessMessagesConstants } from "@/find-me-commons/constants/SuccessMessagesConstants";
 import BadRequestExceptionDto from "@/find-me-commons/dto/bad-request-exception.dto";
 import ErrorExceptionDto from "@/find-me-commons/dto/error-exception.dto";
 import OkMessageDto from "@/find-me-commons/dto/ok-message.dto";
@@ -27,8 +27,8 @@ import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
-@ApiTags(apiTagsConstants.USERS)
-@Controller(pathConstants.USERS)
+@ApiTags(ApiTagsConstants.USERS)
+@Controller(PathConstants.USERS)
 export class FindMeUsersController {
     public constructor(
         private readonly usersService: FindMeUsersService
@@ -71,7 +71,7 @@ export class FindMeUsersController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(pathConstants.ME)
+    @Get(PathConstants.ME)
     public async getMe(
         @CurrentUser() user: FindMeUserDocument
     ): Promise<FindMeUserDocument> {
@@ -96,7 +96,7 @@ export class FindMeUsersController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Put(pathConstants.ME)
+    @Put(PathConstants.ME)
     public async updateMe(
         @CurrentUser() user: FindMeUserDocument,
         @Body() updateDto: UpdateFindMeUserDto
@@ -122,13 +122,13 @@ export class FindMeUsersController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Delete(pathConstants.ME)
+    @Delete(PathConstants.ME)
     public async deleteMe(
         @CurrentUser() user: FindMeUserDocument
     ): Promise<OkMessageDto> {
-        if (user.email === "") throw new BadRequestException([ errorMessagesConstants.ACCOUNT_IS_ALREADY_DELETED ]);
+        if (user.email === "") throw new BadRequestException([ ErrorMessagesConstants.ACCOUNT_IS_ALREADY_DELETED ]);
         this.usersService.anonymizeUserData(user._id);
-        return { message: successMessagesConstants.USER_ACCOUNT_REMOVED };
+        return { message: SuccessMessagesConstants.USER_ACCOUNT_REMOVED };
     }
 
     @ApiOperation({
@@ -145,7 +145,7 @@ export class FindMeUsersController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Delete(pathConstants.ME + "/" + pathConstants.PROFILE_IMAGE)
+    @Delete(PathConstants.ME + "/" + PathConstants.PROFILE_IMAGE)
     public async removeMyProfileImage(
         @CurrentUser() user: FindMeUserDocument
     ): Promise<FindMeUser> {
@@ -170,7 +170,7 @@ export class FindMeUsersController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Post(pathConstants.ME + "/" + pathConstants.UPDATE_PASSWORD)
+    @Post(PathConstants.ME + "/" + PathConstants.UPDATE_PASSWORD)
     public async updateMyPassword(
         @Body() updateFindMeUserPasswordDto: UpdateFindMeUserPasswordDto,
         @CurrentUser() user: FindMeUserDocument
