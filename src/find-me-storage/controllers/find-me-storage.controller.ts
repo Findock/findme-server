@@ -14,13 +14,13 @@ import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
-import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
+import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @ApiTags(ApiTagsConstants.STORAGE)
 @Controller(PathConstants.STORAGE)
 export class FindMeStorageController {
     public constructor(
-        private readonly usersService: FindMeUsersService
+        private readonly usersProfileImagesService: FindMeUsersProfileImagesService
     ) {}
 
     @ApiOperation({
@@ -65,6 +65,6 @@ export class FindMeStorageController {
         @CurrentUser() user: FindMeUserDocument
     ): Promise<FindMeUser> {
         const imageUrl = `/${file.path}`;
-        return this.usersService.updateUserProfileImage(user._id, imageUrl);
+        return this.usersProfileImagesService.updateUserProfileImage(user._id, imageUrl);
     }
 }
