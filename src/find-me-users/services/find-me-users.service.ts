@@ -5,7 +5,7 @@ import {
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 
-import errorMessagesConstants from "@/find-me-commons/constants/error-messages.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
@@ -27,12 +27,12 @@ export class FindMeUsersService {
         createFindMeUserDto: CreateFindMeUserDto
     ): Promise<FindMeUserDocument> {
         if (!createFindMeUserDto.termsAccepted) {
-            throw new BadRequestException([ errorMessagesConstants.TERMS_NEED_TO_BE_ACCEPTED ]);
+            throw new BadRequestException([ ErrorMessagesConstants.TERMS_NEED_TO_BE_ACCEPTED ]);
         }
 
         const userWithThisEmail = await this.userModel.findOne({ email: createFindMeUserDto.email });
         if (userWithThisEmail !== null) {
-            throw new ConflictException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST ]);
+            throw new ConflictException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST ]);
         }
 
         const encryptedPassword = this.securityService.encryptValue(createFindMeUserDto.password);
@@ -106,7 +106,7 @@ export class FindMeUsersService {
     ): Promise<FindMeUser> {
         const user = await this.userModel.findById(userId).lean();
         if(user.password !== this.securityService.encryptValue(oldPassword)) {
-            throw new BadRequestException([ errorMessagesConstants.INVALID_OLD_PASSWORD ]);
+            throw new BadRequestException([ ErrorMessagesConstants.INVALID_OLD_PASSWORD ]);
         }
         await this.userModel.findByIdAndUpdate(userId, { password: this.securityService.encryptValue(newPassword) });
         delete user.password;

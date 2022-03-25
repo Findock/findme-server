@@ -12,7 +12,7 @@ import {
     FindMeResetPasswordToken,
     FindMeResetPasswordTokenDocument,
 } from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
-import errorMessagesConstants from "@/find-me-commons/constants/error-messages.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
 import { FindMeSecurityService } from "@/find-me-security/services/find-me-security.service";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
@@ -35,10 +35,10 @@ export class FindMeAuthService {
     public async validateUser(email: string, password: string): Promise<FindMeUserDocument> {
         const user = await this.usersService.findOneByEmail(email);
         if (!user) {
-            throw new UnauthorizedException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         }
         if (this.securityService.encryptValue(password) !== user.password) {
-            throw new UnauthorizedException([ errorMessagesConstants.WRONG_PASSWORD ]);
+            throw new UnauthorizedException([ ErrorMessagesConstants.WRONG_PASSWORD ]);
         }
         return user;
     }
@@ -90,7 +90,7 @@ export class FindMeAuthService {
     public async removeAuthTokenByIdForUser(tokenId: string, user: FindMeUserDocument): Promise<void> {
         const authToken = await this.authTokenModel.findById(tokenId);
         if (!authToken || authToken.active === false) {
-            throw new BadRequestException([ errorMessagesConstants.TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE ]);
+            throw new BadRequestException([ ErrorMessagesConstants.TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE ]);
         }
         if (authToken.userId !== user._id.toString()) throw new UnauthorizedException();
         authToken.active = false;
@@ -99,7 +99,7 @@ export class FindMeAuthService {
 
     public async sendResetPasswordLink(userEmail: string): Promise<void> {
         const user = await this.usersService.findOneByEmail(userEmail);
-        if (!user) throw new BadRequestException([ errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
+        if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         const link = await this.generateResetPasswordLinkForUser(user._id);
         await this.mailerService.sendResetPasswordLink(
             userEmail,
@@ -111,11 +111,11 @@ export class FindMeAuthService {
     public async resetUserPasswordWithToken(token: string, newPassword: string): Promise<void> {
         const passwordResetTokenObject = await this.resetPasswordTokenModel.findOne({ token }).populate("user");
         if (!passwordResetTokenObject) {
-            throw new BadRequestException([ errorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
+            throw new BadRequestException([ ErrorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
         }
         const user = await this.usersService.findOneById(passwordResetTokenObject.user._id);
         if (!user) {
-            throw new BadRequestException([ errorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
+            throw new BadRequestException([ ErrorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
         }
         user.password = this.securityService.encryptValue(newPassword);
         await user.save();

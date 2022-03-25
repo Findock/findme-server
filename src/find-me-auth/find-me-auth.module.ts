@@ -10,7 +10,7 @@ import {
 } from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
 import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
 import { JwtStrategy } from "@/find-me-auth/strategies/find-me-jwt.strategy";
-import envConfig from "@/find-me-commons/configurations/env.config";
+import { envConfig } from "@/find-me-commons/configurations/env.config";
 import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
 
 const secret = envConfig().encryptKey;

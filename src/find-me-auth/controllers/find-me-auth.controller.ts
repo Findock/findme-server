@@ -15,17 +15,17 @@ import { PasswordResetRequestDto } from "@/find-me-auth/dto/password-reset-reque
 import { UserAuthTokensDto } from "@/find-me-auth/dto/user-auth-tokens";
 import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
-import apiTagsConstants from "@/find-me-commons/constants/api-tags.constants";
-import errorMessagesConstants from "@/find-me-commons/constants/error-messages.constants";
-import pathConstants from "@/find-me-commons/constants/path.constants";
-import successMessagesConstants from "@/find-me-commons/constants/success-messages.constants";
-import BadRequestExceptionDto from "@/find-me-commons/dto/bad-request-exception.dto";
-import OkMessageDto from "@/find-me-commons/dto/ok-message.dto";
-import UnauthorizedExceptionDto from "@/find-me-commons/dto/unauthorized-exception.dto";
+import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
+import { PathConstants } from "@/find-me-commons/constants/path.constants";
+import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-messages.constants";
+import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
+import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
+import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 
-@ApiTags(apiTagsConstants.AUTH)
-@Controller(pathConstants.AUTH)
+@ApiTags(ApiTagsConstants.AUTH)
+@Controller(PathConstants.AUTH)
 export class FindMeAuthController {
 
     public constructor(
@@ -45,11 +45,11 @@ export class FindMeAuthController {
         type: BadRequestExceptionDto,
     })
     @ApiUnauthorizedResponse({
-        description: `'${errorMessagesConstants.WRONG_PASSWORD}' / 
-            '${errorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST}'`,
+        description: `'${ErrorMessagesConstants.WRONG_PASSWORD}' /
+            '${ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST}'`,
         type: UnauthorizedExceptionDto,
     })
-    @Post(pathConstants.LOGIN)
+    @Post(PathConstants.LOGIN)
     public async login(
         @Body() loginDto: AuthLoginDto
     ): Promise<AuthTokenDto> {
@@ -61,7 +61,7 @@ export class FindMeAuthController {
         description: "You need to logout user to prevent login history dump",
     })
     @ApiOkResponse({
-        description: "Authorization token was successfully removed from dadabase and user is now logged out",
+        description: "Authorization token was successfully removed from database and user is now logged out",
         type: OkMessageDto,
     })
     @ApiUnauthorizedResponse({
@@ -70,7 +70,7 @@ export class FindMeAuthController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Post(pathConstants.LOGOUT)
+    @Post(PathConstants.LOGOUT)
     public async logout(
         @Request() req: Request
     ): Promise<OkMessageDto> {
@@ -92,12 +92,12 @@ export class FindMeAuthController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(pathConstants.VALIDATE_TOKEN)
+    @Get(PathConstants.VALIDATE_TOKEN)
     public async validateToken(
         @CurrentUser() user: FindMeUserDocument
     ): Promise<OkMessageDto> {
         if (!user) throw new UnauthorizedException();
-        return { message: successMessagesConstants.TOKEN_IS_VALID };
+        return { message: SuccessMessagesConstants.TOKEN_IS_VALID };
     }
 
     @ApiOperation({
@@ -114,7 +114,7 @@ export class FindMeAuthController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(pathConstants.MY_AUTH_TOKENS)
+    @Get(PathConstants.MY_AUTH_TOKENS)
     public async myActiveTokens(
         @CurrentUser() user: FindMeUserDocument
     ): Promise<UserAuthTokensDto> {
@@ -143,14 +143,14 @@ export class FindMeAuthController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Delete(pathConstants.AUTH_TOKEN + pathConstants.ID_PARAM)
+    @Delete(PathConstants.AUTH_TOKEN + PathConstants.ID_PARAM)
     public async removeAuthToken(
         @Param("id") id: string,
         @CurrentUser() user: FindMeUserDocument
     ): Promise<OkMessageDto> {
         if (!id || typeof id !== "string") throw new BadRequestException();
         await this.authService.removeAuthTokenByIdForUser(id, user);
-        return { message: successMessagesConstants.TOKEN_REMOVED };
+        return { message: SuccessMessagesConstants.TOKEN_REMOVED };
     }
 
     @ApiOperation({
@@ -165,7 +165,7 @@ export class FindMeAuthController {
         description: "User with this email address was not found - email is not sent",
         type: BadRequestExceptionDto,
     })
-    @Post(pathConstants.SEND_RESET_PASSWORD_EMAIL)
+    @Post(PathConstants.SEND_RESET_PASSWORD_EMAIL)
     public async sendPasswordResetLinkEmail(
         @Body() passwordResetRequestDto: PasswordResetRequestDto
     ): Promise<OkMessageDto> {
@@ -186,7 +186,7 @@ export class FindMeAuthController {
         description: "Bad password reset token",
         type: BadRequestExceptionDto,
     })
-    @Post(pathConstants.RESET_PASSWORD)
+    @Post(PathConstants.RESET_PASSWORD)
     public async resetUserPasswordByResetToken(
         @Body() passwordResetByTokenDto: PasswordResetByTokenDto
     ): Promise<OkMessageDto> {

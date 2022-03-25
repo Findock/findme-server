@@ -1,6 +1,6 @@
 const fallbackEncryptKey = "fallbackEncryptKey";
 
-export default (): {
+export const securityConfig = (): {
     security: {
         encryptKey: string;
     };
