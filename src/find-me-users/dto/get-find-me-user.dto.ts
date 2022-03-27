@@ -13,9 +13,6 @@ export class GetFindMeUserDto {
     @ApiProperty({ example: "+48 353 566 433" })
     public phoneNumber: string;
 
-    @ApiProperty({ example: true })
-    public termsAccepted: boolean;
-
     @ApiProperty({ example: "https://picsum.photos/300/300" })
     public profileImageUrl: string;
 

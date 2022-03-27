@@ -16,7 +16,7 @@ import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { ErrorExceptionDto } from "@/find-me-commons/dto/error-exception.dto";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
-import { GetOtherFindMeUserDto } from "@/find-me-users/dto/get-other-find-me-user.dto";
+import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-users-access-log.service";
@@ -58,7 +58,7 @@ export class FindMeUsersController {
     })
     @ApiOkResponse({
         description: "Returns user object",
-        type: GetOtherFindMeUserDto,
+        type: GetFindMeUserDto,
     })
     @ApiBadRequestResponse({
         description: "User does not exists",
@@ -70,7 +70,7 @@ export class FindMeUsersController {
     public async getUser(
         @Param("id") userId: string,
         @CurrentUser() user: FindMeUserDocument
-    ): Promise<GetOtherFindMeUserDto> {
+    ): Promise<GetFindMeUserDto> {
         const otherUser = await this.usersService.getOtherUser(userId);
         if (otherUser._id.toString() !== user._id.toString()) {
             this.usersAccessLogService.logUserAccessByAnotherUser(
