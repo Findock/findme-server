@@ -81,7 +81,6 @@ export class FindMeUsersService {
         const user = await this.userModel.findById(userId).lean();
         if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
         delete user.password;
-        delete user.phoneNumber;
         return user;
     }
 }
