@@ -1,7 +1,7 @@
 version: '3'
 services:
   find-me-server:
-    image: mvtthew/findme-server:0.38.1
+    image: mvtthew/findme-server:0.40.1
     platform: linux/x86_64
     restart: always
     env_file: ./.env
