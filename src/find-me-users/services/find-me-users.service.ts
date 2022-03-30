@@ -17,7 +17,7 @@ export class FindMeUsersService {
         @InjectRepository(FindMeUser)
         private usersRepository: Repository<FindMeUser>,
         private readonly securityEncryptionService: FindMeSecurityEncryptionService
-    ) {}
+    ) { }
 
     public async createUser(
         createFindMeUserDto: CreateFindMeUserDto
@@ -67,7 +67,7 @@ export class FindMeUsersService {
         newPassword: string
     ): Promise<FindMeUser> {
         const fullUser = await this.usersRepository.findOne({ where: { id: user.id } });
-        if(fullUser.password !== this.securityEncryptionService.encryptValue(oldPassword)) {
+        if (fullUser.password !== this.securityEncryptionService.encryptValue(oldPassword)) {
             throw new BadRequestException([ ErrorMessagesConstants.INVALID_OLD_PASSWORD ]);
         }
         fullUser.password = this.securityEncryptionService.encryptValue(newPassword);
