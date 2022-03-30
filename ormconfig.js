@@ -12,7 +12,7 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE_NAME,
     entities: [ "dist/**/*.entity{.ts,.js}" ],
-    migrations: [ "dist/find-me-db/migrations/**/*.js" ],
+    migrations: [ "dist/src/find-me-db/migrations/**/*.js" ],
     cli: { migrationsDir: `src/find-me-db/migrations/${year}-${month}-${day}` },
     migrationsTableName: "migrations_history",
     migrationsRun: process.env.DB_AUTO_MIGRATE,

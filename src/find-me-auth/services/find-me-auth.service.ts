@@ -49,7 +49,7 @@ export class FindMeAuthService {
             t: Date.now(),
         });
 
-        await this.authTokenRepository.create({
+        await this.authTokenRepository.insert({
             deviceName: loginDto.deviceName,
             localizationDescription: loginDto.localizationDescription,
             token: "Bearer " + authToken,
@@ -136,7 +136,7 @@ export class FindMeAuthService {
 
     private async generateResetPasswordLinkForUser(user: FindMeUser): Promise<string> {
         const token = this.securityEncryptionService.encryptValue(uuid());
-        await this.resetPasswordTokenRepository.create({
+        await this.resetPasswordTokenRepository.insert({
             user,
             token,
         });

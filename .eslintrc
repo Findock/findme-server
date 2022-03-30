@@ -18,7 +18,8 @@
         "jest": true
     },
     "ignorePatterns": [
-        ".eslintrc.js"
+        ".eslintrc.js",
+        "src/find-me-db/migrations/**/*"
     ],
     "rules": {
         "@typescript-eslint/interface-name-prefix": "off",

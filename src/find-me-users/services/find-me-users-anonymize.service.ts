@@ -24,6 +24,6 @@ export class FindMeUsersAnonymizeService {
         user.city = "";
         user.bio = "";
         await this.usersRepository.save(user);
-        await this.usersDeleteLogRepository.create({ user: user });
+        await this.usersDeleteLogRepository.insert({ user: user });
     }
 }

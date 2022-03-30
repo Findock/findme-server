@@ -27,16 +27,19 @@ export class FindMeUsersService {
         }
 
         const userWithThisEmail = await this.usersRepository.findOne({ where: { email: createFindMeUserDto.email } });
-        if (userWithThisEmail !== null) {
+
+        if (userWithThisEmail) {
             throw new ConflictException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_ALREADY_EXIST ]);
         }
 
         const encryptedPassword = this.securityEncryptionService.encryptValue(createFindMeUserDto.password);
 
-        return this.usersRepository.create({
+        const user = this.usersRepository.create({
             ...createFindMeUserDto,
             password: encryptedPassword,
         });
+        this.usersRepository.save(user);
+        return user;
     }
 
     public async updateUser(user: FindMeUser, updateDto: UpdateFindMeUserDto): Promise<FindMeUser> {
