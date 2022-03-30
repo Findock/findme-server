@@ -1,12 +1,10 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { MongooseModule } from "@nestjs/mongoose";
 import { MulterModule } from "@nestjs/platform-express";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "path";
 
-import { FindMeAuthModule } from "@/find-me-auth/find-me-auth.module";
 import { envConfig } from "@/find-me-commons/configurations/env.config";
 import { securityConfig } from "@/find-me-commons/configurations/security.config";
 import { seederConfig } from "@/find-me-commons/configurations/seeder.config";
@@ -43,7 +41,6 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         // Application modules start
         FindMeStorageModule,
         FindMeUsersModule,
-        FindMeAuthModule,
         // Application modules end
     ],
 })

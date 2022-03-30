@@ -5,12 +5,12 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-import { AuthLoginDto } from "@/find-me-auth/dto/auth-login.dto";
-import { AuthTokenDto } from "@/find-me-auth/dto/auth-token.dto";
-import { FindMeAuthToken } from "@/find-me-auth/entities/find-me-auth-token.entity";
-import { FindMeResetPasswordToken } from "@/find-me-auth/entities/find-me-reset-password-token.entity";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
+import { AuthLoginDto } from "@/find-me-security/dto/auth-login.dto";
+import { AuthTokenDto } from "@/find-me-security/dto/auth-token.dto";
+import { FindMeAuthToken } from "@/find-me-security/entities/find-me-auth-token.entity";
+import { FindMeResetPasswordToken } from "@/find-me-security/entities/find-me-reset-password-token.entity";
 import { FindMeSecurityEncryptionService } from "@/find-me-security/services/find-me-security-encryption.service";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
@@ -35,6 +35,10 @@ export class FindMeAuthService {
         if (!user) {
             throw new UnauthorizedException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         }
+        console.log(password);
+        console.log(this.securityEncryptionService.encryptValue(password));
+        console.log(user.password);
+
         if (this.securityEncryptionService.encryptValue(password) !== user.password) {
             throw new UnauthorizedException([ ErrorMessagesConstants.WRONG_PASSWORD ]);
         }

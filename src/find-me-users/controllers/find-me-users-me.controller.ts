@@ -8,8 +8,6 @@ import {
     ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
-import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
@@ -17,6 +15,8 @@ import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-me
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
+import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
+import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
 import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";

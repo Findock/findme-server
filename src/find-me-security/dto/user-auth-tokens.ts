@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-import { FindMeAuthToken } from "@/find-me-auth/entities/find-me-auth-token.entity";
+import { FindMeAuthToken } from "@/find-me-security/entities/find-me-auth-token.entity";
 
 export class UserAuthTokensDto {
     @ApiProperty({

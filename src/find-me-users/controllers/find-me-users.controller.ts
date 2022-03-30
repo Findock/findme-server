@@ -9,12 +9,12 @@ import {
     ApiTags,
 } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
-import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { ErrorExceptionDto } from "@/find-me-commons/dto/error-exception.dto";
+import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
+import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
 import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";

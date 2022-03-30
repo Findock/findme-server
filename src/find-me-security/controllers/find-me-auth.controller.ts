@@ -7,14 +7,6 @@ import {
     ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
-import { AuthLoginDto } from "@/find-me-auth/dto/auth-login.dto";
-import { AuthTokenDto } from "@/find-me-auth/dto/auth-token.dto";
-import { PasswordResetByTokenDto } from "@/find-me-auth/dto/password-reset-by-token.dto";
-import { PasswordResetRequestDto } from "@/find-me-auth/dto/password-reset-request.dto";
-import { UserAuthTokensDto } from "@/find-me-auth/dto/user-auth-tokens";
-import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
-import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
@@ -22,6 +14,14 @@ import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-me
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
+import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
+import { AuthLoginDto } from "@/find-me-security/dto/auth-login.dto";
+import { AuthTokenDto } from "@/find-me-security/dto/auth-token.dto";
+import { PasswordResetByTokenDto } from "@/find-me-security/dto/password-reset-by-token.dto";
+import { PasswordResetRequestDto } from "@/find-me-security/dto/password-reset-request.dto";
+import { UserAuthTokensDto } from "@/find-me-security/dto/user-auth-tokens";
+import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
+import { FindMeAuthService } from "@/find-me-security/services/find-me-auth.service";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @ApiTags(ApiTagsConstants.AUTH)
