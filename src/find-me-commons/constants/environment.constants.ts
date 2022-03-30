@@ -1,5 +1,4 @@
 export class EnvironmentConstants {
-    public static DOCKER = "docker";
-    public static LOCAL = "local";
+    public static DEV = "dev";
     public static PRODUCTION = "production";
 }

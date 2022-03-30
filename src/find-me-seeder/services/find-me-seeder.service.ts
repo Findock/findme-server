@@ -17,10 +17,7 @@ export class FindMeSeederService {
         private readonly findMeUsersService: FindMeUsersService,
         private readonly configService: ConfigService
     ) {
-        if (![
-            EnvironmentConstants.DOCKER,
-            EnvironmentConstants.LOCAL,
-        ].includes(this.configService.get<string>("env"))) {
+        if (![ EnvironmentConstants.DEV ].includes(this.configService.get<string>("env"))) {
             Logger.log("Seeder service is disabled in production", this.constructor.name);
             return;
         }
