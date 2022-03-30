@@ -1,10 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import faker from "faker";
 import { Repository } from "typeorm";
 
-import { EnvironmentConstants } from "@/find-me-commons/constants/environment.constants";
 import { StringConstants } from "@/find-me-commons/constants/string.constants";
 import { FindMeSeederService } from "@/find-me-db/services/find-me-seeder.service";
 import { FindMeSecurityEncryptionService } from "@/find-me-security/services/find-me-security-encryption.service";
@@ -22,10 +20,9 @@ export class FindMeUserSeederService {
         @InjectRepository(FindMeUser)
         private usersRepository: Repository<FindMeUser>,
         private seederService: FindMeSeederService,
-        private configService: ConfigService,
         private securityEncryptionService: FindMeSecurityEncryptionService,
     ) {
-        if (![ EnvironmentConstants.DEV ].includes(this.configService.get<string>("env"))) return;
+        if (!this.seederService.isSeedingEnabled()) return;
         this.seedUsers();
     }
 
