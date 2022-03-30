@@ -17,7 +17,7 @@ import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-except
 import { ErrorExceptionDto } from "@/find-me-commons/dto/error-exception.dto";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
 import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
-import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-users-access-log.service";
 
@@ -48,7 +48,7 @@ export class FindMeUsersController {
     @Post()
     public async createFindMeUser(
         @Body() createFindMeUserDto: CreateFindMeUserDto
-    ): Promise<FindMeUserDocument> {
+    ): Promise<FindMeUser> {
         return this.usersService.createUser(createFindMeUserDto);
     }
 
@@ -68,14 +68,14 @@ export class FindMeUsersController {
     @UseGuards(JwtAuthGuard)
     @Get(PathConstants.OTHER + PathConstants.ID_PARAM)
     public async getUser(
-        @Param("id") userId: string,
-        @CurrentUser() user: FindMeUserDocument
+        @Param("id") userId: number,
+        @CurrentUser() user: FindMeUser
     ): Promise<GetFindMeUserDto> {
-        const otherUser = await this.usersService.getOtherUser(userId);
-        if (otherUser._id.toString() !== user._id.toString()) {
+        const otherUser = await this.usersService.findOneById(userId);
+        if (otherUser.id !== user.id) {
             this.usersAccessLogService.logUserAccessByAnotherUser(
-                otherUser._id,
-                user._id
+                otherUser,
+                user
             );
         }
         return otherUser;

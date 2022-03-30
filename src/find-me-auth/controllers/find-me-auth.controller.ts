@@ -22,7 +22,7 @@ import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-me
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
-import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @ApiTags(ApiTagsConstants.AUTH)
 @Controller(PathConstants.AUTH)
@@ -94,7 +94,7 @@ export class FindMeAuthController {
     @UseGuards(JwtAuthGuard)
     @Get(PathConstants.VALIDATE_TOKEN)
     public async validateToken(
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<OkMessageDto> {
         if (!user) throw new UnauthorizedException();
         return { message: SuccessMessagesConstants.TOKEN_IS_VALID };
@@ -116,9 +116,9 @@ export class FindMeAuthController {
     @UseGuards(JwtAuthGuard)
     @Get(PathConstants.MY_AUTH_TOKENS)
     public async myActiveTokens(
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<UserAuthTokensDto> {
-        return { authTokens: await this.authService.getAuthTokensForUser(user._id) };
+        return { authTokens: await this.authService.getAuthTokensForUser(user) };
     }
 
     @ApiOperation({
@@ -146,7 +146,7 @@ export class FindMeAuthController {
     @Delete(PathConstants.AUTH_TOKEN + PathConstants.ID_PARAM)
     public async removeAuthToken(
         @Param("id") id: string,
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<OkMessageDto> {
         if (!id || typeof id !== "string") throw new BadRequestException();
         await this.authService.removeAuthTokenByIdForUser(id, user);

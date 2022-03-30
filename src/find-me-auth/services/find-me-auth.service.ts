@@ -1,38 +1,36 @@
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 import { AuthLoginDto } from "@/find-me-auth/dto/auth-login.dto";
 import { AuthTokenDto } from "@/find-me-auth/dto/auth-token.dto";
-import { FindMeAuthToken, FindMeAuthTokenDocument } from "@/find-me-auth/schemas/find-me-auth-token.schema";
-import {
-    FindMeResetPasswordToken,
-    FindMeResetPasswordTokenDocument,
-} from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
+import { FindMeAuthToken } from "@/find-me-auth/entities/find-me-auth-token.entity";
+import { FindMeResetPasswordToken } from "@/find-me-auth/entities/find-me-reset-password-token.entity";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
 import { FindMeSecurityEncryptionService } from "@/find-me-security/services/find-me-security-encryption.service";
-import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @Injectable()
 export class FindMeAuthService {
 
     public constructor(
-        @InjectModel(FindMeAuthToken.name) private readonly authTokenModel: Model<FindMeAuthTokenDocument>,
-        @InjectModel(FindMeResetPasswordToken.name)
-            private readonly resetPasswordTokenModel: Model<FindMeResetPasswordTokenDocument>,
-        private readonly securityEncryptionService: FindMeSecurityEncryptionService,
-        private readonly usersService: FindMeUsersService,
-        private readonly jwtService: JwtService,
-        private readonly mailerService: FindMeMailerService,
-        private readonly configService: ConfigService
-    ) {}
+        @InjectRepository(FindMeAuthToken)
+        private authTokenRepository: Repository<FindMeAuthToken>,
+        @InjectRepository(FindMeResetPasswordToken)
+        private resetPasswordTokenRepository: Repository<FindMeResetPasswordToken>,
+        private securityEncryptionService: FindMeSecurityEncryptionService,
+        private usersService: FindMeUsersService,
+        private jwtService: JwtService,
+        private mailerService: FindMeMailerService,
+        private configService: ConfigService
+    ) { }
 
-    public async validateUser(email: string, password: string): Promise<FindMeUserDocument> {
+    public async validateUser(email: string, password: string): Promise<FindMeUser> {
         const user = await this.usersService.findOneByEmail(email);
         if (!user) {
             throw new UnauthorizedException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
@@ -47,15 +45,15 @@ export class FindMeAuthService {
         const user = await this.validateUser(loginDto.email, loginDto.password);
 
         const authToken = this.jwtService.sign({
-            _id: user._id.toString(),
+            id: user.id,
             t: Date.now(),
         });
 
-        await this.authTokenModel.create({
+        await this.authTokenRepository.create({
             deviceName: loginDto.deviceName,
             localizationDescription: loginDto.localizationDescription,
             token: "Bearer " + authToken,
-            userId: user._id.toString(),
+            user: user,
         });
 
         return {
@@ -65,42 +63,54 @@ export class FindMeAuthService {
     }
 
     public async validateToken(token: string): Promise<boolean> {
-        return !!await this.authTokenModel.findOne({
-            token,
-            active: true,
+        return !!await this.authTokenRepository.findOne({
+            where: {
+                token,
+                active: true,
+            },
         });
     }
 
     public async bumpTokenLastUse(token: string): Promise<void> {
-        await this.authTokenModel.findOneAndUpdate({ token }, { lastUse: new Date() });
+        const tokenEntity = await this.authTokenRepository.findOne({ where: { token } });
+        tokenEntity.lastUse = new Date();
+        await this.authTokenRepository.save(tokenEntity);
     }
 
     public async logout(token: string): Promise<void> {
-        await this.authTokenModel.findOneAndUpdate({ token }, { active: false });
+        const tokenEntity = await this.authTokenRepository.findOne({ where: { token } });
+        tokenEntity.active = false;
+        await this.authTokenRepository.save(tokenEntity);
     }
 
-    public async getAuthTokensForUser(userId: string): Promise<FindMeAuthToken[]> {
-        return (await this.authTokenModel.find({ userId }).sort({ lastUse: -1 }).lean()).map(authToken => {
-            const object = { ...authToken };
-            delete object.token;
-            return object;
+    public async getAuthTokensForUser(user: FindMeUser): Promise<FindMeAuthToken[]> {
+        const tokens = await this.authTokenRepository.find({
+            where: { user },
+            order: { lastUse: -1 },
+        });
+        return tokens.map(t => {
+            delete t.token;
+            return t;
         });
     }
 
-    public async removeAuthTokenByIdForUser(tokenId: string, user: FindMeUserDocument): Promise<void> {
-        const authToken = await this.authTokenModel.findById(tokenId);
+    public async removeAuthTokenByIdForUser(tokenId: string, user: FindMeUser): Promise<void> {
+        const authToken = await this.authTokenRepository.findOne({
+            where: { id: tokenId },
+            relations: [ "user" ],
+        });
         if (!authToken || authToken.active === false) {
             throw new BadRequestException([ ErrorMessagesConstants.TOKEN_DOES_NOT_EXIST_OR_IS_INACTIVE ]);
         }
-        if (authToken.userId !== user._id.toString()) throw new UnauthorizedException();
+        if (authToken.user.id !== user.id) throw new UnauthorizedException();
         authToken.active = false;
-        await authToken.save();
+        await this.authTokenRepository.save(authToken);
     }
 
     public async sendResetPasswordLink(userEmail: string): Promise<void> {
         const user = await this.usersService.findOneByEmail(userEmail);
         if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
-        const link = await this.generateResetPasswordLinkForUser(user._id);
+        const link = await this.generateResetPasswordLinkForUser(user);
         await this.mailerService.sendResetPasswordLink(
             userEmail,
             user.name,
@@ -109,23 +119,25 @@ export class FindMeAuthService {
     }
 
     public async resetUserPasswordWithToken(token: string, newPassword: string): Promise<void> {
-        const passwordResetTokenObject = await this.resetPasswordTokenModel.findOne({ token }).populate("user");
+        const passwordResetTokenObject = await this.resetPasswordTokenRepository.findOne({
+            where: { token },
+            relations: [ "user" ],
+        });
         if (!passwordResetTokenObject) {
             throw new BadRequestException([ ErrorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
         }
-        const user = await this.usersService.findOneById(passwordResetTokenObject.user._id);
+        const user = passwordResetTokenObject.user;
         if (!user) {
             throw new BadRequestException([ ErrorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
         }
-        user.password = this.securityEncryptionService.encryptValue(newPassword);
-        await user.save();
-        await passwordResetTokenObject.delete();
+        await this.usersService.forceUpdateUserPassword(user, this.securityEncryptionService.encryptValue(newPassword));
+        await this.resetPasswordTokenRepository.delete(passwordResetTokenObject);
     }
 
-    private async generateResetPasswordLinkForUser(userId: string): Promise<string> {
+    private async generateResetPasswordLinkForUser(user: FindMeUser): Promise<string> {
         const token = this.securityEncryptionService.encryptValue(uuid());
-        await this.resetPasswordTokenModel.create({
-            user: userId,
+        await this.resetPasswordTokenRepository.create({
+            user,
             token,
         });
         return `${this.configService.get<string>("rootUrl")}static/reset-password?token=${token}`;

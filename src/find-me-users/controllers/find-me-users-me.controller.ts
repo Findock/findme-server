@@ -20,7 +20,7 @@ import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exc
 import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
-import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAnonymizeService } from "@/find-me-users/services/find-me-users-anonymize.service";
 import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
@@ -50,8 +50,8 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Get()
     public async getMe(
-        @CurrentUser() user: FindMeUserDocument
-    ): Promise<FindMeUserDocument> {
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeUser> {
         return user;
     }
 
@@ -75,10 +75,10 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Put()
     public async updateMe(
-        @CurrentUser() user: FindMeUserDocument,
+        @CurrentUser() user: FindMeUser,
         @Body() updateDto: UpdateFindMeUserDto
     ): Promise<FindMeUser> {
-        return this.usersService.updateUser(user._id, updateDto);
+        return this.usersService.updateUser(user, updateDto);
     }
 
     @ApiOperation({
@@ -101,10 +101,10 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Delete()
     public async deleteMe(
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<OkMessageDto> {
         if (user.email === "") throw new BadRequestException([ ErrorMessagesConstants.ACCOUNT_IS_ALREADY_DELETED ]);
-        this.usersAnonymizeService.anonymizeUserData(user._id);
+        this.usersAnonymizeService.anonymizeUserData(user);
         return { message: SuccessMessagesConstants.USER_ACCOUNT_REMOVED };
     }
 
@@ -124,9 +124,9 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Delete(PathConstants.PROFILE_IMAGE)
     public async removeMyProfileImage(
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
-        return this.findMeUsersProfileImagesService.removeUserProfileImage(user._id);
+        return this.findMeUsersProfileImagesService.removeUserProfileImage(user);
     }
 
     @ApiOperation({
@@ -150,11 +150,11 @@ export class FindMeUsersMeController {
     @Post(PathConstants.UPDATE_PASSWORD)
     public async updateMyPassword(
         @Body() updateFindMeUserPasswordDto: UpdateFindMeUserPasswordDto,
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
         const { oldPassword, newPassword } = updateFindMeUserPasswordDto;
         return this.usersService.updateUserPassword(
-            user._id,
+            user,
             oldPassword,
             newPassword
         );

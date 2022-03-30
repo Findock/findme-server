@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class GetFindMeUserDto {
-    @ApiProperty({ example: "6219debb9434c4b7adfae813" })
-    public _id: string;
+    @ApiProperty({ example: 1 })
+    public id: number;
 
     @ApiProperty({ example: "bunia@gmail.com" })
     public email: string;

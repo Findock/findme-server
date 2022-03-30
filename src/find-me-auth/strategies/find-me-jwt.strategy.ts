@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
 import { envConfig } from "@/find-me-commons/configurations/env.config";
-import { FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @Injectable()
@@ -21,13 +21,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     public async validate(req: Request, payload: {
-        _id: string
-    }): Promise<FindMeUserDocument> {
+        id: number
+    }): Promise<FindMeUser> {
         const token = req.headers["authorization"];
         if (!await this.authService.validateToken(token)) throw new UnauthorizedException();
         await this.authService.bumpTokenLastUse(token);
-        const user = await this.usersService.findOneById(payload._id);
-        delete (user as any)._doc.password;
+        const user = await this.usersService.findOneById(payload.id);
         return user;
     }
 }

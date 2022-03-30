@@ -1,25 +1,24 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
-import {
-    FindMeUserAccessLog,
-    FindMeUserAccessLogDocument,
-} from "@/find-me-users/schemas/find-me-user-access-log.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
+import { FindMeUserAccessLog } from "@/find-me-users/entities/find-me-user-access-log.entity";
 
 @Injectable()
 export class FindMeUsersAccessLogService {
     public constructor(
-       @InjectModel(FindMeUserAccessLog.name) private readonly userAccessLogModel: Model<FindMeUserAccessLogDocument>
+        @InjectRepository(FindMeUserAccessLog)
+        private usersAccessLogRepository: Repository<FindMeUserAccessLog>
     ) {}
 
     public async logUserAccessByAnotherUser(
-        accessedUserId: string,
-        accessingUserId: string
+        accessedUser: FindMeUser,
+        accessingUser: FindMeUser
     ): Promise<void> {
-        await this.userAccessLogModel.create({
-            accessedUser: accessedUserId,
-            accessingUser: accessingUserId,
+        await this.usersAccessLogRepository.create({
+            accessedUser: accessedUser,
+            accessingUser: accessingUser,
         });
     }
 }
