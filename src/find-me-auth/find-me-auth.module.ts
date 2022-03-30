@@ -1,13 +1,10 @@
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { MongooseModule } from "@nestjs/mongoose";
+import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { FindMeAuthController } from "@/find-me-auth/controllers/find-me-auth.controller";
-import { FindMeAuthToken, FindMeAuthTokenSchema } from "@/find-me-auth/schemas/find-me-auth-token.schema";
-import {
-    FindMeResetPasswordToken,
-    FindMeResetPasswordTokenSchema,
-} from "@/find-me-auth/schemas/find-me-reset-password.token.schema";
+import { FindMeAuthToken } from "@/find-me-auth/entities/find-me-auth-token.entity";
+import { FindMeResetPasswordToken } from "@/find-me-auth/entities/find-me-reset-password-token.entity";
 import { FindMeAuthService } from "@/find-me-auth/services/find-me-auth.service";
 import { JwtStrategy } from "@/find-me-auth/strategies/find-me-jwt.strategy";
 import { envConfig } from "@/find-me-commons/configurations/env.config";
@@ -17,15 +14,9 @@ const secret = envConfig().encryptKey;
 
 @Module({
     imports: [
-        MongooseModule.forFeature([
-            {
-                name: FindMeAuthToken.name,
-                schema: FindMeAuthTokenSchema,
-            },
-            {
-                name: FindMeResetPasswordToken.name,
-                schema: FindMeResetPasswordTokenSchema,
-            },
+        TypeOrmModule.forFeature([
+            FindMeAuthToken,
+            FindMeResetPasswordToken,
         ]),
         FindMeUsersModule,
         JwtModule.register({ secret }),

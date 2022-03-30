@@ -8,7 +8,6 @@ import { join } from "path";
 
 import { FindMeAuthModule } from "@/find-me-auth/find-me-auth.module";
 import { envConfig } from "@/find-me-commons/configurations/env.config";
-import { mongoDbConfig } from "@/find-me-commons/configurations/mongodb.config";
 import { securityConfig } from "@/find-me-commons/configurations/security.config";
 import { seederConfig } from "@/find-me-commons/configurations/seeder.config";
 import { FindMeCommonsModule } from "@/find-me-commons/find-me-commons.module";
@@ -24,13 +23,11 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         ConfigModule.forRoot({
             isGlobal: true,
             load: [
-                mongoDbConfig,
                 securityConfig,
                 seederConfig,
                 envConfig,
             ],
         }),
-        MongooseModule.forRoot(mongoDbConfig().mongodb.uri),
         TypeOrmModule.forRoot({ autoLoadEntities: true }),
         MulterModule.register({ dest: "./storage" }),
         ServeStaticModule.forRoot({

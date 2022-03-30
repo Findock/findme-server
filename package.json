@@ -20,7 +20,10 @@
         "docker:up": "docker-compose up",
         "docker:up -d": "docker-compose up -d",
         "docker:down": "docker-compose down",
-        "docker:clear": "docker rmi mvtthew/findme-server"
+        "migrate": "typeorm migration:run",
+        "migration:revert": "typeorm migration:revert",
+        "migration:create": "typeorm migration:create -n",
+        "migration:generate": "typeorm migration:generate -n"
     },
     "dependencies": {
         "@nestjs-modules/mailer": "^1.6.1",

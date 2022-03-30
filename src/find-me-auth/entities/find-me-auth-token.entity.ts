@@ -5,6 +5,7 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Entity()
 export class FindMeAuthToken {
+    @ApiProperty()
     @PrimaryGeneratedColumn()
     public id: number;
 

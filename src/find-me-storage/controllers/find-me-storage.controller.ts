@@ -13,7 +13,7 @@ import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
-import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @ApiTags(ApiTagsConstants.STORAGE)
@@ -62,9 +62,9 @@ export class FindMeStorageController {
     }))
     public async uploadNewProfileImageForUser(
         @UploadedFile() file: Express.Multer.File,
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
         const imageUrl = `/${file.path}`;
-        return this.usersProfileImagesService.updateUserProfileImage(user._id, imageUrl);
+        return this.usersProfileImagesService.updateUserProfileImage(user, imageUrl);
     }
 }

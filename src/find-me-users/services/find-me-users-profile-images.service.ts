@@ -11,8 +11,7 @@ export class FindMeUsersProfileImagesService {
         private usersRepository: Repository<FindMeUser>
     ) { }
 
-    public async updateUserProfileImage(userId: string, imageUrl: string): Promise<FindMeUser> {
-        const user = await this.usersRepository.findOne({ where: { id: userId } });
+    public async updateUserProfileImage(user: FindMeUser, imageUrl: string): Promise<FindMeUser> {
         user.profileImageUrl = imageUrl;
         await this.usersRepository.save(user);
         return user;

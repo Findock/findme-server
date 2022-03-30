@@ -7,7 +7,7 @@ import { Model } from "mongoose";
 import { EnvironmentConstants } from "@/find-me-commons/constants/environment.constants";
 import { SeederKeysConstants } from "@/find-me-seeder/constants/SeederKeysConstants";
 import { FindMeSeederLog, FindMeSeederLogDocument } from "@/find-me-seeder/schemas/find-me-seeder-log";
-import { FindMeUser } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @Injectable()
@@ -33,6 +33,7 @@ export class FindMeSeederService {
             await this.createSeederLog(SeederKeysConstants.USERS);
             for (let i = 0; i < amount; i++) {
                 const user: FindMeUser = {
+                    id: null,
                     name: faker.name.firstName() + " " + faker.name.lastName(),
                     email: "bunia" + (i > 0 ? i : "") + "@gmail.com",
                     password: "bunia1",
