@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 export const FindMeStorageProfileImageInterceptor = FileInterceptor("file", {
     storage: diskStorage({
         destination: "./storage/profile-images",
-        filename: (req, file, callback) => {
+        filename: (_req, file, callback) => {
             const fileExtName = extname(file.originalname);
             const fileName = uuidv4();
             callback(null, `${fileName}-profile-image${fileExtName}`);
