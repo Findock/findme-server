@@ -32,7 +32,7 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 export class FindMeAuthController {
 
     public constructor(
-        private readonly authService: FindMeAuthService
+        private authService: FindMeAuthService
     ) {}
 
     @ApiOperation({

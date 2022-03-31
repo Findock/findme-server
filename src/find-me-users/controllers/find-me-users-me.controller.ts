@@ -2,11 +2,15 @@ import {
     BadRequestException,
     Body, ClassSerializerInterceptor,
     Controller, Delete, Get, Post, Put,
+    UploadedFile,
     UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
+    ApiBody,
+    ApiConsumes,
+    ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
     ApiTags,
@@ -22,6 +26,8 @@ import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
+import { FindMeStorageProfileImageInterceptor }
+    from "@/find-me-storage/interceptors/find-me-storage-profile-image.interceptor";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
@@ -34,9 +40,10 @@ import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-m
 @Controller(PathConstants.USERS + "/" + PathConstants.ME)
 export class FindMeUsersMeController {
     public constructor(
-        private readonly usersService: FindMeUsersService,
-        private readonly usersAnonymizeService: FindMeUsersAnonymizeService,
-        private readonly findMeUsersProfileImagesService: FindMeUsersProfileImagesService,
+        private usersService: FindMeUsersService,
+        private usersAnonymizeService: FindMeUsersAnonymizeService,
+        private findMeUsersProfileImagesService: FindMeUsersProfileImagesService,
+        private usersProfileImagesService: FindMeUsersProfileImagesService
     ) { }
 
     @ApiOperation({
@@ -163,5 +170,41 @@ export class FindMeUsersMeController {
             oldPassword,
             newPassword
         );
+    }
+
+    @ApiOperation({
+        summary: "Upload new profile image for user",
+        description: "Uploads and then updates user profile image url in user object",
+    })
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        schema: {
+            type: "object",
+            properties: {
+                file: {
+                    type: "string",
+                    format: "binary",
+                },
+            },
+        },
+    })
+    @ApiCreatedResponse({
+        description: "Image was uploaded and returns updated user object",
+        type: FindMeUser,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @Post(PathConstants.PROFILE_IMAGE)
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FindMeStorageProfileImageInterceptor)
+    public async uploadNewProfileImageForUser(
+        @UploadedFile() file: Express.Multer.File,
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeUser> {
+        const imageUrl = `/${file.path}`;
+        return this.usersProfileImagesService.updateUserProfileImage(user, imageUrl);
     }
 }

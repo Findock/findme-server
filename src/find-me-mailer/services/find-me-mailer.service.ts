@@ -6,7 +6,7 @@ import { MailerSubjectsConstants } from "@/find-me-mailer/constants/MailerSubjec
 @Injectable()
 export class FindMeMailerService {
     public constructor(
-        private readonly mailerService: MailerService
+        private mailerService: MailerService
     ) {}
 
     public async sendResetPasswordLink(

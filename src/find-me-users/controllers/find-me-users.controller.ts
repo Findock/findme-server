@@ -29,8 +29,8 @@ import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-us
 @UseInterceptors(ClassSerializerInterceptor)
 export class FindMeUsersController {
     public constructor(
-        private readonly usersService: FindMeUsersService,
-        private readonly usersAccessLogService: FindMeUsersAccessLogService
+        private usersService: FindMeUsersService,
+        private usersAccessLogService: FindMeUsersAccessLogService
     ) { }
 
     @ApiOperation({

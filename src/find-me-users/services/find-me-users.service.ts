@@ -16,7 +16,7 @@ export class FindMeUsersService {
     public constructor(
         @InjectRepository(FindMeUser)
         private usersRepository: Repository<FindMeUser>,
-        private readonly securityEncryptionService: FindMeSecurityEncryptionService
+        private securityEncryptionService: FindMeSecurityEncryptionService
     ) { }
 
     public async createUser(

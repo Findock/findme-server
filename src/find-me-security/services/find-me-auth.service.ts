@@ -35,10 +35,6 @@ export class FindMeAuthService {
         if (!user) {
             throw new UnauthorizedException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         }
-        console.log(password);
-        console.log(this.securityEncryptionService.encryptValue(password));
-        console.log(user.password);
-
         if (this.securityEncryptionService.encryptValue(password) !== user.password) {
             throw new UnauthorizedException([ ErrorMessagesConstants.WRONG_PASSWORD ]);
         }

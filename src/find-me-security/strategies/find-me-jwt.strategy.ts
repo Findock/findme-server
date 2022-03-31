@@ -10,8 +10,8 @@ import { FindMeUsersService } from "@/find-me-users/services/find-me-users.servi
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
     public constructor(
-        private readonly authService: FindMeAuthService,
-        private readonly usersService: FindMeUsersService
+        private authService: FindMeAuthService,
+        private usersService: FindMeUsersService
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
