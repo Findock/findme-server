@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { MailerService } from "@nestjs-modules/mailer";
 
-import { MailerSubjectsConstants } from "@/find-me-mailer/constants/MailerSubjectsConstants";
+import { MailerSubjectsConstants } from "@/find-me-mailer/constants/mailer-subjects-constants";
 
 @Injectable()
 export class FindMeMailerService {
