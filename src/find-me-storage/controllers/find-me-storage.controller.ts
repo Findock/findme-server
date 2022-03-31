@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { ClassSerializerInterceptor, Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import {
     ApiBearerAuth,
@@ -17,6 +17,7 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @ApiTags(ApiTagsConstants.STORAGE)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller(PathConstants.STORAGE)
 export class FindMeStorageController {
     public constructor(

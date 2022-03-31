@@ -1,6 +1,8 @@
 import {
     BadRequestException,
-    Body, Controller, Delete, Get, Param, Post, Request, UnauthorizedException, UseGuards,
+    Body, ClassSerializerInterceptor, Controller,
+    Delete, Get, Param, Post, Request,
+    UnauthorizedException, UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
@@ -25,6 +27,7 @@ import { FindMeAuthService } from "@/find-me-security/services/find-me-auth.serv
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @ApiTags(ApiTagsConstants.AUTH)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller(PathConstants.AUTH)
 export class FindMeAuthController {
 

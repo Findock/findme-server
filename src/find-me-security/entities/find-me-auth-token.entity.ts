@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
@@ -17,7 +18,7 @@ export class FindMeAuthToken {
     @Column({ nullable: false })
     public localizationDescription: string;
 
-    @ApiProperty()
+    @Exclude()
     @Column({ nullable: false })
     public token: string;
 
