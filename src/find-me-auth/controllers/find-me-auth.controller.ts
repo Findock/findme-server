@@ -170,7 +170,7 @@ export class FindMeAuthController {
         @Body() passwordResetRequestDto: PasswordResetRequestDto
     ): Promise<OkMessageDto> {
         const { email } = passwordResetRequestDto;
-        this.authService.sendResetPasswordLink(email);
+        await this.authService.sendResetPasswordLink(email);
         return { message: "Email with password reset link successfully sent!" };
     }
 
