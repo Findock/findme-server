@@ -111,7 +111,7 @@ export class FindMeAuthService {
         const user = await this.usersService.findOneByEmail(userEmail);
         if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         const link = await this.generateResetPasswordLinkForUser(user);
-        await this.mailerService.sendResetPasswordLink(
+        await this.mailerService.sendResetPasswordLinkMail(
             userEmail,
             user.name,
             link

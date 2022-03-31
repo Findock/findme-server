@@ -9,7 +9,7 @@ export class FindMeMailerService {
         private mailerService: MailerService
     ) {}
 
-    public async sendResetPasswordLink(
+    public async sendResetPasswordLinkMail(
         recipientEmail: string,
         name: string,
         resetPasswordLink: string
