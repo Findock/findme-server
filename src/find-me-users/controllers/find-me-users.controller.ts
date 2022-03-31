@@ -1,4 +1,8 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import {
+    Body, ClassSerializerInterceptor,
+    Controller, Get, Param, Post,
+    UseGuards, UseInterceptors,
+} from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -16,18 +20,18 @@ import { ErrorExceptionDto } from "@/find-me-commons/dto/error-exception.dto";
 import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
 import { CreateFindMeUserDto } from "@/find-me-users/dto/create-find-me-user.dto";
-import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAccessLogService } from "@/find-me-users/services/find-me-users-access-log.service";
 
 @ApiTags(ApiTagsConstants.USERS)
 @Controller(PathConstants.USERS)
+@UseInterceptors(ClassSerializerInterceptor)
 export class FindMeUsersController {
     public constructor(
         private readonly usersService: FindMeUsersService,
         private readonly usersAccessLogService: FindMeUsersAccessLogService
-    ) {}
+    ) { }
 
     @ApiOperation({
         summary: "Create new user",
@@ -58,7 +62,7 @@ export class FindMeUsersController {
     })
     @ApiOkResponse({
         description: "Returns user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiBadRequestResponse({
         description: "User does not exists",
@@ -70,7 +74,7 @@ export class FindMeUsersController {
     public async getUser(
         @Param("id") userId: number,
         @CurrentUser() user: FindMeUser
-    ): Promise<GetFindMeUserDto> {
+    ): Promise<FindMeUser> {
         const otherUser = await this.usersService.findOneById(userId);
         if (otherUser.id !== user.id) {
             this.usersAccessLogService.logUserAccessByAnotherUser(

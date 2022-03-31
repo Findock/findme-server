@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Exclude } from "class-transformer";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -11,7 +12,7 @@ export class FindMeUser {
     @Column({ nullable: false })
     public email: string;
 
-    @ApiProperty()
+    @Exclude()
     @Column({ nullable: false })
     public password: string;
 

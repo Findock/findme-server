@@ -1,4 +1,9 @@
-import { BadRequestException, Body, Controller, Delete, Get, Post, Put, UseGuards } from "@nestjs/common";
+import {
+    BadRequestException,
+    Body, ClassSerializerInterceptor,
+    Controller, Delete, Get, Post, Put,
+    UseGuards, UseInterceptors,
+} from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -17,7 +22,6 @@ import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
-import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
@@ -26,6 +30,7 @@ import { FindMeUsersAnonymizeService } from "@/find-me-users/services/find-me-us
 import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @ApiTags(ApiTagsConstants.USERS_ME)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller(PathConstants.USERS + "/" + PathConstants.ME)
 export class FindMeUsersMeController {
     public constructor(
@@ -40,7 +45,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns authorized user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
@@ -61,7 +66,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns updated user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiBadRequestResponse({
         description: "Form validation errors",
@@ -114,7 +119,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns ok message",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
@@ -135,7 +140,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns updated user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiBadRequestResponse({
         description: "Invalid old password parameter or form validation errors",
