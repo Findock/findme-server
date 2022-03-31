@@ -7,7 +7,8 @@
     "plugins": [
         "@typescript-eslint",
         "simple-import-sort",
-        "eslint-plugin-import"
+        "eslint-plugin-import",
+        "unused-imports"
     ],
     "extends": [
         "plugin:@typescript-eslint/recommended"
@@ -134,6 +135,7 @@
             "error",
             "consistent"
         ],
-        "import/no-default-export": "error"
+        "import/no-default-export": "error",
+        "unused-imports/no-unused-imports": "error"
     }
 }
