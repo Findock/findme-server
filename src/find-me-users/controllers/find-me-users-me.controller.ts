@@ -204,7 +204,7 @@ export class FindMeUsersMeController {
         @UploadedFile() file: Express.Multer.File,
         @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
-        const imageUrl = `/${file.path}`;
+        const imageUrl = `${file.path}`;
         return this.usersProfileImagesService.updateUserProfileImage(user, imageUrl);
     }
 }

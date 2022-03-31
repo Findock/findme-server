@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Exclude } from "class-transformer";
+import { Exclude, Transform } from "class-transformer";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+import { envConfig } from "@/find-me-commons/configurations/env.config";
 
 @Entity()
 export class FindMeUser {
@@ -25,6 +27,7 @@ export class FindMeUser {
     public phoneNumber: string;
 
     @ApiProperty()
+    @Transform(({ value }) => value ? envConfig().rootUrl + value : value)
     @Column({ default: "" })
     public profileImageUrl: string;
 
