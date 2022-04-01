@@ -1,7 +1,7 @@
 version: '3'
 services:
   find-me-server:
-    image: mvtthew/findme-server:0.40.1
+    image: mvtthew/findme-server:0.40
     platform: linux/x86_64
     restart: always
     env_file: ./.env
@@ -9,6 +9,9 @@ services:
       - ${LISTEN_PORT}:${LISTEN_PORT}
     depends_on:
       - find-me-db
+    volumes:
+      - .:/app
+      - /app/node_modules
   find-me-db:
     image: mysql:8.0.28
     platform: linux/x86_64
