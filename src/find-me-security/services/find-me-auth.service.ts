@@ -131,7 +131,7 @@ export class FindMeAuthService {
             throw new BadRequestException([ ErrorMessagesConstants.INVALID_PASSWORD_RESET_TOKEN ]);
         }
         await this.usersService.forceUpdateUserPassword(user, this.securityEncryptionService.encryptValue(newPassword));
-        await this.resetPasswordTokenRepository.delete(passwordResetTokenObject);
+        await this.resetPasswordTokenRepository.remove(passwordResetTokenObject);
     }
 
     private async generateResetPasswordLinkForUser(user: FindMeUser): Promise<string> {
