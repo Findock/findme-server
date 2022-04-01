@@ -1,20 +1,25 @@
 version: '3'
 services:
-  app:
-    image: mvtthew/findme-server:0.38.1
+  find-me-server:
+    image: mvtthew/findme-server:0.40.1
+    platform: linux/x86_64
     restart: always
     env_file: ./.env
     ports:
       - ${LISTEN_PORT}:${LISTEN_PORT}
     depends_on:
-      - mongo
-  mongo:
-    image: mongo:5.0.2
+      - find-me-db
+  find-me-db:
+    image: mysql:8.0.28
+    platform: linux/x86_64
     restart: always
     env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE_NAME}
     ports:
-      - 27027:27017
+      - "${DB_PORT_DOCKER_LISTEN}:3306"
     volumes:
-      - db:/data/db
+      - database:/var/lib/mysql
 volumes:
- db:
+  database:

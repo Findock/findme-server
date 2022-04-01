@@ -1,15 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { MailerService } from "@nestjs-modules/mailer";
 
-import { MailerSubjectsConstants } from "@/find-me-mailer/constants/MailerSubjectsConstants";
+import { MailerSubjectsConstants } from "@/find-me-mailer/constants/mailer-subjects-constants";
 
 @Injectable()
 export class FindMeMailerService {
     public constructor(
-        private readonly mailerService: MailerService
+        private mailerService: MailerService
     ) {}
 
-    public async sendResetPasswordLink(
+    public async sendResetPasswordLinkMail(
         recipientEmail: string,
         name: string,
         resetPasswordLink: string

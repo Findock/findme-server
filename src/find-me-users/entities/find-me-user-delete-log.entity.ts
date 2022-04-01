@@ -1,0 +1,19 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
+
+@Entity()
+export class FindMeUserDeleteLog {
+    @ApiProperty()
+    @PrimaryGeneratedColumn()
+    public id: number;
+
+    @ApiProperty()
+    @ManyToOne(() => FindMeUser)
+    public user: FindMeUser;
+
+    @ApiProperty()
+    @CreateDateColumn()
+    public deleted: Date;
+}

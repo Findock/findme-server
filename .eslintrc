@@ -7,7 +7,8 @@
     "plugins": [
         "@typescript-eslint",
         "simple-import-sort",
-        "eslint-plugin-import"
+        "eslint-plugin-import",
+        "unused-imports"
     ],
     "extends": [
         "plugin:@typescript-eslint/recommended"
@@ -18,7 +19,8 @@
         "jest": true
     },
     "ignorePatterns": [
-        ".eslintrc.js"
+        ".eslintrc.js",
+        "src/find-me-db/migrations/**/*"
     ],
     "rules": {
         "@typescript-eslint/interface-name-prefix": "off",
@@ -133,6 +135,7 @@
             "error",
             "consistent"
         ],
-        "import/no-default-export": "error"
+        "import/no-default-export": "error",
+        "unused-imports/no-unused-imports": "error"
     }
 }

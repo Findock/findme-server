@@ -1,15 +1,22 @@
-import { BadRequestException, Body, Controller, Delete, Get, Post, Put, UseGuards } from "@nestjs/common";
+import {
+    BadRequestException,
+    Body, ClassSerializerInterceptor,
+    Controller, Delete, Get, Post, Put,
+    UploadedFile,
+    UseGuards, UseInterceptors,
+} from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
+    ApiBody,
+    ApiConsumes,
+    ApiCreatedResponse,
     ApiOkResponse,
     ApiOperation,
     ApiTags,
     ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
-import { CurrentUser } from "@/find-me-auth/decorators/find-me-current-user.decorator";
-import { JwtAuthGuard } from "@/find-me-auth/guards/find-me-jwt-auth.guard";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
@@ -17,21 +24,26 @@ import { SuccessMessagesConstants } from "@/find-me-commons/constants/success-me
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { OkMessageDto } from "@/find-me-commons/dto/ok-message.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
-import { GetFindMeUserDto } from "@/find-me-users/dto/get-find-me-user.dto";
+import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
+import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
+import { FindMeStorageProfileImageInterceptor }
+    from "@/find-me-storage/interceptors/find-me-storage-profile-image.interceptor";
 import { UpdateFindMeUserDto } from "@/find-me-users/dto/update-find-me-user.dto";
 import { UpdateFindMeUserPasswordDto } from "@/find-me-users/dto/update-find-me-user-password.dto";
-import { FindMeUser, FindMeUserDocument } from "@/find-me-users/schemas/find-me-user.schema";
+import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 import { FindMeUsersAnonymizeService } from "@/find-me-users/services/find-me-users-anonymize.service";
 import { FindMeUsersProfileImagesService } from "@/find-me-users/services/find-me-users-profile-images.service";
 
 @ApiTags(ApiTagsConstants.USERS_ME)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller(PathConstants.USERS + "/" + PathConstants.ME)
 export class FindMeUsersMeController {
     public constructor(
-        private readonly usersService: FindMeUsersService,
-        private readonly usersAnonymizeService: FindMeUsersAnonymizeService,
-        private readonly findMeUsersProfileImagesService: FindMeUsersProfileImagesService,
+        private usersService: FindMeUsersService,
+        private usersAnonymizeService: FindMeUsersAnonymizeService,
+        private findMeUsersProfileImagesService: FindMeUsersProfileImagesService,
+        private usersProfileImagesService: FindMeUsersProfileImagesService
     ) { }
 
     @ApiOperation({
@@ -40,7 +52,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns authorized user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
@@ -50,8 +62,8 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Get()
     public async getMe(
-        @CurrentUser() user: FindMeUserDocument
-    ): Promise<FindMeUserDocument> {
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeUser> {
         return user;
     }
 
@@ -61,7 +73,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns updated user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiBadRequestResponse({
         description: "Form validation errors",
@@ -75,10 +87,10 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Put()
     public async updateMe(
-        @CurrentUser() user: FindMeUserDocument,
+        @CurrentUser() user: FindMeUser,
         @Body() updateDto: UpdateFindMeUserDto
     ): Promise<FindMeUser> {
-        return this.usersService.updateUser(user._id, updateDto);
+        return this.usersService.updateUser(user, updateDto);
     }
 
     @ApiOperation({
@@ -101,10 +113,10 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Delete()
     public async deleteMe(
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<OkMessageDto> {
         if (user.email === "") throw new BadRequestException([ ErrorMessagesConstants.ACCOUNT_IS_ALREADY_DELETED ]);
-        this.usersAnonymizeService.anonymizeUserData(user._id);
+        this.usersAnonymizeService.anonymizeUserData(user);
         return { message: SuccessMessagesConstants.USER_ACCOUNT_REMOVED };
     }
 
@@ -114,7 +126,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns ok message",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization",
@@ -124,9 +136,9 @@ export class FindMeUsersMeController {
     @UseGuards(JwtAuthGuard)
     @Delete(PathConstants.PROFILE_IMAGE)
     public async removeMyProfileImage(
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
-        return this.findMeUsersProfileImagesService.removeUserProfileImage(user._id);
+        return this.findMeUsersProfileImagesService.removeUserProfileImage(user);
     }
 
     @ApiOperation({
@@ -135,7 +147,7 @@ export class FindMeUsersMeController {
     })
     @ApiOkResponse({
         description: "Returns updated user object",
-        type: GetFindMeUserDto,
+        type: FindMeUser,
     })
     @ApiBadRequestResponse({
         description: "Invalid old password parameter or form validation errors",
@@ -150,13 +162,49 @@ export class FindMeUsersMeController {
     @Post(PathConstants.UPDATE_PASSWORD)
     public async updateMyPassword(
         @Body() updateFindMeUserPasswordDto: UpdateFindMeUserPasswordDto,
-        @CurrentUser() user: FindMeUserDocument
+        @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
         const { oldPassword, newPassword } = updateFindMeUserPasswordDto;
         return this.usersService.updateUserPassword(
-            user._id,
+            user,
             oldPassword,
             newPassword
         );
+    }
+
+    @ApiOperation({
+        summary: "Upload new profile image for user",
+        description: "Uploads and then updates user profile image url in user object",
+    })
+    @ApiConsumes("multipart/form-data")
+    @ApiBody({
+        schema: {
+            type: "object",
+            properties: {
+                file: {
+                    type: "string",
+                    format: "binary",
+                },
+            },
+        },
+    })
+    @ApiCreatedResponse({
+        description: "Image was uploaded and returns updated user object",
+        type: FindMeUser,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @Post(PathConstants.PROFILE_IMAGE)
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FindMeStorageProfileImageInterceptor)
+    public async uploadNewProfileImageForUser(
+        @UploadedFile() file: Express.Multer.File,
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeUser> {
+        const imageUrl = `${file.path}`;
+        return this.usersProfileImagesService.updateUserProfileImage(user, imageUrl);
     }
 }
