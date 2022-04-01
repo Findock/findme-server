@@ -3,7 +3,8 @@
     "sourceRoot": "src",
     "compilerOptions": {
         "assets": [
-            "find-me-mailer/templates/**/*"
+            "find-me-mailer/templates/**/*",
+            "find-me-static/static/**/*"
         ],
         "watchAssets": true
     }
