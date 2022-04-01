@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/favicon.ico">
+    <title>FindMe - Reset hasła</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #16979F;
+            font-family: 'Poppins';
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .bg-image {
+            width: 50%;
+            background-image: url(https://images.unsplash.com/photo-1504595403659-9088ce801e29?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80);
+            background-position: center;
+            background-size: cover;
+        }
+
+        .form-container {
+            width: 50%;
+            min-height: 100vh;
+            color: white;
+            padding: 0 7rem;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .form-box {
+            margin-top: 3rem;
+            background-color: white;
+            color: black;
+            padding: 3rem;
+            border-radius: 20px;
+        }
+
+        input {
+            border-radius: 20px;
+            border: 1px solid #aaa;
+            padding: 1rem;
+            width: calc(100% - 2rem);
+            background-color: transparent;
+            font-family: 'Poppins';
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .send-btn {
+            background-color: #F3AC8E;
+            color: white;
+            padding: 1rem 4rem;
+            border: 0;
+            cursor: pointer;
+            border-radius: 200px;
+            font-family: 'Poppins';
+            font-weight: 500;
+        }
+
+        #password {
+            margin-bottom: 2rem;
+        }
+
+        #repeatPassword {
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="bg-image"></div>
+        <div class="form-container">
+            <h1>
+                Zmień swoje hasło do aplikacji
+            </h1>
+            <p>
+                Dziękujemy Ci, że z nami jesteś :)
+            </p>
+
+            <div class="form-box">
+                <form>
+                    <label for="password">
+                        Podaj nowe hasło
+                    </label>
+                    <input id="password" autocomplete="new-password" placeholder="Podaj swoje nowe hasło" type="password"></imput>
+
+                    <label for="repeatPassword">
+                        Potwierdź nowe hasło
+                    </label>
+                    <input id="repeatPassword" autocomplete="new-password" placeholder="Potwierdź swoje nowe hasło" type="password"></imput>
+
+                    <div class="text-center">
+                        <button type="button" class="send-btn" id="send-btn">
+                            Zmień hasło
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
+    const sendResetPassword = async () => {
+        console.log(1);
+        const password = document.getElementById('password').value;
+        const repeatPassword = document.getElementById('repeatPassword').value;
+        if (password !== repeatPassword) return
+        try {
+            const res = await fetch('/auth/reset-password', {
+                method: "POST",
+                body: JSON.stringify({
+                    token,
+                    newPassword
+                })
+            });
+            console.log(res);
+            Swal.fire({
+                icon: 'success',
+                title: 'Hasło zmienione!',
+                text: 'Twoje hasło zostało zresetowane. Możesz zalogować się nowym hasłem do aplikacji.'
+            })
+        } catch {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Twoje hasło nie zostało zresetowane. Pamiętaj, że nowe hasło musi mieć przynajmniej 6 znaków (max 64).'
+            })
+        }
+    };
+
+    document.getElementById('send-btn').addEventListener('click', sendResetPassword);
+</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</html>
