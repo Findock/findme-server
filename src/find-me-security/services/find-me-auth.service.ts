@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -109,7 +109,7 @@ export class FindMeAuthService {
 
     public async sendResetPasswordLink(userEmail: string): Promise<void> {
         const user = await this.usersService.findOneByEmail(userEmail);
-        if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
+        if (!user) throw new NotFoundException([ ErrorMessagesConstants.USER_WITH_THIS_EMAIL_DOES_NOT_EXIST ]);
         const link = await this.generateResetPasswordLinkForUser(user);
         await this.mailerService.sendResetPasswordLinkMail(
             userEmail,

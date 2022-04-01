@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
-    ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse,
+    ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
@@ -161,11 +161,15 @@ export class FindMeAuthController {
         description: "You can send emails only for accounts which exist in application",
     })
     @ApiOkResponse({
-        description: "Sends email and returns ok message",
+        description: "Returns ok message - email is sent",
         type: OkMessageDto,
     })
     @ApiBadRequestResponse({
-        description: "User with this email address was not found - email is not sent",
+        description: "Form validation error - email is not sent",
+        type: BadRequestExceptionDto,
+    })
+    @ApiNotFoundResponse({
+        description: "User with this email address does not exits - email is not sent",
         type: BadRequestExceptionDto,
     })
     @Post(PathConstants.SEND_RESET_PASSWORD_EMAIL)
