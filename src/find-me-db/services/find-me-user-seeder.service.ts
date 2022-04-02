@@ -23,10 +23,10 @@ export class FindMeUserSeederService {
         private securityEncryptionService: FindMeSecurityEncryptionService,
     ) {
         if (!this.seederService.isSeedingEnabled()) return;
-        this.seedUsers();
+        this.seed();
     }
 
-    public async seedUsers(): Promise<void> {
+    public async seed(): Promise<void> {
         if (!(await this.seederService.isSeeded(this.seedKey))) {
             for (let i = 0; i < this.usersToSeed; i++) {
                 const user = this.usersRepository.create({

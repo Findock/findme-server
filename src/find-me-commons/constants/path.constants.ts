@@ -1,10 +1,13 @@
 export class PathConstants {
     public static ID_PARAM = "/:id";
+    public static SEARCH = "search";
 
     public static USERS = "users";
     public static OTHER = "other";
     public static AUTH = "auth";
+    public static DISTINCTIVE_FEATURES = "distinctive-feature";
     public static ME = "me";
+
     public static LOGIN = "login";
     public static LOGOUT = "logout";
     public static VALIDATE_TOKEN = "validate-token";

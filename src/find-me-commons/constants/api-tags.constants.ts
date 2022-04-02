@@ -3,4 +3,5 @@ export class ApiTagsConstants {
     public static STORAGE = "storage";
     public static USERS = "users";
     public static USERS_ME = "users-me";
+    public static DISTINCTIVE_FEATURES = "distinctive-features";
 }
