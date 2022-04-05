@@ -8,4 +8,5 @@ export class ErrorMessagesConstants {
     public static ACCOUNT_IS_ALREADY_DELETED = "Account is already deleted.";
     public static INVALID_PASSWORD_RESET_TOKEN = "Invalid password reset token";
     public static INVALID_OLD_PASSWORD = "Invalid old password";
+    public static NOMINATIM_SERVICE_UNREACHABLE = "Nominatim service unreachable";
 }

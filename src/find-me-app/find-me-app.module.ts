@@ -11,6 +11,7 @@ import { securityConfig } from "@/find-me-commons/configurations/security.config
 import { seederConfig } from "@/find-me-commons/configurations/seeder.config";
 import { FindMeCommonsModule } from "@/find-me-commons/find-me-commons.module";
 import { FindMeDbModule } from "@/find-me-db/find-me-db.module";
+import { FindMeLocationModule } from "@/find-me-location/find-me-location.module";
 import { FindMeMailerModule } from "@/find-me-mailer/find-me-mailer.module";
 import { FindMeSecurityModule } from "@/find-me-security/find-me-security.module";
 import { FindMeStaticModule } from "@/find-me-static/find-me-static.module";
@@ -45,6 +46,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         FindMeStorageModule,
         FindMeUsersModule,
         FindMeAnnouncementsModule,
+        FindMeLocationModule,
         // Application modules end
     ],
 })

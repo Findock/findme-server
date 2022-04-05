@@ -9,6 +9,7 @@ export class PathConstants {
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
     public static AN = "distinctive-feature";
     public static ME = "me";
+    public static LOCATION = "location";
 
     public static LOGIN = "login";
     public static LOGOUT = "logout";
@@ -19,4 +20,6 @@ export class PathConstants {
     public static SEND_RESET_PASSWORD_EMAIL = "send-reset-password-email";
     public static RESET_PASSWORD = "reset-password";
     public static UPDATE_PASSWORD = "update-password";
+    public static LOCATION_BY_QUERY = "location-by-query";
+    public static LOCATION_BY_COORDINATES = "location-by-coordinates";
 }
