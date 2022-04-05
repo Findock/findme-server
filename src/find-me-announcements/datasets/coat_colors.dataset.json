@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "hex": "#000000",
+        "namePl": "Czarne"
+    },
+    {
+        "id": 2,
+        "hex": "#FFFFFF",
+        "namePl": "Białe"
+    },
+    {
+        "id": 3,
+        "hex": "#FFA92F",
+        "namePl": "Rude"
+    },
+    {
+        "id": 4,
+        "hex": "#AF6E22",
+        "namePl": "Czekoladowe"
+    },
+    {
+        "id": 5,
+        "hex": "#FFEFB7",
+        "namePl": "Żółte"
+    },
+    {
+        "id": 6,
+        "hex": "#EFECE3",
+        "namePl": "Jasnobeżowe"
+    }
+]

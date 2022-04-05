@@ -5,5 +5,6 @@ export class ApiTagsConstants {
     public static USERS_ME = "users-me";
     public static DISTINCTIVE_FEATURES = "distinctive-features";
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
+    public static COAT_COLORS = "coat-colors";
     public static LOCATION = "location";
 }

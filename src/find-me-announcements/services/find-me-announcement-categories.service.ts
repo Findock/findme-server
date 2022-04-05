@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import announcementCategoriesDataset from "@/find-me-announcements/datasets/announcements-categories.dataset.json";
+import announcementCategoriesDataset from "@/find-me-announcements/datasets/announcement-categories.dataset.json";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
 import { IFindMeAbstractLookupService } from "@/find-me-commons/services/i-find-me-abstract-lookup-service";
 
