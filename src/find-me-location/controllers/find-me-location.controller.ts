@@ -6,6 +6,8 @@ import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { FindMeLocationSearchByQueryResultDto }
     from "@/find-me-location/dto/find-me-lication-search-by-query-result.dto";
+import { FindMeLocationSearchByCoordinatesDto }
+    from "@/find-me-location/dto/find-me-location-search-by-coordinates.dto";
 import { FindMeLocationSearchByQueryDto } from "@/find-me-location/dto/find-me-location-search-by-query.dto";
 import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim-service";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
@@ -23,7 +25,7 @@ export class FindMeLocationController {
         description: "As a query pass fragment of location name",
     })
     @ApiOkResponse({
-        description: "Returns array of matched location objects (max 10)",
+        description: "Returns array of matched location objects by query (max 10)",
         type: FindMeLocationSearchByQueryResultDto,
         isArray: true,
     })
@@ -34,9 +36,33 @@ export class FindMeLocationController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Post(PathConstants.SEARCH + "/" + PathConstants.LOCATION_BY_QUERY)
-    public async search(
+    public async searchByQuery(
         @Body() searchByQueryDto: FindMeLocationSearchByQueryDto
     ): Promise<FindMeLocationSearchByQueryResultDto[]> {
         return this.nominatimService.searchLocationsByQuery(searchByQueryDto.query);
+    }
+
+    @ApiOperation({
+        summary: "Search for location by location coordinates",
+        description: "Pass lot and lat coordinates",
+    })
+    @ApiOkResponse({
+        description: "Returns matched location object by coordinates (max 10)",
+        type: FindMeLocationSearchByQueryResultDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Invalid authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.SEARCH + "/" + PathConstants.LOCATION_BY_COORDINATES)
+    public async searchByCoordinates(
+        @Body() searchByCoordinatesDto: FindMeLocationSearchByCoordinatesDto
+    ): Promise<FindMeLocationSearchByQueryResultDto> {
+        return this.nominatimService.searchLocationsByCoordinates(
+            searchByCoordinatesDto.lat,
+            searchByCoordinatesDto.lon
+        );
     }
 }

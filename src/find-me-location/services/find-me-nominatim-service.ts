@@ -42,10 +42,34 @@ export class FindMeNominatimService {
                 format: "jsonv2",
             },
         }));
+
         return res.data.map(i => ({
             name: i.display_name,
-            lat: i.lat,
-            lon: i.lon,
+            lat: +i.lat,
+            lon: +i.lon,
         }));
+    }
+
+    public async searchLocationsByCoordinates(
+        lat: number,
+        lon: number
+    ): Promise<FindMeLocationSearchByQueryResultDto> {
+        if (!this.isNominatimAvailable) {
+            throw new InternalServerErrorException([ ErrorMessagesConstants.NOMINATIM_SERVICE_UNREACHABLE ]);
+        }
+        const res = await firstValueFrom(this.httpService.get(this.nominatimRootUrl + "/reverse", {
+            params: {
+                lat,
+                lon,
+                zoom: 10,
+                format: "jsonv2",
+            },
+        }));
+
+        return {
+            name: res.data.display_name,
+            lat: +res.data.lat,
+            lon: +res.data.lon,
+        };
     }
 }
