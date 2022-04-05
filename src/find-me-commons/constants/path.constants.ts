@@ -6,6 +6,8 @@ export class PathConstants {
     public static OTHER = "other";
     public static AUTH = "auth";
     public static DISTINCTIVE_FEATURES = "distinctive-feature";
+    public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
+    public static AN = "distinctive-feature";
     public static ME = "me";
 
     public static LOGIN = "login";

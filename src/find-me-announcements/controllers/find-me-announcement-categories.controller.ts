@@ -1,30 +1,30 @@
 import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 
-import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
-import { FindMeDistinctiveFeaturesService }
-    from "@/find-me-announcements/services/find-me-distinctive-features.service";
+import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
+import { FindMeAnnouncementCategoriesService }
+    from "@/find-me-announcements/services/find-me-announcement-categories.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { LookupSearchDto } from "@/find-me-commons/dto/lookup-search.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
 
-@ApiTags(ApiTagsConstants.DISTINCTIVE_FEATURES)
+@ApiTags(ApiTagsConstants.ANNOUNCEMENT_CATEGORIES)
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller(PathConstants.DISTINCTIVE_FEATURES)
-export class FindMeDistinctiveFeaturesController {
+@Controller(PathConstants.ANNOUNCEMENT_CATEGORIES)
+export class FindMeAnnouncementCategoriesController {
     public constructor(
-        private distinctiveFeaturesService: FindMeDistinctiveFeaturesService
+        private announcementCategoriesService: FindMeAnnouncementCategoriesService
     ) { }
 
     @ApiOperation({
-        summary: "Get all distinctive features",
-        description: "Get array of all distinctive features",
+        summary: "Get all announcement categories",
+        description: "Get array of all announcement categories",
     })
     @ApiOkResponse({
-        description: "Returns list of all distinctive features",
-        type: FindMeDistinctiveFeature,
+        description: "Returns list of all announcement categories",
+        type: FindMeAnnouncementCategory,
         isArray: true,
     })
     @ApiUnauthorizedResponse({
@@ -34,17 +34,17 @@ export class FindMeDistinctiveFeaturesController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get()
-    public async getAll(): Promise<FindMeDistinctiveFeature[]> {
-        return this.distinctiveFeaturesService.getAllDistinctiveFeatures();
+    public async getAll(): Promise<FindMeAnnouncementCategory[]> {
+        return this.announcementCategoriesService.getAllAnnouncementCategories();
     }
 
     @ApiOperation({
-        summary: "Search for distinctive features",
-        description: "Get array of matched distinctive features",
+        summary: "Search for announcement categories",
+        description: "Get array of matched announcement categories",
     })
     @ApiOkResponse({
-        description: "Returns array of matched distinctive features",
-        type: FindMeDistinctiveFeature,
+        description: "Returns array of matched announcement categories",
+        type: FindMeAnnouncementCategory,
         isArray: true,
     })
     @ApiUnauthorizedResponse({
@@ -56,7 +56,7 @@ export class FindMeDistinctiveFeaturesController {
     @Post(PathConstants.SEARCH)
     public async search(
         @Body() lookupSearchDto: LookupSearchDto
-    ): Promise<FindMeDistinctiveFeature[]> {
-        return this.distinctiveFeaturesService.searchDistinctiveFeatures(lookupSearchDto.query);
+    ): Promise<FindMeAnnouncementCategory[]> {
+        return this.announcementCategoriesService.searchAnnouncementCategories(lookupSearchDto.query);
     }
 }
