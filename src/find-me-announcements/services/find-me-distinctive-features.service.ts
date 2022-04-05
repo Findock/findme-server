@@ -4,10 +4,10 @@ import { Repository } from "typeorm";
 
 import distinctiveFeaturesDataset from "@/find-me-announcements/datasets/distinctive-features.dataset.json";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
-import { IFindMeAbstractLookup } from "@/find-me-commons/services/i-find-me-abstract-lookup";
+import { IFindMeAbstractLookupService } from "@/find-me-commons/services/i-find-me-abstract-lookup-service";
 
 @Injectable()
-export class FindMeDistinctiveFeaturesService implements IFindMeAbstractLookup {
+export class FindMeDistinctiveFeaturesService implements IFindMeAbstractLookupService {
     public constructor(
         @InjectRepository(FindMeDistinctiveFeature)
         private distinctiveFeaturesRepository: Repository<FindMeDistinctiveFeature>
@@ -40,7 +40,7 @@ export class FindMeDistinctiveFeaturesService implements IFindMeAbstractLookup {
     public async searchDistinctiveFeatures(query: string): Promise<FindMeDistinctiveFeature[]> {
         return this.distinctiveFeaturesRepository
             .createQueryBuilder("find_me_distinctive_feature")
-            .where("find_me_distinctive_feature.namePl like :q", { q: "%" + query + "%" })
+            .where("find_me_distinctive_feature.namePl like :q", { q: `%${query}%` })
             .getMany();
     }
 }

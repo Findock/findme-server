@@ -1,1 +1,22 @@
-[]
+[
+    {
+        "id": 1,
+        "namePl": "Gryzoń"
+    },
+    {
+        "id": 2,
+        "namePl": "Kot"
+    },
+    {
+        "id": 3,
+        "namePl": "Pies"
+    },
+    {
+        "id": 4,
+        "namePl": "Ptak"
+    },
+    {
+        "id": 5,
+        "namePl": "Inne"
+    }
+]
