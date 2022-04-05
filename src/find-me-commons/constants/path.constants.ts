@@ -20,6 +20,6 @@ export class PathConstants {
     public static SEND_RESET_PASSWORD_EMAIL = "send-reset-password-email";
     public static RESET_PASSWORD = "reset-password";
     public static UPDATE_PASSWORD = "update-password";
-    public static LOCATION_BY_QUERY = "location-by-query";
-    public static LOCATION_BY_COORDINATES = "location-by-coordinates";
+    public static BY_QUERY = "by-query";
+    public static BY_COORDINATES = "by-coordinates";
 }

@@ -35,7 +35,7 @@ export class FindMeLocationController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Post(PathConstants.SEARCH + "/" + PathConstants.LOCATION_BY_QUERY)
+    @Post(PathConstants.SEARCH + "/" + PathConstants.BY_QUERY)
     public async searchByQuery(
         @Body() searchByQueryDto: FindMeLocationSearchByQueryDto
     ): Promise<FindMeLocationSearchByQueryResultDto[]> {
@@ -56,7 +56,7 @@ export class FindMeLocationController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Post(PathConstants.SEARCH + "/" + PathConstants.LOCATION_BY_COORDINATES)
+    @Post(PathConstants.SEARCH + "/" + PathConstants.BY_COORDINATES)
     public async searchByCoordinates(
         @Body() searchByCoordinatesDto: FindMeLocationSearchByCoordinatesDto
     ): Promise<FindMeLocationSearchByQueryResultDto> {
