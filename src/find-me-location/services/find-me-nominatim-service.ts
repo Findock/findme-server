@@ -40,6 +40,7 @@ export class FindMeNominatimService {
                 q: query,
                 country: this.defaultCountryQuery,
                 format: "jsonv2",
+                limit: 5,
             },
         }));
 

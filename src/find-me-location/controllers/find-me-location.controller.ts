@@ -25,7 +25,7 @@ export class FindMeLocationController {
         description: "As a query pass fragment of location name",
     })
     @ApiOkResponse({
-        description: "Returns array of matched location objects by query (max 10)",
+        description: "Returns array of matched location objects by query (max 5)",
         type: FindMeLocationSearchByQueryResultDto,
         isArray: true,
     })
@@ -47,7 +47,7 @@ export class FindMeLocationController {
         description: "Pass lot and lat coordinates",
     })
     @ApiOkResponse({
-        description: "Returns matched location object by coordinates (max 10)",
+        description: "Returns matched location object by coordinates",
         type: FindMeLocationSearchByQueryResultDto,
     })
     @ApiUnauthorizedResponse({
