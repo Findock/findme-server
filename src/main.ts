@@ -31,7 +31,7 @@ async function bootstrap(): Promise<void> {
 
     await app.listen(appListenPort);
 
-    figlet("FindMe Server", (err, data) => {
+    figlet("FindMe Server", (_err, data) => {
         const year = new Date().getFullYear();
         console.log(gradient.instagram.multiline(data), "v" + version);
         console.log(gradient.vice(" © " + year + " Findock \n "));
