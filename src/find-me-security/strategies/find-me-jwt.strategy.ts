@@ -26,6 +26,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const token = req.headers["authorization"];
         if (!await this.authService.validateToken(token)) throw new UnauthorizedException();
         await this.authService.bumpTokenLastUse(token);
-        return this.usersService.findOneById(payload.id);
+        const user = await this.usersService.findOneById(payload.id);
+        await this.usersService.bumpUserLastLogin(user);
+        return user;
     }
 }

@@ -56,6 +56,8 @@ export class FindMeAuthService {
             user: user,
         });
 
+        await this.usersService.bumpUserLastLogin(user);
+
         return {
             access_token: authToken,
             token_type: "Bearer",

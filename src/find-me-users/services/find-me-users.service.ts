@@ -77,7 +77,12 @@ export class FindMeUsersService {
 
     public async forceUpdateUserPassword(user: FindMeUser, newPassword: string): Promise<FindMeUser> {
         user.password = newPassword;
-        this.usersRepository.save(user);
+        await this.usersRepository.save(user);
         return user;
+    }
+
+    public async bumpUserLastLogin(user: FindMeUser): Promise<void> {
+        user.lastLogin = new Date();
+        await this.usersRepository.save(user);
     }
 }
