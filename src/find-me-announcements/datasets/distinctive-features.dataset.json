@@ -1,83 +1,110 @@
 [
     {
+        "id": 1,
         "namePl": "Ma chipa"
     },
     {
+        "id": 2,
         "namePl": "Kolor jednolity"
     },
     {
+        "id": 3,
         "namePl": "Oczy zielone"
     },
     {
+        "id": 4,
         "namePl": "Oczy niebieskie"
     },
     {
+        "id": 5,
         "namePl": "Oczy piwne"
     },
     {
+        "id": 6,
         "namePl": "Oczy czarne"
     },
     {
+        "id": 7,
         "namePl": "Oczy żółte"
     },
     {
+        "id": 8,
         "namePl": "Biały szare łaty na pysku"
     },
     {
+        "id": 9,
         "namePl": "Szary ogon"
     },
     {
+        "id": 10,
         "namePl": "Mały pysk"
     },
     {
+        "id": 11,
         "namePl": "Duży pysk"
     },
     {
+        "id": 12,
         "namePl": "Brak ucha"
     },
     {
+        "id": 13,
         "namePl": "Brak uszu"
     },
     {
+        "id": 14,
         "namePl": "Brak kończyny"
     },
     {
+        "id": 15,
         "namePl": "Bez kity"
     },
     {
+        "id": 16,
         "namePl": "Ma obroże"
     },
     {
+        "id": 17,
         "namePl": "Bez obroży"
     },
     {
+        "id": 18,
         "namePl": "Oczy nierówne"
     },
     {
+        "id": 19,
         "namePl": "Brak oka"
     },
     {
+        "id": 20,
         "namePl": "Ślepy"
     },
     {
+        "id": 21,
         "namePl": "Krótki ogon"
     },
     {
+        "id": 22,
         "namePl": "Brak ogona"
     },
     {
+        "id": 23,
         "namePl": "Dość gruby"
     },
     {
+        "id": 24,
         "namePl": "Dość chudy"
     },
     {
+        "id": 25,
         "namePl": "Pogryziony"
     },
     {
+        "id": 26,
         "namePl": "Dziury w sierści"
     },
     {
+        "id": 27,
         "namePl": "Krwawi"
     }
 ]

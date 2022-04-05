@@ -92,6 +92,19 @@
         "@typescript-eslint/semi": [
             "error"
         ],
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                "multiline": {
+                    "delimiter": "semi",
+                    "requireLast": true
+                },
+                "singleline": {
+                    "delimiter": "semi",
+                    "requireLast": false
+                }
+            }
+        ],
         "linebreak-style": "off",
         "object-curly-spacing": [
             "error",
@@ -136,6 +149,7 @@
             "consistent"
         ],
         "import/no-default-export": "error",
-        "unused-imports/no-unused-imports": "error"
+        "unused-imports/no-unused-imports": "error",
+        "@typescript-eslint/no-empty-function": "off"
     }
 }

@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     public async validate(req: Request, payload: {
-        id: number
+        id: number;
     }): Promise<FindMeUser> {
         const token = req.headers["authorization"];
         if (!await this.authService.validateToken(token)) throw new UnauthorizedException();
