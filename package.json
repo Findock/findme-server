@@ -54,7 +54,7 @@
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
         "swagger-ui-express": "^4.3.0",
-        "typeorm": "0.3.5"
+        "typeorm": "0.2"
     },
     "devDependencies": {
         "@nestjs/schematics": "^8.0.0",
