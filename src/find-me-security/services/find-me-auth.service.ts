@@ -86,17 +86,18 @@ export class FindMeAuthService {
     }
 
     public async getAuthTokensForUser(user: FindMeUser): Promise<FindMeAuthToken[]> {
-        const tokens = await this.authTokenRepository.find({
-            where: { user },
-            order: { lastUse: -1 },
-        });
+        const tokens = await this.authTokenRepository
+            .createQueryBuilder("find_me_auth_token")
+            .where("find_me_auth_token.userId = :userId", { userId: user.id })
+            .getMany();
+
         return tokens.map(t => {
             delete t.token;
             return t;
         });
     }
 
-    public async removeAuthTokenByIdForUser(tokenId: string, user: FindMeUser): Promise<void> {
+    public async removeAuthTokenByIdForUser(tokenId: number, user: FindMeUser): Promise<void> {
         const authToken = await this.authTokenRepository.findOne({
             where: { id: tokenId },
             relations: [ "user" ],

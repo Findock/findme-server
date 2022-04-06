@@ -1,6 +1,6 @@
 {
     "name": "find-me-server",
-    "version": "0.40.9",
+    "version": "0.40.10",
     "private": true,
     "author": "Findock",
     "scripts": {
@@ -27,7 +27,7 @@
         "@nestjs/axios": "^0.0.7",
         "@nestjs/cli": "^8.2.4",
         "@nestjs/common": "^8.0.0",
-        "@nestjs/config": "^1.1.6",
+        "@nestjs/config": "^2.0.0",
         "@nestjs/core": "^8.0.0",
         "@nestjs/jwt": "^8.0.0",
         "@nestjs/passport": "^8.2.1",
@@ -54,7 +54,7 @@
         "rimraf": "^3.0.2",
         "rxjs": "^7.2.0",
         "swagger-ui-express": "^4.3.0",
-        "typeorm": "0.2"
+        "typeorm": "0.3.5"
     },
     "devDependencies": {
         "@nestjs/schematics": "^8.0.0",
@@ -63,7 +63,7 @@
         "@types/faker": "5.5.9",
         "@types/figlet": "^1.5.4",
         "@types/gradient-string": "^1.1.2",
-        "@types/node": "^16.0.0",
+        "@types/node": "^17.0.23",
         "@types/passport-jwt": "^3.0.6",
         "@types/passport-local": "^1.0.34",
         "@types/supertest": "^2.0.11",

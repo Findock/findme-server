@@ -148,7 +148,7 @@ export class FindMeAuthController {
     @UseGuards(JwtAuthGuard)
     @Delete(PathConstants.AUTH_TOKEN + PathConstants.ID_PARAM)
     public async removeAuthToken(
-        @Param("id") id: string,
+        @Param("id") id: number,
         @CurrentUser() user: FindMeUser
     ): Promise<OkMessageDto> {
         if (!id || typeof id !== "string") throw new BadRequestException();
