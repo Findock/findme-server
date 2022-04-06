@@ -3,11 +3,9 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColum
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
-import { FindMeAnimalGenderEnum } from "@/find-me-announcements/enums/find-me-animal-gender.enum";
-import { FindMeAnnouncementTypeEnum } from "@/find-me-announcements/enums/find-me-announcement-type.enum";
 
 @Entity()
-export class FindEeAnnouncement {
+export class FindMeAnnouncement {
     @PrimaryGeneratedColumn()
     public id: number;
 
@@ -22,16 +20,10 @@ export class FindEeAnnouncement {
     @JoinTable()
     public coatColors: FindMeCoatColor[];
 
-    @Column({
-        enum: FindMeAnimalGenderEnum,
-        nullable: false,
-    })
+    @Column({ nullable: false })
     public gender: string;
 
-    @Column({
-        enum: FindMeAnnouncementTypeEnum,
-        nullable: false,
-    })
+    @Column({ nullable: false })
     public type: string;
 
     @Column({ nullable: false })
@@ -48,15 +40,15 @@ export class FindEeAnnouncement {
 
     @Column({
         type: "decimal",
-        scale: 8,
-        precision: 6,
+        precision: 8,
+        scale: 6,
     })
     public locationLat: number;
 
     @Column({
         type: "decimal",
-        scale: 9,
-        precision: 6,
+        precision: 9,
+        scale: 6,
     })
     public locationLon: number;
 }
