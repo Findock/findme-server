@@ -7,6 +7,7 @@ export class PathConstants {
     public static AUTH = "auth";
     public static DISTINCTIVE_FEATURES = "distinctive-feature";
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
+    public static COAT_COLORS = "coat-colors";
     public static AN = "distinctive-feature";
     public static ME = "me";
     public static LOCATION = "location";
