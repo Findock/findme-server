@@ -13,16 +13,17 @@ export class FindMeAnnouncement {
     @PrimaryGeneratedColumn()
     public id: number;
 
+    @ManyToOne(() => FindMeUser)
+    public creator: FindMeUser;
+
     @ManyToOne(() => FindMeAnnouncementCategory, { nullable: false })
     public category: FindMeAnnouncementCategory;
 
-    @ManyToMany(() => FindMeDistinctiveFeature)
-    @JoinTable()
-    public distinctiveFeatures: FindMeDistinctiveFeature[];
+    @Column({ nullable: false })
+    public title: string;
 
-    @ManyToMany(() => FindMeCoatColor)
-    @JoinTable()
-    public coatColors: FindMeCoatColor[];
+    @Column({ type: "text" })
+    public description: string;
 
     @Column({ nullable: false })
     public gender: FindMeAnimalGenderEnum;
@@ -36,11 +37,13 @@ export class FindMeAnnouncement {
     })
     public status: FindMeAnnouncementStatusEnum;
 
-    @Column({ nullable: false })
-    public title: string;
+    @ManyToMany(() => FindMeDistinctiveFeature)
+    @JoinTable()
+    public distinctiveFeatures: FindMeDistinctiveFeature[];
 
-    @Column({ type: "text" })
-    public description: string;
+    @ManyToMany(() => FindMeCoatColor)
+    @JoinTable()
+    public coatColors: FindMeCoatColor[];
 
     @Column({ nullable: false })
     public locationName: string;
@@ -61,9 +64,6 @@ export class FindMeAnnouncement {
         scale: 6,
     })
     public locationLon: number;
-
-    @ManyToOne(() => FindMeUser)
-    public creator: FindMeUser;
 
     @CreateDateColumn()
     public createDate: Date;
