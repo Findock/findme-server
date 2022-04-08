@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
+import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
 import { FindMeAnimalGenderEnum } from "@/find-me-announcements/enums/find-me-animal-gender.enum";
@@ -38,12 +39,16 @@ export class FindMeAnnouncement {
     public status: FindMeAnnouncementStatusEnum;
 
     @ManyToMany(() => FindMeDistinctiveFeature)
-    @JoinTable()
+    @JoinTable({ name: "find-me-bind-announcement-distinctive-features" })
     public distinctiveFeatures: FindMeDistinctiveFeature[];
 
     @ManyToMany(() => FindMeCoatColor)
-    @JoinTable()
+    @JoinTable({ name: "find-me-bind-announcement-coat-colors" })
     public coatColors: FindMeCoatColor[];
+
+    @ManyToMany(() => FindMeAnnouncementPhoto)
+    @JoinTable({ name: "find-me-bind-announcement-photos" })
+    public photos: FindMeAnnouncementPhoto[];
 
     @Column({ nullable: false })
     public locationName: string;
