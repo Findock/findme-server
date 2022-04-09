@@ -1,6 +1,6 @@
 {
     "name": "find-me-server",
-    "version": "0.40.11",
+    "version": "0.40.12",
     "private": true,
     "author": "Findock",
     "scripts": {
@@ -25,7 +25,7 @@
     "dependencies": {
         "@nestjs-modules/mailer": "^1.6.1",
         "@nestjs/axios": "^0.0.7",
-        "@nestjs/cli": "^8.2.4",
+        "@nestjs/cli": "^8.2.5",
         "@nestjs/common": "^8.0.0",
         "@nestjs/config": "^2.0.0",
         "@nestjs/core": "^8.0.0",
