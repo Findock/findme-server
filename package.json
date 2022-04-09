@@ -17,7 +17,7 @@
         "migration:revert": "typeorm migration:revert",
         "start": "nest start",
         "start:debug": "nest start --debug --watch",
-        "start:dev": "nest start --watch",
+        "start:dev": "yarn prebuild && nest start --watch",
         "start:prod": "node dist/src/main",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
