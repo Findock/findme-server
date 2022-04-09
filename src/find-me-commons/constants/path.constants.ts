@@ -1,13 +1,14 @@
 export class PathConstants {
     public static ID_PARAM = "/:id";
     public static SEARCH = "search";
+    public static UPLOAD = "upload";
 
     public static USERS = "users";
     public static OTHER = "other";
     public static AUTH = "auth";
     public static DISTINCTIVE_FEATURES = "distinctive-feature";
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
-    public static ANNOUNCEMENT_PHOTO = "announcement-photo";
+    public static ANNOUNCEMENT_PHOTOS = "announcement-photos";
     public static COAT_COLORS = "coat-colors";
     public static AN = "distinctive-feature";
     public static ME = "me";

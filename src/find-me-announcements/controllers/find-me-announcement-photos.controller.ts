@@ -18,9 +18,9 @@ import { FindMeStorageAnnouncementPhotoInterceptor }
     from "@/find-me-storage/interceptors/find-me-storage-announcement-photo.interceptor";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
-@ApiTags(ApiTagsConstants.ANNOUNCEMENT_PHOTO)
+@ApiTags(ApiTagsConstants.ANNOUNCEMENT_PHOTOS)
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller(PathConstants.ANNOUNCEMENT_PHOTO)
+@Controller(PathConstants.ANNOUNCEMENT_PHOTOS)
 export class FindMeAnnouncementPhotosController {
     public constructor(
         private announcementPhotosService: FindMeAnnouncementPhotosService
@@ -53,7 +53,7 @@ export class FindMeAnnouncementPhotosController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FindMeStorageAnnouncementPhotoInterceptor)
-    @Post()
+    @Post(PathConstants.UPLOAD)
     public async uploadAnnouncementPhoto(
         @UploadedFile() file: Express.Multer.File,
         @CurrentUser() user: FindMeUser
