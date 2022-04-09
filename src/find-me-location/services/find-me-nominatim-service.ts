@@ -64,6 +64,7 @@ export class FindMeNominatimService {
                 lon,
                 zoom: 10,
                 format: "jsonv2",
+                addressdetails: 0,
             },
         }));
 

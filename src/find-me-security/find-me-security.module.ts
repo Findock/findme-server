@@ -3,6 +3,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { envConfig } from "@/find-me-commons/configurations/env.config";
+import { FindMeLocationModule } from "@/find-me-location/find-me-location.module";
 import { FindMeAuthController } from "@/find-me-security/controllers/find-me-auth.controller";
 import { FindMeAuthToken } from "@/find-me-security/entities/find-me-auth-token.entity";
 import { FindMeResetPasswordToken } from "@/find-me-security/entities/find-me-reset-password-token.entity";
@@ -22,6 +23,7 @@ const secret = envConfig().encryptKey;
             ]),
             FindMeUsersModule,
             JwtModule.register({ secret }),
+            FindMeLocationModule,
         ],
         providers: [
             FindMeAuthService,
