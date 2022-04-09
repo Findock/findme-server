@@ -1,5 +1,11 @@
 import { ClassSerializerInterceptor, Controller, Post, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import {
+    ApiBearerAuth, ApiBody,
+    ApiConsumes, ApiOkResponse,
+    ApiOperation, ApiTags,
+    ApiUnauthorizedResponse,
+}
+    from "@nestjs/swagger";
 
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
 import { FindMeAnnouncementPhotosService } from "@/find-me-announcements/services/find-me-announcement-photos.service";
