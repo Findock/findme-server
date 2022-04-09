@@ -9,7 +9,7 @@ import { FindMeLocationSearchByQueryResultDto }
 import { FindMeLocationSearchByCoordinatesDto }
     from "@/find-me-location/dto/find-me-location-search-by-coordinates.dto";
 import { FindMeLocationSearchByQueryDto } from "@/find-me-location/dto/find-me-location-search-by-query.dto";
-import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim-service";
+import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim.service";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
 
 @ApiTags(ApiTagsConstants.LOCATION)
