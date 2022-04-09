@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
+import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim-service";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
 import { AuthLoginDto } from "@/find-me-security/dto/auth-login.dto";
 import { AuthTokenDto } from "@/find-me-security/dto/auth-token.dto";
@@ -27,7 +28,8 @@ export class FindMeAuthService {
         private usersService: FindMeUsersService,
         private jwtService: JwtService,
         private mailerService: FindMeMailerService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private nominatimService: FindMeNominatimService
     ) { }
 
     public async validateUser(email: string, password: string): Promise<FindMeUser> {
@@ -49,9 +51,22 @@ export class FindMeAuthService {
             t: Date.now(),
         });
 
+        let decodedLocationString = loginDto.localizationDescription;
+        if (loginDto.localizationDescription !== "unknown") {
+            const possibleCoordinates = loginDto.localizationDescription.split(" ");
+            if (possibleCoordinates.length === 2) {
+                const [
+                    lat,
+                    lon,
+                ] = possibleCoordinates;
+                const nominatimPossibleLocation = await this.nominatimService.searchLocationsByCoordinates(+lat, +lon);
+                decodedLocationString = nominatimPossibleLocation.name || "unknown";
+            }
+        }
+
         await this.authTokenRepository.insert({
             deviceName: loginDto.deviceName,
-            localizationDescription: loginDto.localizationDescription,
+            localizationDescription: decodedLocationString,
             token: "Bearer " + authToken,
             user: user,
         });

@@ -6,7 +6,8 @@ import { FindMeNominatimService } from "@/find-me-location/services/find-me-nomi
 
 @Module({
     imports: [ HttpModule ],
-    providers: [ FindMeNominatimService ],
     controllers: [ FindMeLocationController ],
+    providers: [ FindMeNominatimService ],
+    exports: [ FindMeNominatimService ],
 })
 export class FindMeLocationModule { }
