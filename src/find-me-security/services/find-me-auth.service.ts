@@ -6,7 +6,7 @@ import { Repository } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
-import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim-service";
+import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim.service";
 import { FindMeMailerService } from "@/find-me-mailer/services/find-me-mailer.service";
 import { AuthLoginDto } from "@/find-me-security/dto/auth-login.dto";
 import { AuthTokenDto } from "@/find-me-security/dto/auth-token.dto";

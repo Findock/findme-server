@@ -197,14 +197,13 @@ export class FindMeUsersMeController {
         type: UnauthorizedExceptionDto,
     })
     @ApiBearerAuth()
-    @Post(PathConstants.PROFILE_IMAGE)
-    @UseGuards(JwtAuthGuard)
     @UseInterceptors(FindMeStorageProfileImageInterceptor)
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.PROFILE_IMAGE)
     public async uploadNewProfileImageForUser(
         @UploadedFile() file: Express.Multer.File,
         @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
-        const imageUrl = `${file.path}`;
-        return this.usersProfileImagesService.updateUserProfileImage(user, imageUrl);
+        return this.usersProfileImagesService.updateUserProfileImage(user, file.path);
     }
 }
