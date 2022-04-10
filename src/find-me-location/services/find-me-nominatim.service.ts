@@ -3,8 +3,8 @@ import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common
 import { firstValueFrom } from "rxjs";
 
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
-import { FindMeLocationSearchByQueryResultDto }
-    from "@/find-me-location/dto/find-me-lication-search-by-query-result.dto";
+import { FindMeLocationSearchResultDto }
+    from "@/find-me-location/dto/find-me-lication-search-result.dto";
 
 @Injectable()
 export class FindMeNominatimService {
@@ -31,7 +31,7 @@ export class FindMeNominatimService {
         }
     }
 
-    public async searchLocationsByQuery(query: string): Promise<FindMeLocationSearchByQueryResultDto[]> {
+    public async searchLocationsByQuery(query: string): Promise<FindMeLocationSearchResultDto[]> {
         if (!this.isNominatimAvailable) {
             throw new InternalServerErrorException([ ErrorMessagesConstants.NOMINATIM_SERVICE_UNREACHABLE ]);
         }
@@ -41,11 +41,12 @@ export class FindMeNominatimService {
                 country: this.defaultCountryQuery,
                 format: "jsonv2",
                 limit: 5,
+                addressdetails: 1,
             },
         }));
 
         return res.data.map(i => ({
-            name: i.display_name,
+            address: i.address,
             lat: +i.lat,
             lon: +i.lon,
         }));
@@ -54,7 +55,7 @@ export class FindMeNominatimService {
     public async searchLocationsByCoordinates(
         lat: number,
         lon: number
-    ): Promise<FindMeLocationSearchByQueryResultDto> {
+    ): Promise<FindMeLocationSearchResultDto> {
         if (!this.isNominatimAvailable) {
             throw new InternalServerErrorException([ ErrorMessagesConstants.NOMINATIM_SERVICE_UNREACHABLE ]);
         }
@@ -64,12 +65,12 @@ export class FindMeNominatimService {
                 lon,
                 zoom: 10,
                 format: "jsonv2",
-                addressdetails: 0,
+                addressdetails: 1,
             },
         }));
 
         return {
-            name: res.data.display_name,
+            address: res.data.address,
             lat: +res.data.lat,
             lon: +res.data.lon,
         };

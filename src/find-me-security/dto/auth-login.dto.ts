@@ -26,7 +26,7 @@ export class AuthLoginDto {
 
     @ApiProperty({
         required: true,
-        example: "Cracow, Poland",
+        example: "50.0469432, 19.997153435836697",
     })
     @IsNotEmpty()
     public localizationDescription: string;

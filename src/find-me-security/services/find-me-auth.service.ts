@@ -60,7 +60,8 @@ export class FindMeAuthService {
                     lon,
                 ] = possibleCoordinates;
                 const nominatimPossibleLocation = await this.nominatimService.searchLocationsByCoordinates(+lat, +lon);
-                decodedLocationString = nominatimPossibleLocation.name || "unknown";
+                decodedLocationString = nominatimPossibleLocation.address.city
+                    + ", " + nominatimPossibleLocation.address.country || "unknown";
             }
         }
 

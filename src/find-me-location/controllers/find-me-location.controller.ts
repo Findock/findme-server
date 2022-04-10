@@ -4,8 +4,8 @@ import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedRes
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
-import { FindMeLocationSearchByQueryResultDto }
-    from "@/find-me-location/dto/find-me-lication-search-by-query-result.dto";
+import { FindMeLocationSearchResultDto }
+    from "@/find-me-location/dto/find-me-lication-search-result.dto";
 import { FindMeLocationSearchByCoordinatesDto }
     from "@/find-me-location/dto/find-me-location-search-by-coordinates.dto";
 import { FindMeLocationSearchByQueryDto } from "@/find-me-location/dto/find-me-location-search-by-query.dto";
@@ -26,7 +26,7 @@ export class FindMeLocationController {
     })
     @ApiOkResponse({
         description: "Returns array of matched location objects by query (max 5)",
-        type: FindMeLocationSearchByQueryResultDto,
+        type: FindMeLocationSearchResultDto,
         isArray: true,
     })
     @ApiUnauthorizedResponse({
@@ -38,7 +38,7 @@ export class FindMeLocationController {
     @Post(PathConstants.SEARCH + "/" + PathConstants.BY_QUERY)
     public async searchByQuery(
         @Body() searchByQueryDto: FindMeLocationSearchByQueryDto
-    ): Promise<FindMeLocationSearchByQueryResultDto[]> {
+    ): Promise<FindMeLocationSearchResultDto[]> {
         return this.nominatimService.searchLocationsByQuery(searchByQueryDto.query);
     }
 
@@ -48,7 +48,7 @@ export class FindMeLocationController {
     })
     @ApiOkResponse({
         description: "Returns matched location object by coordinates",
-        type: FindMeLocationSearchByQueryResultDto,
+        type: FindMeLocationSearchResultDto,
     })
     @ApiUnauthorizedResponse({
         description: "Invalid authorization token",
@@ -59,7 +59,7 @@ export class FindMeLocationController {
     @Post(PathConstants.SEARCH + "/" + PathConstants.BY_COORDINATES)
     public async searchByCoordinates(
         @Body() searchByCoordinatesDto: FindMeLocationSearchByCoordinatesDto
-    ): Promise<FindMeLocationSearchByQueryResultDto> {
+    ): Promise<FindMeLocationSearchResultDto> {
         return this.nominatimService.searchLocationsByCoordinates(
             searchByCoordinatesDto.lat,
             searchByCoordinatesDto.lon
