@@ -1,11 +1,16 @@
 import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
+import {
+    ApiBearerAuth, ApiNotFoundResponse,
+    ApiOkResponse, ApiOperation,
+    ApiTags, ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
+import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
@@ -27,10 +32,15 @@ export class FindMeAnnouncementsController {
         description: "Successfully created announcement",
         type: FindMeAnnouncement,
     })
+    @ApiNotFoundResponse({
+        description: "Form validation error array",
+        type: BadRequestExceptionDto,
+    })
     @ApiUnauthorizedResponse({
         description: "Bad authorization token",
         type: UnauthorizedExceptionDto,
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Post()
     public async createAnnouncement(
