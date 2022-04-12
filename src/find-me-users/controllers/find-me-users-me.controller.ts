@@ -204,6 +204,9 @@ export class FindMeUsersMeController {
         @UploadedFile() file: Express.Multer.File,
         @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
-        return this.usersProfileImagesService.updateUserProfileImage(user, file.path);
+        return this.usersProfileImagesService.updateUserProfileImage(
+            user,
+            file.path.replaceAll("\\", "/")
+        );
     }
 }
