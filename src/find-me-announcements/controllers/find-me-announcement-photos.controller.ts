@@ -58,6 +58,9 @@ export class FindMeAnnouncementPhotosController {
         @UploadedFile() file: Express.Multer.File,
         @CurrentUser() user: FindMeUser
     ): Promise<FindMeAnnouncementPhoto> {
-        return this.announcementPhotosService.createAnnouncementPhoto(user, file.path);
+        return this.announcementPhotosService.createAnnouncementPhoto(
+            user,
+            file.path.replaceAll("\\", "/")
+        );
     }
 }
