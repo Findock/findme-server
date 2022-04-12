@@ -79,6 +79,9 @@ export class FindMeLocationSearchResultDto {
     public address: NominatimAddressObject;
 
     @ApiProperty()
+    public name: string;
+
+    @ApiProperty()
     public lat: number;
 
     @ApiProperty()

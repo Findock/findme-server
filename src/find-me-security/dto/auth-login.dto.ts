@@ -19,14 +19,14 @@ export class AuthLoginDto {
 
     @ApiProperty({
         required: true,
-        example: "Apple iPhone 11 Pro Max",
+        example: "Apple iPhone 11",
     })
     @IsNotEmpty()
     public deviceName: string;
 
     @ApiProperty({
         required: true,
-        example: "50.0469432, 19.997153435836697",
+        example: "50.0469432 19.997153435836697",
     })
     @IsNotEmpty()
     public localizationDescription: string;
