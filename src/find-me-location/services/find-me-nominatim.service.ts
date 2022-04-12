@@ -20,6 +20,9 @@ export class FindMeNominatimService {
     }
 
     private parseNominatimName(nominatimAddress: NominatimAddressObject): string {
+        if (!nominatimAddress) {
+            return "unknown";
+        }
         if (nominatimAddress.village) {
             return `${nominatimAddress.village}, ${nominatimAddress.county}`;
         }
