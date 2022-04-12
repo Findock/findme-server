@@ -5,6 +5,7 @@ import { FindMeAnnouncementCategoriesController }
     from "@/find-me-announcements/controllers/find-me-announcement-categories.controller";
 import { FindMeAnnouncementPhotosController }
     from "@/find-me-announcements/controllers/find-me-announcement-photos.controller";
+import { FindMeAnnouncementsController } from "@/find-me-announcements/controllers/find-me-announcements.controller";
 import { FindMeCoatColorsController } from "@/find-me-announcements/controllers/find-me-coat-colors.controller";
 import { FindMeDistinctiveFeaturesController }
     from "@/find-me-announcements/controllers/find-me-distinctive-features.controller";
@@ -15,6 +16,7 @@ import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-
 import { FindMeAnnouncementCategoriesService }
     from "@/find-me-announcements/services/find-me-announcement-categories.service";
 import { FindMeAnnouncementPhotosService } from "@/find-me-announcements/services/find-me-announcement-photos.service";
+import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { FindMeCoatColorsService } from "@/find-me-announcements/services/find-me-coat-colors.service";
 import { FindMeDistinctiveFeaturesService }
     from "@/find-me-announcements/services/find-me-distinctive-features.service";
@@ -33,12 +35,14 @@ import { FindMeDistinctiveFeaturesService }
         FindMeAnnouncementCategoriesService,
         FindMeCoatColorsService,
         FindMeAnnouncementPhotosService,
+        FindMeAnnouncementsService,
     ],
     controllers: [
         FindMeDistinctiveFeaturesController,
         FindMeAnnouncementCategoriesController,
         FindMeCoatColorsController,
         FindMeAnnouncementPhotosController,
+        FindMeAnnouncementsController,
     ],
 })
 export class FindMeAnnouncementsModule { }
