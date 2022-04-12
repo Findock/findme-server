@@ -6,6 +6,7 @@ export class ApiTagsConstants {
     public static DISTINCTIVE_FEATURES = "distinctive-features";
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
     public static ANNOUNCEMENT_PHOTOS = "announcement-photos";
+    public static ANNOUNCEMENTS = "announcements";
     public static COAT_COLORS = "coat-colors";
     public static LOCATION = "location";
 }

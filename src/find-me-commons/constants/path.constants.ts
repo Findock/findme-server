@@ -9,11 +9,11 @@ export class PathConstants {
     public static DISTINCTIVE_FEATURES = "distinctive-feature";
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
     public static ANNOUNCEMENT_PHOTOS = "announcement-photos";
+    public static ANNOUNCEMENTS = "announcements";
     public static COAT_COLORS = "coat-colors";
     public static AN = "distinctive-feature";
     public static ME = "me";
     public static LOCATION = "location";
-
     public static LOGIN = "login";
     public static LOGOUT = "logout";
     public static VALIDATE_TOKEN = "validate-token";
