@@ -23,9 +23,9 @@ export class FindMeAnnouncementsService {
             .map(coatColorIds => ({ id: coatColorIds }));
         const photos = createDto.photosIds
             .map(photoIds => ({ id: photoIds }));
+        const category = { id: createDto.categoryId };
 
         const createdAnnouncement = this.announcementsRepository.create({
-            category: createDto.category,
             title: createDto.title,
             description: createDto.description,
             gender: createDto.gender,
@@ -34,6 +34,7 @@ export class FindMeAnnouncementsService {
             locationDescription: createDto.locationDescription,
             locationLat: createDto.locationLat,
             locationLon: createDto.locationLon,
+            category,
             distinctiveFeatures,
             coatColors,
             photos,

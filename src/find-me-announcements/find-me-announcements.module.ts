@@ -9,6 +9,7 @@ import { FindMeAnnouncementsController } from "@/find-me-announcements/controlle
 import { FindMeCoatColorsController } from "@/find-me-announcements/controllers/find-me-coat-colors.controller";
 import { FindMeDistinctiveFeaturesController }
     from "@/find-me-announcements/controllers/find-me-distinctive-features.controller";
+import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
@@ -28,6 +29,7 @@ import { FindMeDistinctiveFeaturesService }
             FindMeAnnouncementCategory,
             FindMeCoatColor,
             FindMeAnnouncementPhoto,
+            FindMeAnnouncement,
         ]),
     ],
     providers: [
