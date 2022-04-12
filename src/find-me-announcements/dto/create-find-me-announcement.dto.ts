@@ -21,35 +21,35 @@ export class CreateFindMeAnnouncementDto {
     @IsEnum(FindMeAnimalGenderEnum)
     public gender: FindMeAnimalGenderEnum;
 
-    @ApiProperty()
+    @ApiProperty({ enum: FindMeAnnouncementTypeEnum })
     @IsEnum(FindMeAnnouncementTypeEnum)
     public type: FindMeAnnouncementTypeEnum;
 
-    @ApiProperty()
+    @ApiProperty({ example: [ 1, 2 ] })
     @IsArray()
     public distinctiveFeaturesIds: number[];
 
-    @ApiProperty()
+    @ApiProperty({ example: [ 1, 2 ] })
     @IsArray()
     public coatColorsIds: number[];
 
-    @ApiProperty()
+    @ApiProperty({ example: [ 1, 2 ] })
     @IsArray()
     public photosIds: number[];
 
-    @ApiProperty()
+    @ApiProperty({ example: "Kraków, województwo małopolskie" })
     @IsString()
     public locationName: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: "W okolicach lasu krakowa" })
     @IsString()
     public locationDescription: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: 50.0469432 })
     @IsNumber()
     public locationLat: number;
 
-    @ApiProperty()
+    @ApiProperty({ example: 19.997153435836697 })
     @IsNumber()
     public locationLon: number;
 }
