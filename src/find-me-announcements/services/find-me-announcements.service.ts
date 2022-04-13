@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
+import { FindMeAnnouncementStatusEnum } from "@/find-me-announcements/enums/find-me-announcement-status.enum";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Injectable()
@@ -42,5 +43,34 @@ export class FindMeAnnouncementsService {
         });
         await this.announcementsRepository.save(createdAnnouncement);
         return createdAnnouncement;
+    }
+
+    public async getAllUserAnnouncements(user: FindMeUser): Promise<FindMeAnnouncement[]> {
+        return this.announcementsRepository.find({
+            where: { creator: user.id },
+            relations: [
+                "creator",
+                "distinctiveFeatures",
+                "category",
+                "coatColors",
+                "photos",
+            ],
+        });
+    }
+
+    public async getActiveUserAnnouncements(user: FindMeUser): Promise<FindMeAnnouncement[]> {
+        return this.announcementsRepository.find({
+            where: {
+                creator: user.id,
+                status: FindMeAnnouncementStatusEnum.ACTIVE,
+            },
+            relations: [
+                "creator",
+                "distinctiveFeatures",
+                "category",
+                "coatColors",
+                "photos",
+            ],
+        });
     }
 }

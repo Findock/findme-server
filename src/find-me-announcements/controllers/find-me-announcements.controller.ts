@@ -1,4 +1,9 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import {
+    Body, ClassSerializerInterceptor,
+    Controller, Get, Post,
+    Query,
+    UseGuards, UseInterceptors,
+} from "@nestjs/common";
 import {
     ApiBearerAuth, ApiNotFoundResponse,
     ApiOkResponse, ApiOperation,
@@ -51,5 +56,32 @@ export class FindMeAnnouncementsController {
             user,
             createDto
         );
+    }
+
+    @ApiOperation({
+        summary: "Get user created announcements",
+        description: "You can narrow result to only active announcements",
+    })
+    @ApiOkResponse({
+        description: "Returns array of user created announcement",
+        type: FindMeAnnouncement,
+        isArray: true,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get(PathConstants.MY)
+    public async searchUserAnnouncements(
+        @CurrentUser() user: FindMeUser,
+        @Query("active") active: "true" | "false"
+    ): Promise<FindMeAnnouncement[]> {
+        if (active === "true") {
+            return this.announcementsService.getActiveUserAnnouncements(user);
+        } else {
+            return this.announcementsService.getAllUserAnnouncements(user);
+        }
     }
 }
