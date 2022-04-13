@@ -76,9 +76,9 @@ export class FindMeAnnouncementsController {
     @Get(PathConstants.MY)
     public async searchUserAnnouncements(
         @CurrentUser() user: FindMeUser,
-        @Query("active") active: "true" | "false"
+        @Query("onlyActive") onlyActive: "true" | "false"
     ): Promise<FindMeAnnouncement[]> {
-        if (active === "true") {
+        if (onlyActive === "true") {
             return this.announcementsService.getActiveUserAnnouncements(user);
         } else {
             return this.announcementsService.getAllUserAnnouncements(user);
