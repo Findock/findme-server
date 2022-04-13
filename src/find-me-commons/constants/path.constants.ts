@@ -13,6 +13,7 @@ export class PathConstants {
     public static COAT_COLORS = "coat-colors";
     public static AN = "distinctive-feature";
     public static ME = "me";
+    public static MY = "my";
     public static LOCATION = "location";
     public static LOGIN = "login";
     public static LOGOUT = "logout";

@@ -38,7 +38,7 @@ export class FindMeNominatimService {
         return `${nominatimAddress.state}`;
     }
 
-    public async updateIsNominatimAvailableFlag(): Promise<void> {
+    private async updateIsNominatimAvailableFlag(): Promise<void> {
         if (this.isNominatimAvailable) return;
         try {
             const res = await firstValueFrom(this.httpService.get(this.nominatimRootUrl + "/status"));
@@ -52,6 +52,7 @@ export class FindMeNominatimService {
     }
 
     public async searchLocationsByQuery(query: string): Promise<FindMeLocationSearchResultDto[]> {
+        await this.updateIsNominatimAvailableFlag();
         if (!this.isNominatimAvailable) {
             throw new InternalServerErrorException([ ErrorMessagesConstants.NOMINATIM_SERVICE_UNREACHABLE ]);
         }
@@ -79,6 +80,7 @@ export class FindMeNominatimService {
         lat: number,
         lon: number
     ): Promise<FindMeLocationSearchResultDto> {
+        await this.updateIsNominatimAvailableFlag();
         if (!this.isNominatimAvailable) {
             throw new InternalServerErrorException([ ErrorMessagesConstants.NOMINATIM_SERVICE_UNREACHABLE ]);
         }
