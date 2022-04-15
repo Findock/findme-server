@@ -1,6 +1,6 @@
 {
     "name": "find-me-server",
-    "version": "0.40.16",
+    "version": "0.40.17",
     "private": true,
     "author": "Findock",
     "scripts": {
