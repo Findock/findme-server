@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementStatusEnum } from "@/find-me-announcements/enums/find-me-announcement-status.enum";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Injectable()
@@ -72,5 +73,20 @@ export class FindMeAnnouncementsService {
                 "photos",
             ],
         });
+    }
+
+    public async getOtherAnnouncementById(announcementId: number): Promise<FindMeAnnouncement> {
+        const announcement = await this.announcementsRepository.findOne({
+            where: { id: announcementId },
+            relations: [
+                "creator",
+                "distinctiveFeatures",
+                "category",
+                "coatColors",
+                "photos",
+            ],
+        });
+        if (!announcement) throw new BadRequestException(ErrorMessagesConstants.ANNOUNCEMENT_DOES_NOT_EXIST);
+        return announcement;
     }
 }

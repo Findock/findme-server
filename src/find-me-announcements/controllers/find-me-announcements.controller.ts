@@ -1,10 +1,11 @@
 import {
     Body, ClassSerializerInterceptor,
-    Controller, Get, Post,
+    Controller, Get, Param, Post,
     Query,
     UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import {
+    ApiBadRequestResponse,
     ApiBearerAuth, ApiNotFoundResponse,
     ApiOkResponse, ApiOperation,
     ApiTags, ApiUnauthorizedResponse,
@@ -83,5 +84,30 @@ export class FindMeAnnouncementsController {
         } else {
             return this.announcementsService.getAllUserAnnouncements(user);
         }
+    }
+
+    @ApiOperation({
+        summary: "Get other announcement data",
+        description: "Get other announcement data",
+    })
+    @ApiOkResponse({
+        description: "Returns other announcement object",
+        type: FindMeAnnouncement,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement does not exit",
+        type: BadRequestExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get(PathConstants.OTHER + PathConstants.ID_PARAM)
+    public async getOtherAnnouncement(
+        @Param("id") announcementId: number
+    ): Promise<FindMeAnnouncement> {
+        return this.announcementsService.getOtherAnnouncementById(announcementId);
     }
 }
