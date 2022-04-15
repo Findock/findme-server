@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsEnum, IsNumber, IsString, MaxLength } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsNumber, IsString, MaxLength } from "class-validator";
 
 import { FindMeAnimalGenderEnum } from "@/find-me-announcements/enums/find-me-animal-gender.enum";
 import { FindMeAnnouncementTypeEnum } from "@/find-me-announcements/enums/find-me-announcement-type.enum";
@@ -10,11 +10,13 @@ export class CreateFindMeAnnouncementDto {
 
     @ApiProperty({ example: "Zaginął piesek" })
     @IsString()
+    @IsNotEmpty()
     @MaxLength(255)
     public title: string;
 
     @ApiProperty({ example: "Zaginął piesek był bardzo fajny i super" })
     @IsString()
+    @IsNotEmpty()
     public description: string;
 
     @ApiProperty({ enum: FindMeAnimalGenderEnum })
@@ -31,14 +33,17 @@ export class CreateFindMeAnnouncementDto {
 
     @ApiProperty({ example: [ 1, 2 ] })
     @IsArray()
+    @ArrayNotEmpty()
     public coatColorsIds: number[];
 
     @ApiProperty({ example: [ 1, 2 ] })
     @IsArray()
+    @ArrayNotEmpty()
     public photosIds: number[];
 
     @ApiProperty({ example: "Kraków, województwo małopolskie" })
     @IsString()
+    @IsNotEmpty()
     public locationName: string;
 
     @ApiProperty({ example: "W okolicach lasu krakowa" })
