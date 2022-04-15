@@ -6,6 +6,8 @@ import { FindMeAnnouncementTypeEnum } from "@/find-me-announcements/enums/find-m
 
 export class CreateFindMeAnnouncementDto {
     @ApiProperty({ example: 1 })
+    @IsNumber()
+    @IsNotEmpty()
     public categoryId: number;
 
     @ApiProperty({ example: "Zaginął piesek" })
@@ -21,10 +23,12 @@ export class CreateFindMeAnnouncementDto {
 
     @ApiProperty({ enum: FindMeAnimalGenderEnum })
     @IsEnum(FindMeAnimalGenderEnum)
+    @IsNotEmpty()
     public gender: FindMeAnimalGenderEnum;
 
     @ApiProperty({ enum: FindMeAnnouncementTypeEnum })
     @IsEnum(FindMeAnnouncementTypeEnum)
+    @IsNotEmpty()
     public type: FindMeAnnouncementTypeEnum;
 
     @ApiProperty({ example: [ 1, 2 ] })
