@@ -3,6 +3,7 @@ export class PathConstants {
     public static SEARCH = "search";
     public static UPLOAD = "upload";
 
+    public static GET = "get";
     public static USERS = "users";
     public static OTHER = "other";
     public static AUTH = "auth";

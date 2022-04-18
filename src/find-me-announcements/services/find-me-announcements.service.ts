@@ -75,7 +75,7 @@ export class FindMeAnnouncementsService {
         });
     }
 
-    public async getOtherAnnouncementById(announcementId: number): Promise<FindMeAnnouncement> {
+    public async getAnnouncementById(announcementId: number): Promise<FindMeAnnouncement> {
         const announcement = await this.announcementsRepository.findOne({
             where: { id: announcementId },
             relations: [
@@ -88,5 +88,9 @@ export class FindMeAnnouncementsService {
         });
         if (!announcement) throw new BadRequestException(ErrorMessagesConstants.ANNOUNCEMENT_DOES_NOT_EXIST);
         return announcement;
+    }
+
+    public isUserCreatorOfAnnouncement(user: FindMeUser, announcement: FindMeAnnouncement): boolean {
+        return announcement.creator.id === user.id;
     }
 }
