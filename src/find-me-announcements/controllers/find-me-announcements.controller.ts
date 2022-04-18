@@ -12,6 +12,7 @@ import {
 } from "@nestjs/swagger";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
+import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
@@ -104,10 +105,16 @@ export class FindMeAnnouncementsController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(PathConstants.OTHER + PathConstants.ID_PARAM)
+    @Get(PathConstants.GET + PathConstants.ID_PARAM)
     public async getOtherAnnouncement(
-        @Param("id") announcementId: number
-    ): Promise<FindMeAnnouncement> {
-        return this.announcementsService.getOtherAnnouncementById(announcementId);
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser
+    ): Promise<GetFindMeAnnouncementDto> {
+        const announcement = await this.announcementsService.getAnnouncementById(announcementId);
+        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
+        return {
+            ...announcement,
+            isUserCreator,
+        };
     }
 }
