@@ -14,7 +14,6 @@ import {
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
-import { UpdateFindMeAnnouncementDto } from "@/find-me-announcements/dto/update-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
@@ -142,7 +141,7 @@ export class FindMeAnnouncementsController {
     public async updateAnnouncement(
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser,
-        @Body() updateDto: UpdateFindMeAnnouncementDto
+        @Body() updateDto: CreateFindMeAnnouncementDto
     ): Promise<FindMeAnnouncement> {
         return this.announcementsService.updateAnnouncementById(announcementId, user, updateDto);
     }

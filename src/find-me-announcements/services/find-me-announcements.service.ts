@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
-import { UpdateFindMeAnnouncementDto } from "@/find-me-announcements/dto/update-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
@@ -54,7 +53,7 @@ export class FindMeAnnouncementsService {
     public async updateAnnouncementById(
         announcementId: number,
         updatingUser: FindMeUser,
-        updateDto: UpdateFindMeAnnouncementDto
+        updateDto: CreateFindMeAnnouncementDto
     ): Promise<FindMeAnnouncement> {
         const announcement = await this.announcementsRepository.findOne({
             where: { id: announcementId },
