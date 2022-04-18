@@ -1,6 +1,7 @@
 import {
     Body, ClassSerializerInterceptor,
     Controller, Get, Param, Post,
+    Put,
     Query,
     UseGuards, UseInterceptors,
 } from "@nestjs/common";
@@ -88,12 +89,12 @@ export class FindMeAnnouncementsController {
     }
 
     @ApiOperation({
-        summary: "Get other announcement data",
-        description: "Get other announcement data",
+        summary: "Get one announcement by id",
+        description: "Get announcement data object with is user creator flag",
     })
     @ApiOkResponse({
-        description: "Returns other announcement object",
-        type: FindMeAnnouncement,
+        description: "Returns announcement object",
+        type: GetFindMeAnnouncementDto,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization token",
@@ -106,7 +107,7 @@ export class FindMeAnnouncementsController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get(PathConstants.GET + PathConstants.ID_PARAM)
-    public async getOtherAnnouncement(
+    public async getAnnouncement(
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser
     ): Promise<GetFindMeAnnouncementDto> {
@@ -116,5 +117,32 @@ export class FindMeAnnouncementsController {
             ...announcement,
             isUserCreator,
         };
+    }
+
+    @ApiOperation({
+        summary: "Update announcement by id",
+        description: "Update user created announcement",
+    })
+    @ApiOkResponse({
+        description: "Returns updated announcement object",
+        type: GetFindMeAnnouncementDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token / user is not authorized to edit this announcement",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement does not exit",
+        type: BadRequestExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(PathConstants.UPDATE + PathConstants.ID_PARAM)
+    public async updateAnnouncement(
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser,
+        @Body() updateDto: CreateFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement> {
+        return this.announcementsService.updateAnnouncementById(announcementId, user, updateDto);
     }
 }
