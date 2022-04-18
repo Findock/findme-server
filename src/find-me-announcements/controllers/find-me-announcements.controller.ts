@@ -1,6 +1,7 @@
 import {
     Body, ClassSerializerInterceptor,
     Controller, Get, Param, Post,
+    Put,
     Query,
     UseGuards, UseInterceptors,
 } from "@nestjs/common";
@@ -13,6 +14,7 @@ import {
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
+import { UpdateFindMeAnnouncementDto } from "@/find-me-announcements/dto/update-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
@@ -88,12 +90,12 @@ export class FindMeAnnouncementsController {
     }
 
     @ApiOperation({
-        summary: "Get other announcement data",
-        description: "Get other announcement data",
+        summary: "Get one announcement by id",
+        description: "Get announcement data object with is user creator flag",
     })
     @ApiOkResponse({
-        description: "Returns other announcement object",
-        type: FindMeAnnouncement,
+        description: "Returns announcement object",
+        type: GetFindMeAnnouncementDto,
     })
     @ApiUnauthorizedResponse({
         description: "Bad authorization token",
@@ -106,7 +108,7 @@ export class FindMeAnnouncementsController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get(PathConstants.GET + PathConstants.ID_PARAM)
-    public async getOtherAnnouncement(
+    public async getAnnouncement(
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser
     ): Promise<GetFindMeAnnouncementDto> {
@@ -116,5 +118,32 @@ export class FindMeAnnouncementsController {
             ...announcement,
             isUserCreator,
         };
+    }
+
+    @ApiOperation({
+        summary: "Update announcement by id",
+        description: "Update user created announcement",
+    })
+    @ApiOkResponse({
+        description: "Returns updated announcement object",
+        type: GetFindMeAnnouncementDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token / user is not authorized to edit this announcement",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement does not exit",
+        type: BadRequestExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(PathConstants.UPDATE + PathConstants.ID_PARAM)
+    public async updateAnnouncement(
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser,
+        @Body() updateDto: UpdateFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement> {
+        return this.announcementsService.updateAnnouncementById(announcementId, user, updateDto);
     }
 }
