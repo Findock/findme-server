@@ -85,6 +85,7 @@ export class FindMeAnnouncementsService {
         announcement.locationName = updateDto.locationName;
         announcement.locationDescription = updateDto.locationDescription;
         announcement.locationLat = updateDto.locationLat;
+        announcement.locationLon = updateDto.locationLon;
         announcement.category = category as FindMeAnnouncementCategory;
         announcement.distinctiveFeatures = distinctiveFeatures as FindMeDistinctiveFeature[];
         announcement.coatColors = coatColors as FindMeCoatColor[];
