@@ -2,6 +2,8 @@ export class PathConstants {
     public static ID_PARAM = "/:id";
     public static SEARCH = "search";
     public static UPLOAD = "upload";
+    public static ADD = "add";
+    public static REMOVE = "remove";
 
     public static GET = "get";
     public static UPDATE = "update";
@@ -12,6 +14,7 @@ export class PathConstants {
     public static ANNOUNCEMENT_CATEGORIES = "announcement-categories";
     public static ANNOUNCEMENT_PHOTOS = "announcement-photos";
     public static ANNOUNCEMENTS = "announcements";
+    public static FAVORITES = "favorites";
     public static COAT_COLORS = "coat-colors";
     public static AN = "distinctive-feature";
     public static ME = "me";
