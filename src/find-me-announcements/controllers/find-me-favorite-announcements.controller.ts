@@ -1,4 +1,8 @@
-import { ClassSerializerInterceptor, Controller, Delete, Param, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import {
+    ClassSerializerInterceptor,
+    Controller, Delete, Param, Post,
+    UseGuards, UseInterceptors,
+} from "@nestjs/common";
 import {
     ApiBadRequestResponse, ApiBearerAuth,
     ApiOkResponse, ApiOperation, ApiTags,
