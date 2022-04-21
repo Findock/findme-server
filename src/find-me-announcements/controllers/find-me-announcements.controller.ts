@@ -16,6 +16,8 @@ import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-
 import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
+import { FindMeFavoriteAnnouncementsService }
+    from "@/find-me-announcements/services/find-me-favorite-announcements.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
@@ -29,7 +31,8 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 @Controller(PathConstants.ANNOUNCEMENTS)
 export class FindMeAnnouncementsController {
     public constructor(
-        private announcementsService: FindMeAnnouncementsService
+        private announcementsService: FindMeAnnouncementsService,
+        private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService
     ) { }
 
     @ApiOperation({
@@ -113,9 +116,11 @@ export class FindMeAnnouncementsController {
     ): Promise<GetFindMeAnnouncementDto> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
         const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
+        const isInFavorites = await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user);
         return {
             ...announcement,
             isUserCreator,
+            isInFavorites,
         };
     }
 

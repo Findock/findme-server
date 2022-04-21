@@ -10,4 +10,6 @@ export class ErrorMessagesConstants {
     public static INVALID_OLD_PASSWORD = "Invalid old password";
     public static NOMINATIM_SERVICE_UNREACHABLE = "Nominatim service unreachable";
     public static ANNOUNCEMENT_DOES_NOT_EXIST = "Announcement does not exist";
+    public static ANNOUNCEMENT_IS_ALREADY_IN_FAVORITES = "Announcement is already in favorites";
+    public static ANNOUNCEMENT_IS_NOT_IN_FAVORITES = "Announcement is not in favorites";
 }

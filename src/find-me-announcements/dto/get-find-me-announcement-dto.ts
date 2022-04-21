@@ -5,4 +5,7 @@ import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-ann
 export class GetFindMeAnnouncementDto extends FindMeAnnouncement {
     @ApiProperty({ example: true })
     public isUserCreator: boolean;
+
+    @ApiProperty({ example: true })
+    public isInFavorites: boolean;
 }
