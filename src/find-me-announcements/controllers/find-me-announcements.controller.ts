@@ -83,12 +83,18 @@ export class FindMeAnnouncementsController {
     public async searchUserAnnouncements(
         @CurrentUser() user: FindMeUser,
         @Query("onlyActive") onlyActive: "true" | "false"
-    ): Promise<FindMeAnnouncement[]> {
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        let announcements: FindMeAnnouncement[] = [];
         if (onlyActive === "true") {
-            return this.announcementsService.getActiveUserAnnouncements(user);
+            announcements = await this.announcementsService.getActiveUserAnnouncements(user);
         } else {
-            return this.announcementsService.getAllUserAnnouncements(user);
+            announcements = await this.announcementsService.getAllUserAnnouncements(user);
         }
+        return Promise.all(announcements.map(async announcement => ({
+            ...announcement,
+            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
+            isUserCreator: true,
+        })));
     }
 
     @ApiOperation({
