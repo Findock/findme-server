@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Body, ClassSerializerInterceptor,
     Controller, Get, Param, Post,
     UseGuards, UseInterceptors,
@@ -14,6 +15,7 @@ import {
 } from "@nestjs/swagger";
 
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { ErrorExceptionDto } from "@/find-me-commons/dto/error-exception.dto";
@@ -76,6 +78,7 @@ export class FindMeUsersController {
         @CurrentUser() user: FindMeUser
     ): Promise<FindMeUser> {
         const otherUser = await this.usersService.findOneById(userId);
+        if (!otherUser) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
         if (otherUser.id !== user.id) {
             this.usersAccessLogService.logUserAccessByAnotherUser(
                 otherUser,
