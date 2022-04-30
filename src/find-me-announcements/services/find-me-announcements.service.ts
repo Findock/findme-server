@@ -3,12 +3,15 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
+import { SearchFindMeAnnouncementDto } from "@/find-me-announcements/dto/search-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
 import { FindMeAnnouncementStatusEnum } from "@/find-me-announcements/enums/find-me-announcement-status.enum";
+import { FindMeFavoriteAnnouncementsService }
+    from "@/find-me-announcements/services/find-me-favorite-announcements.service";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
@@ -16,7 +19,8 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 export class FindMeAnnouncementsService {
     public constructor(
         @InjectRepository(FindMeAnnouncement)
-        private announcementsRepository: Repository<FindMeAnnouncement>
+        private announcementsRepository: Repository<FindMeAnnouncement>,
+        private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService
     ) { }
 
     public async createAnnouncement(
@@ -109,20 +113,30 @@ export class FindMeAnnouncementsService {
         });
     }
 
-    public async getActiveUserAnnouncements(user: FindMeUser): Promise<FindMeAnnouncement[]> {
-        return this.announcementsRepository.find({
-            where: {
-                creator: user.id,
-                status: FindMeAnnouncementStatusEnum.ACTIVE,
-            },
-            relations: [
-                "creator",
-                "distinctiveFeatures",
-                "category",
-                "coatColors",
-                "photos",
-            ],
-        });
+    public async searchUserAnnouncements(
+        user: FindMeUser,
+        searchDto: SearchFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement[]> {
+        let announcements = await this.getAllUserAnnouncements(user);
+        const pageSize = searchDto.pageSize || 10;
+        const offset = searchDto.offset || 0;
+
+        if (searchDto.onlyActive) {
+            announcements = announcements.filter(a => a.status === FindMeAnnouncementStatusEnum.ACTIVE);
+        }
+
+        if (searchDto.onlyFavorites) {
+            announcements = (await Promise.all(announcements.map(async a => {
+                if (await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(a, user)) return a;
+                return null;
+            }))).filter(a => {
+                return a !== null;
+            });
+        }
+
+        announcements = announcements.filter((_, i) => i >= offset && i <= offset + pageSize);
+
+        return announcements;
     }
 
     public async getAnnouncementById(announcementId: number): Promise<FindMeAnnouncement> {

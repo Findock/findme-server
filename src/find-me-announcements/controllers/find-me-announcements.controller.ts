@@ -1,8 +1,8 @@
 import {
+    BadRequestException,
     Body, ClassSerializerInterceptor,
     Controller, Get, Param, Post,
     Put,
-    Query,
     UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import {
@@ -14,17 +14,20 @@ import {
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
+import { SearchFindMeAnnouncementDto } from "@/find-me-announcements/dto/search-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { FindMeFavoriteAnnouncementsService }
     from "@/find-me-announcements/services/find-me-favorite-announcements.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { BadRequestExceptionDto } from "@/find-me-commons/dto/bad-request-exception.dto";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
+import { FindMeUsersService } from "@/find-me-users/services/find-me-users.service";
 
 @ApiTags(ApiTagsConstants.ANNOUNCEMENTS)
 @UseInterceptors(ClassSerializerInterceptor)
@@ -32,7 +35,8 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 export class FindMeAnnouncementsController {
     public constructor(
         private announcementsService: FindMeAnnouncementsService,
-        private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService
+        private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService,
+        private usersService: FindMeUsersService
     ) { }
 
     @ApiOperation({
@@ -66,10 +70,10 @@ export class FindMeAnnouncementsController {
 
     @ApiOperation({
         summary: "Get user created announcements",
-        description: "You can narrow result to only active announcements",
+        description: "You can narrow result to using announcements filters",
     })
     @ApiOkResponse({
-        description: "Returns array of user created announcement",
+        description: "Returns array of user created announcements",
         type: FindMeAnnouncement,
         isArray: true,
     })
@@ -79,21 +83,51 @@ export class FindMeAnnouncementsController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @Get(PathConstants.MY)
+    @Post(PathConstants.MY + "/" + PathConstants.SEARCH)
     public async searchUserAnnouncements(
         @CurrentUser() user: FindMeUser,
-        @Query("onlyActive") onlyActive: "true" | "false"
+        @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
-        let announcements: FindMeAnnouncement[] = [];
-        if (onlyActive === "true") {
-            announcements = await this.announcementsService.getActiveUserAnnouncements(user);
-        } else {
-            announcements = await this.announcementsService.getAllUserAnnouncements(user);
-        }
+        const announcements = await this.announcementsService.searchUserAnnouncements(user, searchDto);
         return Promise.all(announcements.map(async announcement => ({
             ...announcement,
             isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
             isUserCreator: true,
+        })));
+    }
+
+    @ApiOperation({
+        summary: "Get other user created announcements by user ID",
+        description: "You can narrow result to using announcements filters",
+    })
+    @ApiOkResponse({
+        description: "Returns array of other user created announcements",
+        type: FindMeAnnouncement,
+        isArray: true,
+    })
+    @ApiBadRequestResponse({
+        description: "User with provided id does not exist",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.OTHER + PathConstants.ID_PARAM + "/" + PathConstants.SEARCH)
+    public async searchOtherUserAnnouncements(
+        @CurrentUser() user: FindMeUser,
+        @Param("id") id: number,
+        @Body() searchDto: SearchFindMeAnnouncementDto
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        const otherUser = await this.usersService.findOneById(id);
+        if (!otherUser) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
+        const announcements = await this.announcementsService.searchUserAnnouncements(otherUser, searchDto);
+        return Promise.all(announcements.map(async announcement => ({
+            ...announcement,
+            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
+            isUserCreator: announcement.creator.id === user.id,
         })));
     }
 
