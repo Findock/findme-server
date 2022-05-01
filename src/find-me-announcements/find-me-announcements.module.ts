@@ -21,6 +21,8 @@ import { FindMeFavoriteAnnouncement } from "@/find-me-announcements/entities/fin
 import { FindMeAnnouncementCategoriesService }
     from "@/find-me-announcements/services/find-me-announcement-categories.service";
 import { FindMeAnnouncementPhotosService } from "@/find-me-announcements/services/find-me-announcement-photos.service";
+import { FindMeAnnouncementViewLogsService }
+    from "@/find-me-announcements/services/find-me-announcement-view-logs.service";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { FindMeCoatColorsService } from "@/find-me-announcements/services/find-me-coat-colors.service";
 import { FindMeDistinctiveFeaturesService }
@@ -49,6 +51,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         FindMeAnnouncementPhotosService,
         FindMeAnnouncementsService,
         FindMeFavoriteAnnouncementsService,
+        FindMeAnnouncementViewLogsService,
     ],
     controllers: [
         FindMeDistinctiveFeaturesController,
