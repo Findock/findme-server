@@ -13,6 +13,7 @@ import { FindMeFavoriteAnnouncementsController }
     from "@/find-me-announcements/controllers/find-me-favorite-announcements.controller";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
+import { FindMeAnnouncementViewLog } from "@/find-me-announcements/entities/find-me-announcement-get-log.entity";
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
@@ -20,6 +21,8 @@ import { FindMeFavoriteAnnouncement } from "@/find-me-announcements/entities/fin
 import { FindMeAnnouncementCategoriesService }
     from "@/find-me-announcements/services/find-me-announcement-categories.service";
 import { FindMeAnnouncementPhotosService } from "@/find-me-announcements/services/find-me-announcement-photos.service";
+import { FindMeAnnouncementViewLogsService }
+    from "@/find-me-announcements/services/find-me-announcement-view-logs.service";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { FindMeCoatColorsService } from "@/find-me-announcements/services/find-me-coat-colors.service";
 import { FindMeDistinctiveFeaturesService }
@@ -37,6 +40,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
             FindMeAnnouncementPhoto,
             FindMeAnnouncement,
             FindMeFavoriteAnnouncement,
+            FindMeAnnouncementViewLog,
         ]),
         FindMeUsersModule,
     ],
@@ -47,6 +51,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         FindMeAnnouncementPhotosService,
         FindMeAnnouncementsService,
         FindMeFavoriteAnnouncementsService,
+        FindMeAnnouncementViewLogsService,
     ],
     controllers: [
         FindMeDistinctiveFeaturesController,
