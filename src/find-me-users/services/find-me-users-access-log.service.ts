@@ -16,9 +16,10 @@ export class FindMeUsersAccessLogService {
         accessedUser: FindMeUser,
         accessingUser: FindMeUser
     ): Promise<void> {
-        await this.usersAccessLogRepository.create({
+        const accessLog = this.usersAccessLogRepository.create({
             accessedUser: accessedUser,
             accessingUser: accessingUser,
         });
+        await this.usersAccessLogRepository.save(accessLog);
     }
 }
