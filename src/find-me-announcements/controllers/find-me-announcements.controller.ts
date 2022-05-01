@@ -190,4 +190,85 @@ export class FindMeAnnouncementsController {
     ): Promise<FindMeAnnouncement> {
         return this.announcementsService.updateAnnouncementById(announcementId, user, updateDto);
     }
+
+    @ApiOperation({
+        summary: "Resolve announcement by id",
+        description: "Resolve user created announcement",
+    })
+    @ApiOkResponse({
+        description: "Returns updated announcement object",
+        type: GetFindMeAnnouncementDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token / user is not authorized to resolve this announcement",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement does not exit",
+        type: BadRequestExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(PathConstants.STATUS + "/" + PathConstants.RESOLVE + PathConstants.ID_PARAM)
+    public async resolveAnnouncement(
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        const announcement = await this.announcementsService.getAnnouncementById(announcementId);
+        return this.announcementsService.resolveAnnouncement(announcement, user);
+    }
+
+    @ApiOperation({
+        summary: "Make active announcement by id",
+        description: "Make active user created announcement",
+    })
+    @ApiOkResponse({
+        description: "Returns updated announcement object",
+        type: GetFindMeAnnouncementDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token / user is not authorized to make active this announcement",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement does not exit",
+        type: BadRequestExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(PathConstants.STATUS + "/" + PathConstants.MAKE_ACTIVE + PathConstants.ID_PARAM)
+    public async makeActiveAnnouncement(
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        const announcement = await this.announcementsService.getAnnouncementById(announcementId);
+        return this.announcementsService.makeActiveAnnouncement(announcement, user);
+    }
+
+    @ApiOperation({
+        summary: "Archive announcement by id",
+        description: "Archive user created announcement",
+    })
+    @ApiOkResponse({
+        description: "Returns updated announcement object",
+        type: GetFindMeAnnouncementDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token / user is not authorized to archive this announcement",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement does not exit",
+        type: BadRequestExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(PathConstants.STATUS + "/" + PathConstants.ARCHIVE + PathConstants.ID_PARAM)
+    public async archiveAnnouncement(
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        const announcement = await this.announcementsService.getAnnouncementById(announcementId);
+        return this.announcementsService.archiveAnnouncement(announcement, user);
+    }
 }

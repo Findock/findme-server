@@ -31,4 +31,8 @@ export class PathConstants {
     public static UPDATE_PASSWORD = "update-password";
     public static BY_QUERY = "by-query";
     public static BY_COORDINATES = "by-coordinates";
+    public static STATUS = "status";
+    public static RESOLVE = "resolve";
+    public static MAKE_ACTIVE = "make-active";
+    public static ARCHIVE = "archive";
 }

@@ -157,4 +157,40 @@ export class FindMeAnnouncementsService {
     public isUserCreatorOfAnnouncement(user: FindMeUser, announcement: FindMeAnnouncement): boolean {
         return announcement.creator.id === user.id;
     }
+
+    public async resolveAnnouncement(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        if (announcement.creator.id !== user.id) {
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
+        }
+        announcement.status = FindMeAnnouncementStatusEnum.NOT_ACTIVE;
+        await this.announcementsRepository.save(announcement);
+        return announcement;
+    }
+
+    public async makeActiveAnnouncement(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        if (announcement.creator.id !== user.id) {
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
+        }
+        announcement.status = FindMeAnnouncementStatusEnum.ACTIVE;
+        await this.announcementsRepository.save(announcement);
+        return announcement;
+    }
+
+    public async archiveAnnouncement(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        if (announcement.creator.id !== user.id) {
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
+        }
+        announcement.status = FindMeAnnouncementStatusEnum.ARCHIVED;
+        await this.announcementsRepository.save(announcement);
+        return announcement;
+    }
 }
