@@ -16,6 +16,8 @@ import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-
 import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
 import { SearchFindMeAnnouncementDto } from "@/find-me-announcements/dto/search-find-me-announcement.dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
+import { FindMeAnnouncementViewLogsService }
+    from "@/find-me-announcements/services/find-me-announcement-view-logs.service";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { FindMeFavoriteAnnouncementsService }
     from "@/find-me-announcements/services/find-me-favorite-announcements.service";
@@ -36,7 +38,8 @@ export class FindMeAnnouncementsController {
     public constructor(
         private announcementsService: FindMeAnnouncementsService,
         private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService,
-        private usersService: FindMeUsersService
+        private usersService: FindMeUsersService,
+        private announcementViewLogsService: FindMeAnnouncementViewLogsService
     ) { }
 
     @ApiOperation({
@@ -157,6 +160,7 @@ export class FindMeAnnouncementsController {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
         const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
         const isInFavorites = await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user);
+        if (!isUserCreator) await this.announcementViewLogsService.logAnnouncementViewByUser(announcement, user);
         return {
             ...announcement,
             isUserCreator,
