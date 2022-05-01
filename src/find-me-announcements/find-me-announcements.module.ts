@@ -13,6 +13,7 @@ import { FindMeFavoriteAnnouncementsController }
     from "@/find-me-announcements/controllers/find-me-favorite-announcements.controller";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
+import { FindMeAnnouncementViewLog } from "@/find-me-announcements/entities/find-me-announcement-get-log.entity";
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
@@ -37,6 +38,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
             FindMeAnnouncementPhoto,
             FindMeAnnouncement,
             FindMeFavoriteAnnouncement,
+            FindMeAnnouncementViewLog,
         ]),
         FindMeUsersModule,
     ],
