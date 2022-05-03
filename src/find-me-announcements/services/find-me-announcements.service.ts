@@ -134,7 +134,7 @@ export class FindMeAnnouncementsService {
             });
         }
 
-        announcements = announcements.filter((_, i) => i >= offset && i <= offset + pageSize);
+        announcements = announcements.filter((_, i) => i >= offset && i < offset + pageSize);
 
         return announcements;
     }
