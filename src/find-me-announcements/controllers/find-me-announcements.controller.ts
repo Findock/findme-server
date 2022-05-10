@@ -72,8 +72,36 @@ export class FindMeAnnouncementsController {
     }
 
     @ApiOperation({
-        summary: "Get user created announcements",
-        description: "You can narrow result to using announcements filters",
+        summary: "Search announcements",
+        description: "You can narrow result using announcements filters",
+    })
+    @ApiOkResponse({
+        description: "Returns array of announcements",
+        type: FindMeAnnouncement,
+        isArray: true,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.SEARCH)
+    public async searchAnnouncements(
+        @CurrentUser() user: FindMeUser,
+        @Body() searchDto: SearchFindMeAnnouncementDto
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        const announcements = await this.announcementsService.searchAnnouncements(user, searchDto);
+        return Promise.all(announcements.map(async announcement => ({
+            ...announcement,
+            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
+            isUserCreator: this.announcementsService.isUserCreatorOfAnnouncement(user, announcement),
+        })));
+    }
+
+    @ApiOperation({
+        summary: "Search user created announcements",
+        description: "You can narrow result using announcements filters",
     })
     @ApiOkResponse({
         description: "Returns array of user created announcements",

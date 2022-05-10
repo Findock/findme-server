@@ -113,6 +113,18 @@ export class FindMeAnnouncementsService {
         });
     }
 
+    public async getAllAnnouncements(): Promise<FindMeAnnouncement[]> {
+        return this.announcementsRepository.find({
+            relations: [
+                "creator",
+                "distinctiveFeatures",
+                "category",
+                "coatColors",
+                "photos",
+            ],
+        });
+    }
+
     public async searchUserAnnouncements(
         user: FindMeUser,
         searchDto: SearchFindMeAnnouncementDto
@@ -128,6 +140,32 @@ export class FindMeAnnouncementsService {
         if (searchDto.onlyFavorites) {
             announcements = (await Promise.all(announcements.map(async a => {
                 if (await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(a, user)) return a;
+                return null;
+            }))).filter(a => {
+                return a !== null;
+            });
+        }
+
+        announcements = announcements.filter((_, i) => i >= offset && i < offset + pageSize);
+
+        return announcements;
+    }
+
+    public async searchAnnouncements(
+        searchingUser: FindMeUser,
+        searchDto: SearchFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement[]> {
+        let announcements = await this.getAllAnnouncements();
+        const pageSize = searchDto.pageSize || 10;
+        const offset = searchDto.offset || 0;
+
+        if (searchDto.onlyActive) {
+            announcements = announcements.filter(a => a.status === FindMeAnnouncementStatusEnum.ACTIVE);
+        }
+
+        if (searchDto.onlyFavorites) {
+            announcements = (await Promise.all(announcements.map(async a => {
+                if (await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(a, searchingUser)) return a;
                 return null;
             }))).filter(a => {
                 return a !== null;
