@@ -129,33 +129,23 @@ export class FindMeAnnouncementsService {
         user: FindMeUser,
         searchDto: SearchFindMeAnnouncementDto
     ): Promise<FindMeAnnouncement[]> {
-        let announcements = await this.getAllUserAnnouncements(user);
-        const pageSize = searchDto.pageSize || 10;
-        const offset = searchDto.offset || 0;
-
-        if (searchDto.onlyActive) {
-            announcements = announcements.filter(a => a.status === FindMeAnnouncementStatusEnum.ACTIVE);
-        }
-
-        if (searchDto.onlyFavorites) {
-            announcements = (await Promise.all(announcements.map(async a => {
-                if (await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(a, user)) return a;
-                return null;
-            }))).filter(a => {
-                return a !== null;
-            });
-        }
-
-        announcements = announcements.filter((_, i) => i >= offset && i < offset + pageSize);
-
-        return announcements;
+        const announcements = await this.getAllUserAnnouncements(user);
+        return this.narrowResultByFilters(announcements, user, searchDto);
     }
 
     public async searchAnnouncements(
         searchingUser: FindMeUser,
         searchDto: SearchFindMeAnnouncementDto
     ): Promise<FindMeAnnouncement[]> {
-        let announcements = await this.getAllAnnouncements();
+        const announcements = await this.getAllAnnouncements();
+        return this.narrowResultByFilters(announcements, searchingUser, searchDto);
+    }
+
+    public async narrowResultByFilters(
+        announcements: FindMeAnnouncement[],
+        searchingUser: FindMeUser,
+        searchDto: SearchFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement[]> {
         const pageSize = searchDto.pageSize || 10;
         const offset = searchDto.offset || 0;
 
@@ -170,6 +160,31 @@ export class FindMeAnnouncementsService {
             }))).filter(a => {
                 return a !== null;
             });
+        }
+
+        if (searchDto.categoryId) {
+            announcements = announcements.filter(announcement => announcement.category.id === searchDto.categoryId);
+        }
+
+        if (searchDto.distinctiveFeaturesIds && searchDto.distinctiveFeaturesIds.length > 0) {
+            announcements = announcements
+                .filter(announcement =>
+                    announcement.distinctiveFeatures.length >= searchDto.distinctiveFeaturesIds.length &&
+                    searchDto.distinctiveFeaturesIds
+                        .every(distinctiveFeaturesId => announcement.distinctiveFeatures
+                            .map(distinctiveFeature => distinctiveFeature.id).includes(distinctiveFeaturesId)));
+        }
+
+        if (searchDto.type) {
+            announcements = announcements.filter(announcement => announcement.type === searchDto.type);
+        }
+
+        if (searchDto.coatColorsIds && searchDto.coatColorsIds.length > 0) {
+            announcements = announcements
+                .filter(announcement => announcement.coatColors.length >= searchDto.coatColorsIds.length &&
+                    searchDto.coatColorsIds
+                        .every(coatColorId => announcement.coatColors
+                            .map(coatColor => coatColor.id).includes(coatColorId)));
         }
 
         announcements = announcements.filter((_, i) => i >= offset && i < offset + pageSize);
