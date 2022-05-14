@@ -13,4 +13,5 @@ export class ErrorMessagesConstants {
     public static ANNOUNCEMENT_IS_ALREADY_IN_FAVORITES = "Announcement is already in favorites";
     public static ANNOUNCEMENT_IS_NOT_IN_FAVORITES = "Announcement is not in favorites";
     public static USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION = "User is not authorized to do this action";
+    public static PASSWORD_CAN_NOT_BE_SAME_AS_OLD_PASSWORD = "Password can not be same as old password";
 }
