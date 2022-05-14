@@ -70,6 +70,9 @@ export class FindMeUsersService {
         if (fullUser.password !== this.securityEncryptionService.encryptValue(oldPassword)) {
             throw new BadRequestException([ ErrorMessagesConstants.INVALID_OLD_PASSWORD ]);
         }
+        if (fullUser.password === this.securityEncryptionService.encryptValue(newPassword)) {
+            throw new BadRequestException([ ErrorMessagesConstants.PASSWORD_CAN_NOT_BE_SAME_AS_OLD_PASSWORD ]);
+        }
         fullUser.password = this.securityEncryptionService.encryptValue(newPassword);
         await this.usersRepository.save(fullUser);
         return fullUser;

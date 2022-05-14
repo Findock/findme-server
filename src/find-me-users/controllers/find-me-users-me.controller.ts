@@ -150,7 +150,7 @@ export class FindMeUsersMeController {
         type: FindMeUser,
     })
     @ApiBadRequestResponse({
-        description: "Invalid old password parameter or form validation errors",
+        description: "Invalid old password parameter or same password as old one, or form validation errors",
         type: BadRequestExceptionDto,
     })
     @ApiUnauthorizedResponse({
