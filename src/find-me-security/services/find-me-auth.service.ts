@@ -110,7 +110,7 @@ export class FindMeAuthService {
             .where("find_me_auth_token.userId = :userId", { userId: user.id })
             .getMany();
 
-        return tokens.map(t => {
+        return tokens.sort((a, b) => b.id - a.id).map(t => {
             delete t.token;
             return t;
         });
