@@ -162,8 +162,9 @@ export class FindMeAnnouncementsService {
             });
         }
 
-        if (searchDto.categoryId) {
-            announcements = announcements.filter(announcement => announcement.category.id === searchDto.categoryId);
+        if (searchDto.categoryIds) {
+            announcements = announcements
+                .filter(announcement => searchDto.categoryIds.includes(announcement.category.id));
         }
 
         if (searchDto.distinctiveFeaturesIds && searchDto.distinctiveFeaturesIds.length > 0) {
@@ -175,8 +176,14 @@ export class FindMeAnnouncementsService {
                             .map(distinctiveFeature => distinctiveFeature.id).includes(distinctiveFeaturesId)));
         }
 
-        if (searchDto.type) {
-            announcements = announcements.filter(announcement => announcement.type === searchDto.type);
+        if (searchDto.types) {
+            announcements = announcements
+                .filter(announcement => searchDto.types.includes(announcement.type));
+        }
+
+        if (searchDto.genders) {
+            announcements = announcements
+                .filter(announcement => searchDto.genders.includes(announcement.gender));
         }
 
         if (searchDto.coatColorsIds && searchDto.coatColorsIds.length > 0) {
