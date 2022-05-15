@@ -10,6 +10,8 @@ import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-m
 import { FindMeCoatColor } from "@/find-me-announcements/entities/find-me-coat-color.entity";
 import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-me-distinctive-feature.entity";
 import { FindMeAnnouncementStatusEnum } from "@/find-me-announcements/enums/find-me-announcement-status.enum";
+import { FindMeAnnouncementsSortingModeEnum }
+    from "@/find-me-announcements/enums/find-me-announcements-sorting-mode.enum";
 import { FindMeFavoriteAnnouncementsService }
     from "@/find-me-announcements/services/find-me-favorite-announcements.service";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
@@ -193,6 +195,16 @@ export class FindMeAnnouncementsService {
                         .every(coatColorId => announcement.coatColors
                             .map(coatColor => coatColor.id).includes(coatColorId)));
         }
+
+        announcements = announcements.sort((a, b) => {
+            switch (searchDto.sortingMode) {
+                case FindMeAnnouncementsSortingModeEnum.BY_OLDEST:
+                    return a.createDate.getTime() - b.createDate.getTime();
+                case FindMeAnnouncementsSortingModeEnum.BY_NEWEST:
+                default:
+                    return b.createDate.getTime() - a.createDate.getTime();
+            }
+        });
 
         announcements = announcements.filter((_, i) => i >= offset && i < offset + pageSize);
 
