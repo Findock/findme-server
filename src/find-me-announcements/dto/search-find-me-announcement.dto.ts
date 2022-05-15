@@ -3,6 +3,8 @@ import { IsArray, IsBoolean, IsEnum, IsOptional } from "class-validator";
 
 import { FindMeAnimalGenderEnum } from "@/find-me-announcements/enums/find-me-animal-gender.enum";
 import { FindMeAnnouncementTypeEnum } from "@/find-me-announcements/enums/find-me-announcement-type.enum";
+import { FindMeAnnouncementsSortingModeEnum }
+    from "@/find-me-announcements/enums/find-me-announcements-sorting-mode.enum";
 import { OffsetPaginationDto } from "@/find-me-commons/dto/offset-pagination.dto";
 
 export class SearchFindMeAnnouncementDto extends OffsetPaginationDto {
@@ -38,4 +40,9 @@ export class SearchFindMeAnnouncementDto extends OffsetPaginationDto {
     @IsArray()
     @IsOptional()
     public coatColorsIds?: number[];
+
+    @ApiProperty({ example: FindMeAnnouncementsSortingModeEnum.BY_NEWEST })
+    @IsEnum(FindMeAnnouncementsSortingModeEnum)
+    @IsOptional()
+    public sortingMode?: FindMeAnnouncementsSortingModeEnum;
 }
