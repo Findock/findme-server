@@ -96,6 +96,7 @@ export class FindMeAnnouncementsController {
             ...announcement,
             isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
             isUserCreator: this.announcementsService.isUserCreatorOfAnnouncement(user, announcement),
+            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
         })));
     }
 
@@ -124,6 +125,7 @@ export class FindMeAnnouncementsController {
             ...announcement,
             isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
             isUserCreator: true,
+            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
         })));
     }
 
@@ -159,6 +161,7 @@ export class FindMeAnnouncementsController {
             ...announcement,
             isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
             isUserCreator: announcement.creator.id === user.id,
+            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
         })));
     }
 
@@ -188,11 +191,13 @@ export class FindMeAnnouncementsController {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
         const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
         const isInFavorites = await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user);
+        const viewsAmount = await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement);
         if (!isUserCreator) await this.announcementViewLogsService.logAnnouncementViewByUser(announcement, user);
         return {
             ...announcement,
             isUserCreator,
             isInFavorites,
+            viewsAmount,
         };
     }
 
