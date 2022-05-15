@@ -8,4 +8,7 @@ export class GetFindMeAnnouncementDto extends FindMeAnnouncement {
 
     @ApiProperty({ example: true })
     public isInFavorites: boolean;
+
+    @ApiProperty({ example: 1 })
+    public viewsAmount: number;
 }

@@ -20,4 +20,9 @@ export class FindMeAnnouncementViewLogsService {
         });
         await this.announcementViewLogsRepository.save(viewLog);
     }
+
+    public async getViewLogsAmountForAnnouncements(announcement: FindMeAnnouncement): Promise<number> {
+        return (await this.announcementViewLogsRepository.find({ where: { viewedAnnouncement: announcement.id } }))
+            .length;
+    }
 }
