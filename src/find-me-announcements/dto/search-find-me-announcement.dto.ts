@@ -54,5 +54,5 @@ export class SearchFindMeAnnouncementDto extends OffsetPaginationDto {
     @ApiProperty({ example: "Piesek" })
     @IsString()
     @IsOptional()
-    public globalSearchQuery?: string;
+    public textQuery?: string;
 }

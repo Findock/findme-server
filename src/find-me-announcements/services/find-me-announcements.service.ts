@@ -166,6 +166,13 @@ export class FindMeAnnouncementsService {
             });
         }
 
+        if (searchDto.textQuery) {
+            const textQuery = searchDto.textQuery.toLowerCase();
+            announcements = announcements.filter(announcement =>
+                announcement.title.toLowerCase().includes(textQuery) ||
+                announcement.description.toLowerCase().includes(textQuery));
+        }
+
         if (searchDto.categoriesIds && searchDto.categoriesIds.length > 0) {
             announcements = announcements
                 .filter(announcement => searchDto.categoriesIds.includes(announcement.category.id));
