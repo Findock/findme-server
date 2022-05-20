@@ -217,7 +217,7 @@ export class FindMeAnnouncementsService {
                     lat: bestLat,
                     lon: bestLon,
                 } = bestLocation;
-                const locationThreshold = 0.1;
+                const locationThreshold = (searchDto.locationThreshold || 15) * 0.01;
 
                 announcements = announcements.filter(announcement =>
                     announcement.locationLat <= bestLat + locationThreshold &&
