@@ -15,6 +15,7 @@ import { FindMeAnnouncementsSortingModeEnum }
 import { FindMeFavoriteAnnouncementsService }
     from "@/find-me-announcements/services/find-me-favorite-announcements.service";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
+import { FindMeNominatimService } from "@/find-me-location/services/find-me-nominatim.service";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Injectable()
@@ -22,7 +23,8 @@ export class FindMeAnnouncementsService {
     public constructor(
         @InjectRepository(FindMeAnnouncement)
         private announcementsRepository: Repository<FindMeAnnouncement>,
-        private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService
+        private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService,
+        private nominatimService: FindMeNominatimService
     ) { }
 
     public async createAnnouncement(
@@ -164,6 +166,13 @@ export class FindMeAnnouncementsService {
             });
         }
 
+        if (searchDto.textQuery) {
+            const textQuery = searchDto.textQuery.toLowerCase();
+            announcements = announcements.filter(announcement =>
+                announcement.title.toLowerCase().includes(textQuery) ||
+                announcement.description.toLowerCase().includes(textQuery));
+        }
+
         if (searchDto.categoriesIds && searchDto.categoriesIds.length > 0) {
             announcements = announcements
                 .filter(announcement => searchDto.categoriesIds.includes(announcement.category.id));
@@ -194,6 +203,28 @@ export class FindMeAnnouncementsService {
                     searchDto.coatColorsIds
                         .every(coatColorId => announcement.coatColors
                             .map(coatColor => coatColor.id).includes(coatColorId)));
+        }
+
+        if (searchDto.locationQuery) {
+            const possibleLocations = await this.nominatimService.searchLocationsByQuery(searchDto.locationQuery);
+            if (possibleLocations.length === 0) {
+                announcements = [];
+            } else {
+                const [ bestLocation ] = possibleLocations;
+                console.log(bestLocation);
+
+                const {
+                    lat: bestLat,
+                    lon: bestLon,
+                } = bestLocation;
+                const locationThreshold = 0.1;
+
+                announcements = announcements.filter(announcement =>
+                    announcement.locationLat <= bestLat + locationThreshold &&
+                    announcement.locationLat >= bestLat - locationThreshold &&
+                    announcement.locationLon <= bestLon + locationThreshold &&
+                    announcement.locationLon >= bestLon - locationThreshold);
+            }
         }
 
         announcements = announcements.sort((a, b) => {
