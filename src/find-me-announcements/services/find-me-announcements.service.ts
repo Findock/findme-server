@@ -12,6 +12,8 @@ import { FindMeDistinctiveFeature } from "@/find-me-announcements/entities/find-
 import { FindMeAnnouncementStatusEnum } from "@/find-me-announcements/enums/find-me-announcement-status.enum";
 import { FindMeAnnouncementsSortingModeEnum }
     from "@/find-me-announcements/enums/find-me-announcements-sorting-mode.enum";
+import { FindMeAnnouncementViewLogsService }
+    from "@/find-me-announcements/services/find-me-announcement-view-logs.service";
 import { FindMeFavoriteAnnouncementsService }
     from "@/find-me-announcements/services/find-me-favorite-announcements.service";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
@@ -24,6 +26,7 @@ export class FindMeAnnouncementsService {
         @InjectRepository(FindMeAnnouncement)
         private announcementsRepository: Repository<FindMeAnnouncement>,
         private favoriteAnnouncementsService: FindMeFavoriteAnnouncementsService,
+        private announcementViewLogsService: FindMeAnnouncementViewLogsService,
         private nominatimService: FindMeNominatimService
     ) { }
 
@@ -117,6 +120,13 @@ export class FindMeAnnouncementsService {
         });
     }
 
+    public async getUserLastViewedAnnouncements(user: FindMeUser): Promise<FindMeAnnouncement[]> {
+        const userViewLogs = await this.announcementViewLogsService.getUserAnnouncementsViewLogs(user);
+        const viewedAnnouncements = userViewLogs.map(viewLog => viewLog.viewedAnnouncement).reverse();
+        return viewedAnnouncements.filter((announcement, index) =>
+            viewedAnnouncements.map(a => a.id).indexOf(announcement.id) === index);
+    }
+
     public async getAllAnnouncements(): Promise<FindMeAnnouncement[]> {
         return this.announcementsRepository.find({
             relations: [
@@ -134,6 +144,14 @@ export class FindMeAnnouncementsService {
         searchDto: SearchFindMeAnnouncementDto
     ): Promise<FindMeAnnouncement[]> {
         const announcements = await this.getAllUserAnnouncements(user);
+        return this.narrowResultByFilters(announcements, user, searchDto);
+    }
+
+    public async searchLastViewedAnnouncements(
+        user: FindMeUser,
+        searchDto: SearchFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement[]> {
+        const announcements = await this.getUserLastViewedAnnouncements(user);
         return this.narrowResultByFilters(announcements, user, searchDto);
     }
 

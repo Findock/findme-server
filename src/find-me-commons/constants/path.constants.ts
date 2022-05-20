@@ -19,6 +19,7 @@ export class PathConstants {
     public static AN = "distinctive-feature";
     public static ME = "me";
     public static MY = "my";
+    public static LAST_VIEWED = "last-viewed";
     public static LOCATION = "location";
     public static LOGIN = "login";
     public static LOGOUT = "logout";
