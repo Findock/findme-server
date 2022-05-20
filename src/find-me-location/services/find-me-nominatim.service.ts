@@ -24,18 +24,18 @@ export class FindMeNominatimService {
             return "unknown";
         }
         if (nominatimAddress.village) {
-            return `${nominatimAddress.village}, ${nominatimAddress.county}`;
+            return `${nominatimAddress.village || ""}, ${nominatimAddress.county || ""}`;
         }
         if (nominatimAddress.suburb) {
-            return `${nominatimAddress.suburb}, ${nominatimAddress.county}`;
+            return `${nominatimAddress.suburb || ""}, ${nominatimAddress.county || ""}`;
         }
         if (nominatimAddress.city) {
-            return `${nominatimAddress.city}, ${nominatimAddress.state}`;
+            return `${nominatimAddress.city || ""}, ${nominatimAddress.state || ""}`;
         }
         if (nominatimAddress.municipality) {
-            return `${nominatimAddress.municipality}, ${nominatimAddress.state}`;
+            return `${nominatimAddress.municipality || ""}, ${nominatimAddress.state || ""}`;
         }
-        return `${nominatimAddress.state}`;
+        return `${nominatimAddress.state || "unknown"}`;
     }
 
     private async updateIsNominatimAvailableFlag(): Promise<void> {

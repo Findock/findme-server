@@ -29,6 +29,7 @@ import { FindMeDistinctiveFeaturesService }
     from "@/find-me-announcements/services/find-me-distinctive-features.service";
 import { FindMeFavoriteAnnouncementsService }
     from "@/find-me-announcements/services/find-me-favorite-announcements.service";
+import { FindMeLocationModule } from "@/find-me-location/find-me-location.module";
 import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
 
 @Module({
@@ -43,6 +44,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
             FindMeAnnouncementViewLog,
         ]),
         FindMeUsersModule,
+        FindMeLocationModule,
     ],
     providers: [
         FindMeDistinctiveFeaturesService,
