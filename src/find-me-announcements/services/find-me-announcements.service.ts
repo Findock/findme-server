@@ -204,6 +204,8 @@ export class FindMeAnnouncementsService {
                 announcements = [];
             } else {
                 const [ bestLocation ] = possibleLocations;
+                console.log(bestLocation);
+
                 const {
                     lat: bestLat,
                     lon: bestLon,
@@ -211,10 +213,10 @@ export class FindMeAnnouncementsService {
                 const locationThreshold = 0.1;
 
                 announcements = announcements.filter(announcement =>
-                    announcement.locationLat < bestLat + locationThreshold &&
-                    announcement.locationLat > bestLat - locationThreshold &&
-                    announcement.locationLon < bestLon + locationThreshold &&
-                    announcement.locationLon > bestLon + locationThreshold);
+                    announcement.locationLat <= bestLat + locationThreshold &&
+                    announcement.locationLat >= bestLat - locationThreshold &&
+                    announcement.locationLon <= bestLon + locationThreshold &&
+                    announcement.locationLon >= bestLon - locationThreshold);
             }
         }
 
