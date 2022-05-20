@@ -25,4 +25,14 @@ export class FindMeAnnouncementViewLogsService {
         return (await this.announcementViewLogsRepository.find({ where: { viewedAnnouncement: announcement.id } }))
             .length;
     }
+
+    public async getUserAnnouncementsViewLogs(user: FindMeUser): Promise<FindMeAnnouncementViewLog[]> {
+        return this.announcementViewLogsRepository.find({
+            where: { viewingUser: user.id },
+            relations: [
+                "viewingUser",
+                "viewedAnnouncement",
+            ],
+        });
+    }
 }

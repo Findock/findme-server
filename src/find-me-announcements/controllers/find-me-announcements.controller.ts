@@ -130,6 +130,35 @@ export class FindMeAnnouncementsController {
     }
 
     @ApiOperation({
+        summary: "Search user last viewed announcements",
+        description: "You can narrow result using announcements filters",
+    })
+    @ApiOkResponse({
+        description: "Returns array of user last viewed announcements",
+        type: FindMeAnnouncement,
+        isArray: true,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.LAST_VIEWED + "/" + PathConstants.SEARCH)
+    public async searchLastViewedAnnouncements(
+        @CurrentUser() user: FindMeUser,
+        @Body() searchDto: SearchFindMeAnnouncementDto
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        const announcements = await this.announcementsService.searchLastViewedAnnouncements(user, searchDto);
+        return Promise.all(announcements.map(async announcement => ({
+            ...announcement,
+            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
+            isUserCreator: true,
+            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
+        })));
+    }
+
+    @ApiOperation({
         summary: "Get other user created announcements by user ID",
         description: "You can narrow result to using announcements filters",
     })
