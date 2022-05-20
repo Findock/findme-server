@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsBoolean, IsEnum, IsOptional, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
 
 import { FindMeAnimalGenderEnum } from "@/find-me-announcements/enums/find-me-animal-gender.enum";
 import { FindMeAnnouncementTypeEnum } from "@/find-me-announcements/enums/find-me-announcement-type.enum";
@@ -50,6 +50,11 @@ export class SearchFindMeAnnouncementDto extends OffsetPaginationDto {
     @IsString()
     @IsOptional()
     public locationQuery?: string;
+
+    @ApiProperty({ example: 10 })
+    @IsNumber()
+    @IsOptional()
+    public locationThreshold?: number;
 
     @ApiProperty({ example: "Piesek" })
     @IsString()
