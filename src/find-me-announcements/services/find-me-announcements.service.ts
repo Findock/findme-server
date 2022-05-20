@@ -211,8 +211,6 @@ export class FindMeAnnouncementsService {
                 announcements = [];
             } else {
                 const [ bestLocation ] = possibleLocations;
-                console.log(bestLocation);
-
                 const {
                     lat: bestLat,
                     lon: bestLon,
