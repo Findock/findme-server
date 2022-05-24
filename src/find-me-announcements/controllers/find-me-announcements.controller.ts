@@ -92,12 +92,8 @@ export class FindMeAnnouncementsController {
         @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
         const announcements = await this.announcementsService.searchAnnouncements(user, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: this.announcementsService.isUserCreatorOfAnnouncement(user, announcement),
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -121,12 +117,7 @@ export class FindMeAnnouncementsController {
         @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
         const announcements = await this.announcementsService.searchUserAnnouncements(user, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: true,
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -150,12 +141,7 @@ export class FindMeAnnouncementsController {
         @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
         const announcements = await this.announcementsService.searchLastViewedAnnouncements(user, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: true,
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -186,12 +172,8 @@ export class FindMeAnnouncementsController {
         const otherUser = await this.usersService.findOneById(id);
         if (!otherUser) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
         const announcements = await this.announcementsService.searchUserAnnouncements(otherUser, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: announcement.creator.id === user.id,
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -218,16 +200,8 @@ export class FindMeAnnouncementsController {
         @CurrentUser() user: FindMeUser
     ): Promise<GetFindMeAnnouncementDto> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
-        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
-        const isInFavorites = await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user);
-        const viewsAmount = await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement);
-        if (!isUserCreator) await this.announcementViewLogsService.logAnnouncementViewByUser(announcement, user);
-        return {
-            ...announcement,
-            isUserCreator,
-            isInFavorites,
-            viewsAmount,
-        };
+
+        return this.parseAnnouncementObjectToDto(announcement, user);
     }
 
     @ApiOperation({
@@ -256,18 +230,8 @@ export class FindMeAnnouncementsController {
     ): Promise<GetFindMeAnnouncementDto> {
         const updatedAnnouncement = await this.announcementsService
             .updateAnnouncementById(announcementId, user, updateDto);
-        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, updatedAnnouncement);
-        const isInFavorites = await this.favoriteAnnouncementsService
-            .isAnnouncementInUserFavorites(updatedAnnouncement, user);
-        const viewsAmount = await this.announcementViewLogsService
-            .getViewLogsAmountForAnnouncements(updatedAnnouncement);
 
-        return {
-            ...updatedAnnouncement,
-            isUserCreator,
-            isInFavorites,
-            viewsAmount,
-        };
+        return this.parseAnnouncementObjectToDto(updatedAnnouncement, user);
     }
 
     @ApiOperation({
@@ -296,18 +260,7 @@ export class FindMeAnnouncementsController {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
         await this.announcementsService.resolveAnnouncement(announcement, user);
 
-        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
-        const isInFavorites = await this.favoriteAnnouncementsService
-            .isAnnouncementInUserFavorites(announcement, user);
-        const viewsAmount = await this.announcementViewLogsService
-            .getViewLogsAmountForAnnouncements(announcement);
-
-        return {
-            ...announcement,
-            isUserCreator,
-            isInFavorites,
-            viewsAmount,
-        };
+        return this.parseAnnouncementObjectToDto(announcement, user);
     }
 
     @ApiOperation({
@@ -336,18 +289,7 @@ export class FindMeAnnouncementsController {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
         await this.announcementsService.makeActiveAnnouncement(announcement, user);
 
-        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
-        const isInFavorites = await this.favoriteAnnouncementsService
-            .isAnnouncementInUserFavorites(announcement, user);
-        const viewsAmount = await this.announcementViewLogsService
-            .getViewLogsAmountForAnnouncements(announcement);
-
-        return {
-            ...announcement,
-            isUserCreator,
-            isInFavorites,
-            viewsAmount,
-        };
+        return this.parseAnnouncementObjectToDto(announcement, user);
     }
 
     @ApiOperation({
@@ -376,17 +318,26 @@ export class FindMeAnnouncementsController {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
         await this.announcementsService.archiveAnnouncement(announcement, user);
 
-        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
-        const isInFavorites = await this.favoriteAnnouncementsService
-            .isAnnouncementInUserFavorites(announcement, user);
-        const viewsAmount = await this.announcementViewLogsService
-            .getViewLogsAmountForAnnouncements(announcement);
+        return this.parseAnnouncementObjectToDto(announcement, user);
+    }
 
+    private async parseAnnouncementsObjectsToDto(
+        announcements: FindMeAnnouncement[],
+        user: FindMeUser
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        return Promise.all(announcements.map(async announcement =>
+            this.parseAnnouncementObjectToDto(announcement, user)));
+    }
+
+    private async parseAnnouncementObjectToDto(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<GetFindMeAnnouncementDto> {
         return {
             ...announcement,
-            isUserCreator,
-            isInFavorites,
-            viewsAmount,
+            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
+            isUserCreator: await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement),
+            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
         };
     }
 }
