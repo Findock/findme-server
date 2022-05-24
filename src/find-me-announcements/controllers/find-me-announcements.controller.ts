@@ -77,7 +77,7 @@ export class FindMeAnnouncementsController {
     })
     @ApiOkResponse({
         description: "Returns array of announcements",
-        type: FindMeAnnouncement,
+        type: GetFindMeAnnouncementDto,
         isArray: true,
     })
     @ApiUnauthorizedResponse({
@@ -92,12 +92,8 @@ export class FindMeAnnouncementsController {
         @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
         const announcements = await this.announcementsService.searchAnnouncements(user, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: this.announcementsService.isUserCreatorOfAnnouncement(user, announcement),
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -106,7 +102,7 @@ export class FindMeAnnouncementsController {
     })
     @ApiOkResponse({
         description: "Returns array of user created announcements",
-        type: FindMeAnnouncement,
+        type: GetFindMeAnnouncementDto,
         isArray: true,
     })
     @ApiUnauthorizedResponse({
@@ -121,12 +117,7 @@ export class FindMeAnnouncementsController {
         @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
         const announcements = await this.announcementsService.searchUserAnnouncements(user, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: true,
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -135,7 +126,7 @@ export class FindMeAnnouncementsController {
     })
     @ApiOkResponse({
         description: "Returns array of user last viewed announcements",
-        type: FindMeAnnouncement,
+        type: GetFindMeAnnouncementDto,
         isArray: true,
     })
     @ApiUnauthorizedResponse({
@@ -150,12 +141,7 @@ export class FindMeAnnouncementsController {
         @Body() searchDto: SearchFindMeAnnouncementDto
     ): Promise<GetFindMeAnnouncementDto[]> {
         const announcements = await this.announcementsService.searchLastViewedAnnouncements(user, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: true,
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -164,7 +150,7 @@ export class FindMeAnnouncementsController {
     })
     @ApiOkResponse({
         description: "Returns array of other user created announcements",
-        type: FindMeAnnouncement,
+        type: GetFindMeAnnouncementDto,
         isArray: true,
     })
     @ApiBadRequestResponse({
@@ -186,12 +172,8 @@ export class FindMeAnnouncementsController {
         const otherUser = await this.usersService.findOneById(id);
         if (!otherUser) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
         const announcements = await this.announcementsService.searchUserAnnouncements(otherUser, searchDto);
-        return Promise.all(announcements.map(async announcement => ({
-            ...announcement,
-            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
-            isUserCreator: announcement.creator.id === user.id,
-            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
-        })));
+
+        return this.parseAnnouncementsObjectsToDto(announcements, user);
     }
 
     @ApiOperation({
@@ -218,16 +200,8 @@ export class FindMeAnnouncementsController {
         @CurrentUser() user: FindMeUser
     ): Promise<GetFindMeAnnouncementDto> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
-        const isUserCreator = await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement);
-        const isInFavorites = await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user);
-        const viewsAmount = await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement);
-        if (!isUserCreator) await this.announcementViewLogsService.logAnnouncementViewByUser(announcement, user);
-        return {
-            ...announcement,
-            isUserCreator,
-            isInFavorites,
-            viewsAmount,
-        };
+
+        return this.parseAnnouncementObjectToDto(announcement, user);
     }
 
     @ApiOperation({
@@ -253,8 +227,11 @@ export class FindMeAnnouncementsController {
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser,
         @Body() updateDto: CreateFindMeAnnouncementDto
-    ): Promise<FindMeAnnouncement> {
-        return this.announcementsService.updateAnnouncementById(announcementId, user, updateDto);
+    ): Promise<GetFindMeAnnouncementDto> {
+        const updatedAnnouncement = await this.announcementsService
+            .updateAnnouncementById(announcementId, user, updateDto);
+
+        return this.parseAnnouncementObjectToDto(updatedAnnouncement, user);
     }
 
     @ApiOperation({
@@ -279,9 +256,11 @@ export class FindMeAnnouncementsController {
     public async resolveAnnouncement(
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser
-    ): Promise<FindMeAnnouncement> {
+    ): Promise<GetFindMeAnnouncementDto> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
-        return this.announcementsService.resolveAnnouncement(announcement, user);
+        await this.announcementsService.resolveAnnouncement(announcement, user);
+
+        return this.parseAnnouncementObjectToDto(announcement, user);
     }
 
     @ApiOperation({
@@ -306,9 +285,11 @@ export class FindMeAnnouncementsController {
     public async makeActiveAnnouncement(
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser
-    ): Promise<FindMeAnnouncement> {
+    ): Promise<GetFindMeAnnouncementDto> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
-        return this.announcementsService.makeActiveAnnouncement(announcement, user);
+        await this.announcementsService.makeActiveAnnouncement(announcement, user);
+
+        return this.parseAnnouncementObjectToDto(announcement, user);
     }
 
     @ApiOperation({
@@ -333,8 +314,30 @@ export class FindMeAnnouncementsController {
     public async archiveAnnouncement(
         @Param("id") announcementId: number,
         @CurrentUser() user: FindMeUser
-    ): Promise<FindMeAnnouncement> {
+    ): Promise<GetFindMeAnnouncementDto> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
-        return this.announcementsService.archiveAnnouncement(announcement, user);
+        await this.announcementsService.archiveAnnouncement(announcement, user);
+
+        return this.parseAnnouncementObjectToDto(announcement, user);
+    }
+
+    private async parseAnnouncementsObjectsToDto(
+        announcements: FindMeAnnouncement[],
+        user: FindMeUser
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        return Promise.all(announcements.map(async announcement =>
+            this.parseAnnouncementObjectToDto(announcement, user)));
+    }
+
+    private async parseAnnouncementObjectToDto(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<GetFindMeAnnouncementDto> {
+        return {
+            ...announcement,
+            isInFavorites: await this.favoriteAnnouncementsService.isAnnouncementInUserFavorites(announcement, user),
+            isUserCreator: await this.announcementsService.isUserCreatorOfAnnouncement(user, announcement),
+            viewsAmount: await this.announcementViewLogsService.getViewLogsAmountForAnnouncements(announcement),
+        };
     }
 }
