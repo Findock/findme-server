@@ -32,6 +32,11 @@ export class FindMeAnnouncementViewLogsService {
             relations: [
                 "viewingUser",
                 "viewedAnnouncement",
+                "viewedAnnouncement.creator",
+                "viewedAnnouncement.distinctiveFeatures",
+                "viewedAnnouncement.category",
+                "viewedAnnouncement.coatColors",
+                "viewedAnnouncement.photos",
             ],
         });
     }
