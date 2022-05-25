@@ -97,6 +97,34 @@ export class FindMeAnnouncementsController {
     }
 
     @ApiOperation({
+        summary: "Search recently created (<= 24h from now) announcements",
+        description: "You can narrow result using announcements filters",
+    })
+    @ApiOkResponse({
+        description: "Returns array of recently created (<= 24h from now) announcements",
+        type: GetFindMeAnnouncementDto,
+        isArray: true,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.RECENTLY_CREATED + "/" + PathConstants.SEARCH)
+    public async searchRecentlyCreatedAnnouncements(
+        @CurrentUser() user: FindMeUser,
+        @Body() searchDto: SearchFindMeAnnouncementDto
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        const recentlyCreatedAnnouncements = await this.announcementsService.searchRecentlyCreatedAnnouncements(
+            user,
+            searchDto
+        );
+
+        return this.parseAnnouncementsObjectsToDto(recentlyCreatedAnnouncements, user);
+    }
+
+    @ApiOperation({
         summary: "Search user created announcements",
         description: "You can narrow result using announcements filters",
     })
