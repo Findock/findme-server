@@ -163,6 +163,16 @@ export class FindMeAnnouncementsService {
         return this.narrowResultByFilters(announcements, searchingUser, searchDto);
     }
 
+    public async searchRecentlyCreatedAnnouncements(
+        searchingUser: FindMeUser,
+        searchDto: SearchFindMeAnnouncementDto
+    ): Promise<FindMeAnnouncement[]> {
+        const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+        const announcements = (await this.getAllAnnouncements()).filter(announcement =>
+            announcement.createDate.getTime() >= (new Date().getTime() - oneDayInMilliseconds));
+        return this.narrowResultByFilters(announcements, searchingUser, searchDto);
+    }
+
     public async narrowResultByFilters(
         announcements: FindMeAnnouncement[],
         searchingUser: FindMeUser,
