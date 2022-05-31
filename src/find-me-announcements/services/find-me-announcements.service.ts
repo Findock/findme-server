@@ -55,7 +55,7 @@ export class FindMeAnnouncementsService {
             distinctiveFeatures,
             coatColors,
             photos,
-            creator: creator,
+            creator,
         });
         await this.announcementsRepository.save(createdAnnouncement);
         return createdAnnouncement;

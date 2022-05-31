@@ -37,4 +37,6 @@ export class PathConstants {
     public static RESOLVE = "resolve";
     public static MAKE_ACTIVE = "make-active";
     public static ARCHIVE = "archive";
+    public static COMMENT_PHOTOS = "comment-photos";
+    public static COMMENTS = "comments";
 }

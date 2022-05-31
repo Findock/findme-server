@@ -9,4 +9,6 @@ export class ApiTagsConstants {
     public static ANNOUNCEMENTS = "announcements";
     public static COAT_COLORS = "coat-colors";
     public static LOCATION = "location";
+    public static COMMENT_PHOTOS = "comment-photos";
+    public static COMMENTS = "comments";
 }

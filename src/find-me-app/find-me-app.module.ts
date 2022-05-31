@@ -6,6 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { join } from "path";
 
 import { FindMeAnnouncementsModule } from "@/find-me-announcements/find-me-announcements.module";
+import { FindMeCommentsModule } from "@/find-me-comments/find-me-comments.module";
 import { envConfig } from "@/find-me-commons/configurations/env.config";
 import { securityConfig } from "@/find-me-commons/configurations/security.config";
 import { seederConfig } from "@/find-me-commons/configurations/seeder.config";
@@ -47,6 +48,7 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         FindMeUsersModule,
         FindMeAnnouncementsModule,
         FindMeLocationModule,
+        FindMeCommentsModule,
         // Application modules end
     ],
 })
