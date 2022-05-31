@@ -63,5 +63,6 @@ import { FindMeUsersModule } from "@/find-me-users/find-me-users.module";
         FindMeAnnouncementsController,
         FindMeFavoriteAnnouncementsController,
     ],
+    exports: [ FindMeAnnouncementsService ],
 })
 export class FindMeAnnouncementsModule { }

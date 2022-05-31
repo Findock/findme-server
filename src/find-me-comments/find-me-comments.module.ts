@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { FindMeAnnouncementsModule } from "@/find-me-announcements/find-me-announcements.module";
 import { FindMeCommentPhotosController } from "@/find-me-comments/controllers/find-me-comment-photos.controller";
 import { FindMeCommentsController } from "@/find-me-comments/controllers/find-me-comments.controller";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
@@ -14,6 +15,7 @@ import { FindMeCommentPhotosService } from "@/find-me-comments/services/find-me-
             FindMeCommentPhoto,
             FindMeComment,
         ]),
+        FindMeAnnouncementsModule,
     ],
     providers: [
         FindMeCommentPhotosService,
