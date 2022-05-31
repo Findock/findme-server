@@ -22,8 +22,8 @@ export class FindMeCommentsService {
 
         const createdComment = this.commentsRepository.create({
             comment: createDto.comment,
-            locationLon: createDto.locationLot,
-            locationLat: createDto.locationLat,
+            locationLon: createDto.locationLot || 0,
+            locationLat: createDto.locationLat || 0,
             commentedAnnouncement,
             photos,
             creator,
