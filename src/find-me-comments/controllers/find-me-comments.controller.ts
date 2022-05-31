@@ -1,10 +1,16 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, UseGuards, UseInterceptors } from "@nestjs/common";
 import {
-    ApiBearerAuth, ApiNotFoundResponse,
+    Body, ClassSerializerInterceptor,
+    Controller, Get, Param,
+    Post, UseGuards, UseInterceptors,
+} from "@nestjs/common";
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
     ApiOkResponse, ApiOperation,
     ApiTags, ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
+import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { CreateFindMeCommentDto } from "@/find-me-comments/dto/create-find-me-comment.dto";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
 import { FindMeCommentsService } from "@/find-me-comments/services/find-me-comments.service";
@@ -21,7 +27,8 @@ import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 @Controller(PathConstants.COMMENTS)
 export class FindMeCommentsController {
     public constructor(
-        private commentsService: FindMeCommentsService
+        private commentsService: FindMeCommentsService,
+        private announcementsService: FindMeAnnouncementsService
     ) { }
 
     @ApiOperation({
@@ -32,7 +39,7 @@ export class FindMeCommentsController {
         description: "Successfully created announcement comment",
         type: FindMeComment,
     })
-    @ApiNotFoundResponse({
+    @ApiBadRequestResponse({
         description: "Form validation error array",
         type: BadRequestExceptionDto,
     })
@@ -51,5 +58,32 @@ export class FindMeCommentsController {
             user,
             createDto
         );
+    }
+
+    @ApiOperation({
+        summary: "Get announcement comments to announcement by announcement id",
+        description: "Returns announcement comments array",
+    })
+    @ApiOkResponse({
+        description: "Returns announcement comments array",
+        type: FindMeComment,
+        isArray: true,
+    })
+    @ApiBadRequestResponse({
+        description: "Announcement with provided ID does not exist",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get(PathConstants.TO_ANNOUNCEMENT + PathConstants.ID_PARAM)
+    public async getCommentsToAnnouncement(
+        @Param("id") announcementId: number
+    ): Promise<FindMeComment[]> {
+        const announcement = await this.announcementsService.getAnnouncementById(announcementId);
+        return this.commentsService.getCommentsToAnnouncement(announcement);
     }
 }
