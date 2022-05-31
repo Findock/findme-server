@@ -12,7 +12,10 @@ export class FindMeAnnouncementPhotosService {
         private announcementPhotosRepository: Repository<FindMeAnnouncementPhoto>
     ) { }
 
-    public async createAnnouncementPhoto(user: FindMeUser, photoUrl: string): Promise<FindMeAnnouncementPhoto> {
+    public async createAnnouncementPhoto(
+        user: FindMeUser,
+        photoUrl: string
+    ): Promise<FindMeAnnouncementPhoto> {
         const announcementPhoto = this.announcementPhotosRepository.create({
             user,
             url: photoUrl,
