@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
+import { FindMeCommentPhoto } from "@/find-me-comments/entities/find-me-comment-photo.entity";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Entity()
@@ -8,6 +10,10 @@ export class FindMeComment {
     @ApiProperty()
     @PrimaryGeneratedColumn()
     public id: number;
+
+    @ApiProperty()
+    @ManyToOne(() => FindMeAnnouncement)
+    public commentedAnnouncement: FindMeAnnouncement;
 
     @ApiProperty()
     @Column({ nullable: false })
@@ -34,10 +40,15 @@ export class FindMeComment {
     public creator: FindMeUser;
 
     @ApiProperty()
+    @ManyToMany(() => FindMeCommentPhoto)
+    @JoinTable({ name: "find-me-bind-comment-photos" })
+    public photos: FindMeCommentPhoto[];
+
+    @ApiProperty()
     @CreateDateColumn()
     public createDate: Date;
 
     @ApiProperty()
     @Column({ default: false })
-    public archived :boolean;
+    public archived: boolean;
 }
