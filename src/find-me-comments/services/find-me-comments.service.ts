@@ -21,8 +21,8 @@ export class FindMeCommentsService {
             .map(photoIds => ({ id: photoIds }));
 
         const createdComment = this.commentsRepository.create({
-            comment: createDto.comment,
-            locationLon: createDto.locationLot || 0,
+            comment: createDto.comment || "",
+            locationLon: createDto.locationLon || 0,
             locationLat: createDto.locationLat || 0,
             commentedAnnouncement,
             photos,

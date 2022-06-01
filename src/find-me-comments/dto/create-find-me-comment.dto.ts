@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class CreateFindMeCommentDto {
     @ApiProperty({ example: 1 })
@@ -8,9 +8,9 @@ export class CreateFindMeCommentDto {
     public commentedAnnouncementId: number;
 
     @ApiProperty({ example: "Widziałam tego pieska!" })
-    @IsNotEmpty()
     @IsString()
-    public comment: string;
+    @IsOptional()
+    public comment?: string;
 
     @ApiProperty({ example: 50.0469432 })
     @IsNumber()
@@ -20,7 +20,7 @@ export class CreateFindMeCommentDto {
     @ApiProperty({ example: 19.997153435836697 })
     @IsNumber()
     @IsOptional()
-    public locationLot?: number;
+    public locationLon?: number;
 
     @ApiProperty({ example: [] })
     @IsArray()
