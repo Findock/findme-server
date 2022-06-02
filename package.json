@@ -46,7 +46,7 @@
         "handlebars": "^4.7.7",
         "mysql2": "^2.3.3",
         "nodemailer": "^6.7.3",
-        "npm": "^8.4.1",
+        "npm": "^8.11.0",
         "passport": "^0.5.2",
         "passport-jwt": "^4.0.0",
         "passport-local": "^1.0.0",
