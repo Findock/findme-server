@@ -1,6 +1,6 @@
 import {
     Body, ClassSerializerInterceptor,
-    Controller, Get, Param,
+    Controller, Delete, Get, Param,
     Post, Put, UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import {
@@ -91,6 +91,36 @@ export class FindMeCommentsController {
         return this.commentsService.updateComment(
             commentToEdit,
             editDto,
+            user
+        );
+    }
+
+    @ApiOperation({
+        summary: "Delete announcement comment by comment ID",
+        description: "Delete announcement comment by comment ID and returns it",
+    })
+    @ApiOkResponse({ description: "Successfully deleted announcement comment" })
+    @ApiBadRequestResponse({
+        description: "Validation error array",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Delete(PathConstants.ID_PARAM)
+    public async archiveComment(
+        @CurrentUser() user: FindMeUser,
+        @Param("id") commentId: number
+    ): Promise<void> {
+        const commentToDelete = await this.commentsService.getCommentByCommentId(commentId);
+        const commentedAnnouncement = await this.announcementsService
+            .getAnnouncementById(commentToDelete.commentedAnnouncement.id);
+        return this.commentsService.deleteComment(
+            commentToDelete,
+            commentedAnnouncement,
             user
         );
     }
