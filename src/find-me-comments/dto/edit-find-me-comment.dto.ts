@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
 
-export class CreateFindMeCommentDto {
+export class EditFindMeCommentDto {
     @ApiProperty({ example: "Widziałam tego kotka!" })
     @IsString()
     @IsOptional()

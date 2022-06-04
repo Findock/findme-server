@@ -1,9 +1,10 @@
-import { BadRequestException } from "@nestjs/common";
+import { BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { CreateFindMeCommentDto } from "@/find-me-comments/dto/create-find-me-comment.dto";
+import { EditFindMeCommentDto } from "@/find-me-comments/dto/edit-find-me-comment.dto";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
 import { FindMeCommentPhotosService } from "@/find-me-comments/services/find-me-comment-photos.service";
 import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
@@ -34,6 +35,23 @@ export class FindMeCommentsService {
         });
         await this.commentsRepository.save(createdComment);
         return createdComment;
+    }
+
+    public async updateComment(
+        comment: FindMeComment,
+        editDto: EditFindMeCommentDto,
+        creator: FindMeUser
+    ): Promise<FindMeComment> {
+        if (comment.creator.id !== creator.id) throw new UnauthorizedException();
+
+        const photos = await Promise.all(editDto.photosIds
+            .map(photoIds => this.commentPhotosService.getCommentPhotoById(photoIds)));
+
+        comment.comment = editDto.comment;
+        comment.locationLon = editDto.locationLon || 0;
+        comment.locationLat = editDto.locationLat || 0;
+        comment.photos = photos;
+        return comment;
     }
 
     public async getCommentByCommentId(commentId: number): Promise<FindMeComment> {
