@@ -4,12 +4,14 @@ import { Repository } from "typeorm";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { CreateFindMeCommentDto } from "@/find-me-comments/dto/create-find-me-comment.dto";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
+import { FindMeCommentPhotosService } from "@/find-me-comments/services/find-me-comment-photos.service";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 export class FindMeCommentsService {
     public constructor(
         @InjectRepository(FindMeComment)
-        private commentsRepository: Repository<FindMeComment>
+        private commentsRepository: Repository<FindMeComment>,
+        private commentPhotosService: FindMeCommentPhotosService
     ) { }
 
     public async createComment(
@@ -17,8 +19,8 @@ export class FindMeCommentsService {
         createDto: CreateFindMeCommentDto
     ): Promise<FindMeComment> {
         const commentedAnnouncement = { id: createDto.commentedAnnouncementId };
-        const photos = createDto.photosIds
-            .map(photoIds => ({ id: photoIds }));
+        const photos = await Promise.all(createDto.photosIds
+            .map(photoIds => this.commentPhotosService.getCommentPhotoById(photoIds)));
 
         const createdComment = this.commentsRepository.create({
             comment: createDto.comment || "",
