@@ -92,6 +92,35 @@ export class FindMeCommentsController {
         return this.parseCommentObjectsToDto(comments, announcement, user);
     }
 
+    @ApiOperation({
+        summary: "Get comment by comment id",
+        description: "Returns comment object",
+    })
+    @ApiOkResponse({
+        description: "Returns comment object",
+        type: FindMeComment,
+    })
+    @ApiBadRequestResponse({
+        description: "Comment with provided ID does not exist",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get(PathConstants.ID_PARAM)
+    public async getComment(
+        @Param("id") commentId: number,
+        @CurrentUser() user: FindMeUser
+    ): Promise<GetFindMeCommentDto> {
+        const comment = await this.commentsService.getCommentByCommentId(commentId);
+        const announcement = await this.announcementsService.getAnnouncementById(comment.commentedAnnouncement.id);
+
+        return this.parseCommentObjectToDto(comment, announcement, user);
+    }
+
     private async parseCommentObjectsToDto(
         comments: FindMeComment[],
         commentedAnnouncement: FindMeAnnouncement,
