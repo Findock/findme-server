@@ -10,8 +10,10 @@ import {
     ApiTags, ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 
+import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { CreateFindMeCommentDto } from "@/find-me-comments/dto/create-find-me-comment.dto";
+import { GetFindMeCommentDto } from "@/find-me-comments/dto/get-find-me-comment.dto";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
 import { FindMeCommentsService } from "@/find-me-comments/services/find-me-comments.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
@@ -81,9 +83,35 @@ export class FindMeCommentsController {
     @UseGuards(JwtAuthGuard)
     @Get(PathConstants.TO_ANNOUNCEMENT + PathConstants.ID_PARAM)
     public async getCommentsToAnnouncement(
-        @Param("id") announcementId: number
-    ): Promise<FindMeComment[]> {
+        @Param("id") announcementId: number,
+        @CurrentUser() user: FindMeUser
+    ): Promise<GetFindMeCommentDto[]> {
         const announcement = await this.announcementsService.getAnnouncementById(announcementId);
-        return this.commentsService.getCommentsToAnnouncement(announcement);
+        const comments = await this.commentsService.getCommentsToAnnouncement(announcement);
+
+        return this.parseCommentObjectsToDto(comments, announcement, user);
+    }
+
+    private async parseCommentObjectsToDto(
+        comments: FindMeComment[],
+        commentedAnnouncement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<GetFindMeCommentDto[]> {
+        return Promise.all(comments.map(async comment =>
+            this.parseCommentObjectToDto(comment, commentedAnnouncement, user)));
+    }
+
+    private async parseCommentObjectToDto(
+        comment: FindMeComment,
+        commentedAnnouncement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<GetFindMeCommentDto> {
+        const isUserCreator = comment.creator.id === user.id;
+        const isUserCreatorOfCommentedAnnouncement = commentedAnnouncement.creator.id === user.id;
+        return {
+            ...comment,
+            isUserCreator,
+            canEdit: isUserCreator || isUserCreatorOfCommentedAnnouncement,
+        };
     }
 }
