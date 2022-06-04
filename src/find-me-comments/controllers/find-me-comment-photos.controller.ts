@@ -6,7 +6,7 @@ import {
 } from "@nestjs/swagger";
 
 import { FindMeCommentPhoto } from "@/find-me-comments/entities/find-me-comment-photo.entity";
-import { FindMeCommentPhotosService } from "@/find-me-comments/services/find-me-comments-photos.service";
+import { FindMeCommentPhotosService } from "@/find-me-comments/services/find-me-comment-photos.service";
 import { ApiTagsConstants } from "@/find-me-commons/constants/api-tags.constants";
 import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
