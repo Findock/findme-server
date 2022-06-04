@@ -11,7 +11,6 @@ export class FindMeComment {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @ApiProperty()
     @ManyToOne(() => FindMeAnnouncement)
     public commentedAnnouncement: FindMeAnnouncement;
 
