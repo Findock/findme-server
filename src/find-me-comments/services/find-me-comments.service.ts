@@ -52,7 +52,7 @@ export class FindMeCommentsService {
     }
 
     public async getCommentsToAnnouncement(announcement: FindMeAnnouncement): Promise < FindMeComment[] > {
-        return this.commentsRepository.find({
+        const comments = await this.commentsRepository.find({
             where: { commentedAnnouncement: announcement.id },
             relations: [
                 "commentedAnnouncement",
@@ -60,5 +60,6 @@ export class FindMeCommentsService {
                 "creator",
             ],
         });
+        return comments.reverse();
     }
 }
