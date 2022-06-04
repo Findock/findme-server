@@ -51,6 +51,8 @@ export class FindMeCommentsService {
         comment.locationLon = editDto.locationLon || 0;
         comment.locationLat = editDto.locationLat || 0;
         comment.photos = photos;
+
+        await this.commentsRepository.save(comment);
         return comment;
     }
 
