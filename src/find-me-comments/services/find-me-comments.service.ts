@@ -1,3 +1,4 @@
+import { BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -5,6 +6,7 @@ import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-ann
 import { CreateFindMeCommentDto } from "@/find-me-comments/dto/create-find-me-comment.dto";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
 import { FindMeCommentPhotosService } from "@/find-me-comments/services/find-me-comment-photos.service";
+import { ErrorMessagesConstants } from "@/find-me-commons/constants/error-messages.constants";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 export class FindMeCommentsService {
@@ -34,7 +36,22 @@ export class FindMeCommentsService {
         return createdComment;
     }
 
-    public async getCommentsToAnnouncement(announcement: FindMeAnnouncement): Promise<FindMeComment[]> {
+    public async getCommentByCommentId(commentId: number): Promise<FindMeComment> {
+        const comment = await this.commentsRepository.findOne(
+            commentId,
+            {
+                relations: [
+                    "commentedAnnouncement",
+                    "photos",
+                    "creator",
+                ],
+            }
+        );
+        if (!comment) throw new BadRequestException([ ErrorMessagesConstants.COMMENT_DOES_NOT_EXIST ]);
+        return comment;
+    }
+
+    public async getCommentsToAnnouncement(announcement: FindMeAnnouncement): Promise < FindMeComment[] > {
         return this.commentsRepository.find({
             where: { commentedAnnouncement: announcement.id },
             relations: [

@@ -15,4 +15,5 @@ export class ErrorMessagesConstants {
     public static USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION = "User is not authorized to do this action";
     public static PASSWORD_CAN_NOT_BE_SAME_AS_OLD_PASSWORD = "Password can not be same as old password";
     public static COMMENT_PHOTO_DOES_NOT_EXIST = "Comment photo does not exists";
+    public static COMMENT_DOES_NOT_EXIST = "Comment does not exists";
 }
