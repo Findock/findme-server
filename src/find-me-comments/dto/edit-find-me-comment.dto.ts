@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsOptional, IsString } from "class-validator";
 
 export class EditFindMeCommentDto {
     @ApiProperty({ example: "Widziałam tego kotka!" })
@@ -8,12 +8,10 @@ export class EditFindMeCommentDto {
     public comment?: string;
 
     @ApiProperty({ example: 50.0269432 })
-    @IsNumber()
     @IsOptional()
     public locationLat?: number;
 
     @ApiProperty({ example: 19.98215342386123 })
-    @IsNumber()
     @IsOptional()
     public locationLon?: number;
 

@@ -48,8 +48,8 @@ export class FindMeCommentsService {
             .map(photoIds => this.commentPhotosService.getCommentPhotoById(photoIds)));
 
         comment.comment = editDto.comment;
-        comment.locationLon = editDto.locationLon || 0;
-        comment.locationLat = editDto.locationLat || 0;
+        comment.locationLon = Number(editDto.locationLon) || 0;
+        comment.locationLat = Number(editDto.locationLat) || 0;
         comment.photos = photos;
 
         await this.commentsRepository.save(comment);
