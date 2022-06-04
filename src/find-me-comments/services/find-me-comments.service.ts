@@ -40,9 +40,9 @@ export class FindMeCommentsService {
     public async updateComment(
         comment: FindMeComment,
         editDto: EditFindMeCommentDto,
-        creator: FindMeUser
+        updatingUser: FindMeUser
     ): Promise<FindMeComment> {
-        if (comment.creator.id !== creator.id) throw new UnauthorizedException();
+        if (comment.creator.id !== updatingUser.id) throw new UnauthorizedException();
 
         const photos = await Promise.all(editDto.photosIds
             .map(photoIds => this.commentPhotosService.getCommentPhotoById(photoIds)));
@@ -52,6 +52,18 @@ export class FindMeCommentsService {
         comment.locationLat = editDto.locationLat || 0;
         comment.photos = photos;
         return comment;
+    }
+
+    public async deleteComment(
+        comment: FindMeComment,
+        commentedAnnouncement: FindMeAnnouncement,
+        deletingUser: FindMeUser
+    ): Promise<void> {
+        if (comment.creator.id !== deletingUser.id && commentedAnnouncement.creator.id !== deletingUser.id) {
+            throw new UnauthorizedException();
+        }
+        comment.archived = true;
+        this.commentsRepository.save(comment);
     }
 
     public async getCommentByCommentId(commentId: number): Promise<FindMeComment> {
@@ -71,7 +83,10 @@ export class FindMeCommentsService {
 
     public async getCommentsToAnnouncement(announcement: FindMeAnnouncement): Promise < FindMeComment[] > {
         const comments = await this.commentsRepository.find({
-            where: { commentedAnnouncement: announcement.id },
+            where: {
+                commentedAnnouncement: announcement.id,
+                archived: false,
+            },
             relations: [
                 "commentedAnnouncement",
                 "photos",
