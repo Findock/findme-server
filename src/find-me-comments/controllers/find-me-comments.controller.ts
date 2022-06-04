@@ -1,7 +1,7 @@
 import {
     Body, ClassSerializerInterceptor,
     Controller, Get, Param,
-    Post, UseGuards, UseInterceptors,
+    Post, Put, UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import {
     ApiBadRequestResponse,
@@ -13,6 +13,7 @@ import {
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementsService } from "@/find-me-announcements/services/find-me-announcements.service";
 import { CreateFindMeCommentDto } from "@/find-me-comments/dto/create-find-me-comment.dto";
+import { EditFindMeCommentDto } from "@/find-me-comments/dto/edit-find-me-comment.dto";
 import { GetFindMeCommentDto } from "@/find-me-comments/dto/get-find-me-comment.dto";
 import { FindMeComment } from "@/find-me-comments/entities/find-me-comment.entity";
 import { FindMeCommentsService } from "@/find-me-comments/services/find-me-comments.service";
@@ -59,6 +60,38 @@ export class FindMeCommentsController {
         return this.commentsService.createComment(
             user,
             createDto
+        );
+    }
+
+    @ApiOperation({
+        summary: "Edit announcement comment by comment ID",
+        description: "Edits announcement comment by comment ID and returns it",
+    })
+    @ApiOkResponse({
+        description: "Successfully created announcement comment",
+        type: FindMeComment,
+    })
+    @ApiBadRequestResponse({
+        description: "Form validation error array",
+        type: BadRequestExceptionDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Put(PathConstants.ID_PARAM)
+    public async editComment(
+        @CurrentUser() user: FindMeUser,
+        @Param("id") commentId: number,
+        @Body() editDto: EditFindMeCommentDto
+    ): Promise<FindMeComment> {
+        const commentToEdit = await this.commentsService.getCommentByCommentId(commentId);
+        return this.commentsService.updateComment(
+            commentToEdit,
+            editDto,
+            user
         );
     }
 
