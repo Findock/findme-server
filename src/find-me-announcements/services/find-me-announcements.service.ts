@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { SearchFindMeAnnouncementDto } from "@/find-me-announcements/dto/search-find-me-announcement.dto";
+import { SearchNearbyMeAnnouncementDto } from "@/find-me-announcements/dto/search-nearby-find-me-announcement-dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementCategory } from "@/find-me-announcements/entities/find-me-announcement-category.entity";
 import { FindMeAnnouncementPhoto } from "@/find-me-announcements/entities/find-me-announcement-photo.entity";
@@ -173,14 +174,82 @@ export class FindMeAnnouncementsService {
         return this.narrowResultByFilters(announcements, searchingUser, searchDto);
     }
 
-    public async narrowResultByFilters(
+    public async searchNearbyAnnouncements(
+        searchDto: SearchNearbyMeAnnouncementDto
+    ): Promise<FindMeAnnouncement[]> {
+        const locationThreshold = 20 * 0.01;
+        const announcements = (await this.getAllAnnouncements()).filter(announcement =>
+            announcement.locationLat <= searchDto.locationLat + locationThreshold &&
+            announcement.locationLat >= searchDto.locationLat - locationThreshold &&
+            announcement.locationLon <= searchDto.locationLon + locationThreshold &&
+            announcement.locationLon >= searchDto.locationLon - locationThreshold);
+
+        const pageSize = searchDto.pageSize || 10;
+        const offset = searchDto.offset || 0;
+
+        return this.paginateResults(announcements, offset, pageSize);
+    }
+
+    public async getAnnouncementById(announcementId: number): Promise<FindMeAnnouncement> {
+        const announcement = await this.announcementsRepository.findOne({
+            where: { id: announcementId },
+            relations: [
+                "creator",
+                "distinctiveFeatures",
+                "category",
+                "coatColors",
+                "photos",
+            ],
+        });
+        if (!announcement) throw new BadRequestException(ErrorMessagesConstants.ANNOUNCEMENT_DOES_NOT_EXIST);
+        return announcement;
+    }
+
+    public isUserCreatorOfAnnouncement(user: FindMeUser, announcement: FindMeAnnouncement): boolean {
+        return announcement.creator.id === user.id;
+    }
+
+    public async resolveAnnouncement(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        if (announcement.creator.id !== user.id) {
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
+        }
+        announcement.status = FindMeAnnouncementStatusEnum.NOT_ACTIVE;
+        await this.announcementsRepository.save(announcement);
+        return announcement;
+    }
+
+    public async makeActiveAnnouncement(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        if (announcement.creator.id !== user.id) {
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
+        }
+        announcement.status = FindMeAnnouncementStatusEnum.ACTIVE;
+        await this.announcementsRepository.save(announcement);
+        return announcement;
+    }
+
+    public async archiveAnnouncement(
+        announcement: FindMeAnnouncement,
+        user: FindMeUser
+    ): Promise<FindMeAnnouncement> {
+        if (announcement.creator.id !== user.id) {
+            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
+        }
+        announcement.status = FindMeAnnouncementStatusEnum.ARCHIVED;
+        await this.announcementsRepository.save(announcement);
+        return announcement;
+    }
+
+    private async narrowResultByFilters(
         announcements: FindMeAnnouncement[],
         searchingUser: FindMeUser,
         searchDto: SearchFindMeAnnouncementDto
     ): Promise<FindMeAnnouncement[]> {
-        const pageSize = searchDto.pageSize || 10;
-        const offset = searchDto.offset || 0;
-
         if (searchDto.onlyActive) {
             announcements = announcements.filter(a => a.status === FindMeAnnouncementStatusEnum.ACTIVE);
         }
@@ -263,63 +332,17 @@ export class FindMeAnnouncementsService {
             }
         });
 
-        announcements = announcements.filter((_, i) => i >= offset && i < offset + pageSize);
+        const pageSize = searchDto.pageSize || 10;
+        const offset = searchDto.offset || 0;
 
-        return announcements;
+        return this.paginateResults(announcements, offset, pageSize);
     }
 
-    public async getAnnouncementById(announcementId: number): Promise<FindMeAnnouncement> {
-        const announcement = await this.announcementsRepository.findOne({
-            where: { id: announcementId },
-            relations: [
-                "creator",
-                "distinctiveFeatures",
-                "category",
-                "coatColors",
-                "photos",
-            ],
-        });
-        if (!announcement) throw new BadRequestException(ErrorMessagesConstants.ANNOUNCEMENT_DOES_NOT_EXIST);
-        return announcement;
-    }
-
-    public isUserCreatorOfAnnouncement(user: FindMeUser, announcement: FindMeAnnouncement): boolean {
-        return announcement.creator.id === user.id;
-    }
-
-    public async resolveAnnouncement(
-        announcement: FindMeAnnouncement,
-        user: FindMeUser
-    ): Promise<FindMeAnnouncement> {
-        if (announcement.creator.id !== user.id) {
-            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
-        }
-        announcement.status = FindMeAnnouncementStatusEnum.NOT_ACTIVE;
-        await this.announcementsRepository.save(announcement);
-        return announcement;
-    }
-
-    public async makeActiveAnnouncement(
-        announcement: FindMeAnnouncement,
-        user: FindMeUser
-    ): Promise<FindMeAnnouncement> {
-        if (announcement.creator.id !== user.id) {
-            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
-        }
-        announcement.status = FindMeAnnouncementStatusEnum.ACTIVE;
-        await this.announcementsRepository.save(announcement);
-        return announcement;
-    }
-
-    public async archiveAnnouncement(
-        announcement: FindMeAnnouncement,
-        user: FindMeUser
-    ): Promise<FindMeAnnouncement> {
-        if (announcement.creator.id !== user.id) {
-            throw new UnauthorizedException([ ErrorMessagesConstants.USER_IS_NOT_AUTHORIZED_TO_DO_THIS_ACTION ]);
-        }
-        announcement.status = FindMeAnnouncementStatusEnum.ARCHIVED;
-        await this.announcementsRepository.save(announcement);
-        return announcement;
+    private paginateResults(
+        announcements: FindMeAnnouncement[],
+        offset: number,
+        pageSize: number
+    ): FindMeAnnouncement[] {
+        return announcements.filter((_, i) => i >= offset && i < offset + pageSize);
     }
 }
