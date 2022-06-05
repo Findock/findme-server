@@ -40,4 +40,5 @@ export class PathConstants {
     public static COMMENT_PHOTOS = "comment-photos";
     public static COMMENTS = "comments";
     public static TO_ANNOUNCEMENT = "to-announcement";
+    public static NEARBY = "nearby";
 }

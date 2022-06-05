@@ -15,6 +15,7 @@ import {
 import { CreateFindMeAnnouncementDto } from "@/find-me-announcements/dto/create-find-me-announcement.dto";
 import { GetFindMeAnnouncementDto } from "@/find-me-announcements/dto/get-find-me-announcement-dto";
 import { SearchFindMeAnnouncementDto } from "@/find-me-announcements/dto/search-find-me-announcement.dto";
+import { SearchNearbyMeAnnouncementDto } from "@/find-me-announcements/dto/search-nearby-find-me-announcement-dto";
 import { FindMeAnnouncement } from "@/find-me-announcements/entities/find-me-announcement.entity";
 import { FindMeAnnouncementViewLogsService }
     from "@/find-me-announcements/services/find-me-announcement-view-logs.service";
@@ -119,6 +120,33 @@ export class FindMeAnnouncementsController {
         const recentlyCreatedAnnouncements = await this.announcementsService.searchRecentlyCreatedAnnouncements(
             user,
             searchDto
+        );
+
+        return this.parseAnnouncementsObjectsToDto(recentlyCreatedAnnouncements, user);
+    }
+
+    @ApiOperation({
+        summary: "Search nearby (less than 20km) announcements",
+        description: "You can narrow result using announcements filters",
+    })
+    @ApiOkResponse({
+        description: "Returns nearby (less than 20km) announcements",
+        type: GetFindMeAnnouncementDto,
+        isArray: true,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Bad authorization token",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Post(PathConstants.NEARBY + "/" + PathConstants.SEARCH)
+    public async searchNearbyAnnouncements(
+        @CurrentUser() user: FindMeUser,
+        @Body() searchDtoWithoutLocation: SearchNearbyMeAnnouncementDto
+    ): Promise<GetFindMeAnnouncementDto[]> {
+        const recentlyCreatedAnnouncements = await this.announcementsService.searchNearbyAnnouncements(
+            searchDtoWithoutLocation
         );
 
         return this.parseAnnouncementsObjectsToDto(recentlyCreatedAnnouncements, user);

@@ -10,10 +10,12 @@ import { OffsetPaginationDto } from "@/find-me-commons/dto/offset-pagination.dto
 export class SearchFindMeAnnouncementDto extends OffsetPaginationDto {
     @ApiProperty({ example: false })
     @IsBoolean()
+    @IsOptional()
     public onlyActive?: boolean;
 
     @ApiProperty({ example: false })
     @IsBoolean()
+    @IsOptional()
     public onlyFavorites?: boolean;
 
     @ApiProperty({ example: [ 1 ] })
