@@ -1,4 +1,9 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, UseGuards, UseInterceptors } from "@nestjs/common";
+import {
+    Body, ClassSerializerInterceptor,
+    Controller, Get,
+    Param, Post, UseGuards,
+    UseInterceptors,
+} from "@nestjs/common";
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
