@@ -58,7 +58,9 @@ export class FindMeUsersService {
     }
 
     public async findOneById(id: number): Promise<FindMeUser> {
-        return this.usersRepository.findOne({ where: { id } });
+        const user = await this.usersRepository.findOne({ where: { id } });
+        if (!user) throw new BadRequestException([ ErrorMessagesConstants.USER_WITH_THIS_ID_DOES_NOT_EXIST ]);
+        return user;
     }
 
     public async updateUserPassword(
