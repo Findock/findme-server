@@ -5,13 +5,15 @@ import { Repository } from "typeorm";
 import { CreateFindMeChatMessageDto } from "@/find-me-chat/dto/create-find-me-chat-message.dto";
 import { GetFindMeChatListItemDto } from "@/find-me-chat/dto/get-find-me-chat-list-item.dto";
 import { FindMeChatMessage } from "@/find-me-chat/entities/find-me-chat-message.entity";
+import { FindMeChatArchiveService } from "@/find-me-chat/services/find-me-chat-archive.service";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Injectable()
 export class FindMeChatService {
     public constructor(
         @InjectRepository(FindMeChatMessage)
-        private chatMessagesRepository: Repository<FindMeChatMessage>
+        private chatMessagesRepository: Repository<FindMeChatMessage>,
+        private chatArchivesService: FindMeChatArchiveService
     ) { }
 
     public async createNewChatMessage(
@@ -59,24 +61,74 @@ export class FindMeChatService {
     }
 
     public async getUserMessagesList(user: FindMeUser): Promise<GetFindMeChatListItemDto[]> {
-        let sentMessages = await this.chatMessagesRepository.find({
+        const archivedMessages = await this.chatArchivesService.getArchivedChatsForUser(user);
+        const archivedReceiverIds = archivedMessages.map(m => m.archivedReceiver.id);
+
+        let sentMessages = await this.getUserSentMessages(user);
+        let receivedMessages = await this.getUserReceivedMessages(user);
+
+        sentMessages = sentMessages
+            .filter(m => !archivedReceiverIds.includes(m.receiver.id))
+            .sort((a, b) => {
+                return b.sentDate.getTime() - a.sentDate.getTime();
+            });
+        receivedMessages = receivedMessages
+            .filter(m => !archivedReceiverIds.includes(m.sender.id))
+            .sort((a, b) => {
+                return b.sentDate.getTime() - a.sentDate.getTime();
+            });
+
+        return this.parseMessagesToChatListItems([ ...sentMessages, ...receivedMessages ]);
+    }
+
+    public async getUserArchivedMessagesList(user: FindMeUser): Promise<GetFindMeChatListItemDto[]> {
+        const archivedMessages = await this.chatArchivesService.getArchivedChatsForUser(user);
+        const archivedReceiverIds = archivedMessages.map(m => m.archivedReceiver.id);
+
+        let sentMessages = await this.getUserSentMessages(user);
+        let receivedMessages = await this.getUserReceivedMessages(user);
+
+        sentMessages = sentMessages
+            .filter(m => archivedReceiverIds.includes(m.receiver.id))
+            .sort((a, b) => {
+                return b.sentDate.getTime() - a.sentDate.getTime();
+            });
+        receivedMessages = receivedMessages
+            .filter(m => archivedReceiverIds.includes(m.sender.id))
+            .sort((a, b) => {
+                return b.sentDate.getTime() - a.sentDate.getTime();
+            });
+
+        return this.parseMessagesToChatListItems([ ...sentMessages, ...receivedMessages ]);
+    }
+
+    private async getUserSentMessages(user: FindMeUser): Promise<FindMeChatMessage[]> {
+        return this.chatMessagesRepository.find({
             where: { sender: user.id },
             relations: [
                 "sender",
                 "receiver",
             ],
         });
-        sentMessages = sentMessages.sort((a, b) => {
-            return b.sentDate.getTime() - a.sentDate.getTime();
-        });
-        const receiversIds = sentMessages.map(m => m.receiver.id);
+    }
 
-        return sentMessages
-            .filter((m, index) => receiversIds.indexOf(m.receiver.id) === index)
+    private async getUserReceivedMessages(user: FindMeUser): Promise<FindMeChatMessage[]> {
+        return this.chatMessagesRepository.find({
+            where: { receiver: user.id },
+            relations: [
+                "sender",
+                "receiver",
+            ],
+        });
+    }
+
+    private parseMessagesToChatListItems(messages: FindMeChatMessage[]): GetFindMeChatListItemDto[] {
+        const receiversIds = messages.map(m => m.receiver.id);
+        return messages.filter((m, index) => receiversIds.indexOf(m.receiver.id) === index)
             .map(m => ({
                 lastMessage: m,
                 receiver: m.receiver,
-                isUnread: true,
+                unreadCount: 0,
             }));
     }
 

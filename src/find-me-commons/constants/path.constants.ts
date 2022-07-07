@@ -17,6 +17,7 @@ export class PathConstants {
     public static FAVORITES = "favorites";
     public static COAT_COLORS = "coat-colors";
     public static CHAT = "chat";
+    public static CHAT_ARCHIVE = "chat-archive";
     public static AN = "distinctive-feature";
     public static ME = "me";
     public static MY = "my";
@@ -44,4 +45,5 @@ export class PathConstants {
     public static NEARBY = "nearby";
     public static WITH_USER = "with-user";
     public static FOR_USER = "for-user";
+    public static ARCHIVED = "archived";
 }
