@@ -11,5 +11,5 @@ export class GetFindMeChatListItemDto {
     public receiver: FindMeUser;
 
     @ApiProperty()
-    public isUnread: boolean;
+    public unreadCount: number;
 }

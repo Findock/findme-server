@@ -96,11 +96,11 @@ export class FindMeChatController {
     }
 
     @ApiOperation({
-        summary: "Get user chat list",
+        summary: "Get user (not archived) chat list",
         description: "Returns array of chat list objects",
     })
     @ApiOkResponse({
-        description: "Returns array of all user chats",
+        description: "Returns array of all (not archived) user chats",
         type: GetFindMeChatListItemDto,
         isArray: true,
     })
@@ -115,5 +115,27 @@ export class FindMeChatController {
         @CurrentUser() user: FindMeUser,
     ): Promise<GetFindMeChatListItemDto[]> {
         return this.chatService.getUserMessagesList(user);
+    }
+
+    @ApiOperation({
+        summary: "Get user archived chat list",
+        description: "Returns array of (archived) chat list objects",
+    })
+    @ApiOkResponse({
+        description: "Returns array of archived user chats",
+        type: GetFindMeChatListItemDto,
+        isArray: true,
+    })
+    @ApiUnauthorizedResponse({
+        description: "Authorization token is not valid",
+        type: UnauthorizedExceptionDto,
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard)
+    @Get(PathConstants.ARCHIVED)
+    public async getUserArchivedMessagesList(
+        @CurrentUser() user: FindMeUser,
+    ): Promise<GetFindMeChatListItemDto[]> {
+        return this.chatService.getUserArchivedMessagesList(user);
     }
 }

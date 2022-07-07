@@ -12,4 +12,5 @@ export class ApiTagsConstants {
     public static COMMENT_PHOTOS = "comment-photos";
     public static COMMENTS = "comments";
     public static CHAT = "chat";
+    public static CHAT_ARCHIVE = "chat-archive";
 }
