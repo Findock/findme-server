@@ -78,7 +78,7 @@ export class FindMeChatService {
                 return b.sentDate.getTime() - a.sentDate.getTime();
             });
 
-        return this.parseMessagesToChatListItems([ ...sentMessages, ...receivedMessages ]);
+        return this.parseMessagesToChatListItems([ ...sentMessages, ...receivedMessages ], user);
     }
 
     public async getUserArchivedMessagesList(user: FindMeUser): Promise<GetFindMeChatListItemDto[]> {
@@ -99,7 +99,7 @@ export class FindMeChatService {
                 return b.sentDate.getTime() - a.sentDate.getTime();
             });
 
-        return this.parseMessagesToChatListItems([ ...sentMessages, ...receivedMessages ]);
+        return this.parseMessagesToChatListItems([ ...sentMessages, ...receivedMessages ], user);
     }
 
     private async getUserSentMessages(user: FindMeUser): Promise<FindMeChatMessage[]> {
@@ -122,14 +122,19 @@ export class FindMeChatService {
         });
     }
 
-    private parseMessagesToChatListItems(messages: FindMeChatMessage[]): GetFindMeChatListItemDto[] {
-        const receiversIds = messages.map(m => m.receiver.id);
-        return messages.filter((m, index) => receiversIds.indexOf(m.receiver.id) === index)
-            .map(m => ({
-                lastMessage: m,
-                receiver: m.receiver,
-                unreadCount: 0,
-            }));
+    private parseMessagesToChatListItems(messages: FindMeChatMessage[], user: FindMeUser): GetFindMeChatListItemDto[] {
+        const receiversIds = messages.map(m => [ m.receiver.id, m.sender.id ]).flat().filter(id => id !== user.id);
+        return receiversIds
+            .filter((r, index) => receiversIds.indexOf(r) === index)
+            .map((receiver) => {
+                const message = messages.find(m => m.receiver.id === receiver || m.sender.id === receiver);
+                if (!message) return null;
+                return {
+                    receiver: message.receiver,
+                    lastMessage: message,
+                    unreadCount: 0,
+                };
+            }).filter(m => m !== null);
     }
 
     private async markMessageAsReceived(message: FindMeChatMessage): Promise<void> {
