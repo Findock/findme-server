@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {
+    ArrayNotEmpty,
+    IsArray,
     IsNumber,
     IsOptional,
     IsString,
@@ -10,6 +12,11 @@ export class CreateFindMeChatMessageDto {
     @IsString()
     @IsOptional()
     public message?: string;
+
+    @ApiProperty({ example: [ 1, 2 ] })
+    @IsArray()
+    @ArrayNotEmpty()
+    public photosIds: number[];
 
     @ApiProperty({ example: 50.0469432 })
     @IsNumber()

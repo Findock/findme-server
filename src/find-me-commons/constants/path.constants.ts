@@ -18,6 +18,7 @@ export class PathConstants {
     public static COAT_COLORS = "coat-colors";
     public static CHAT = "chat";
     public static CHAT_ARCHIVE = "chat-archive";
+    public static CHAT_PHOTOS = "chat-photos";
     public static AN = "distinctive-feature";
     public static ME = "me";
     public static MY = "my";
