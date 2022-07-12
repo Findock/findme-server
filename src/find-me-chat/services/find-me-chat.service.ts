@@ -48,6 +48,7 @@ export class FindMeChatService {
             relations: [
                 "sender",
                 "receiver",
+                "photos",
             ],
         });
         const receivedMessages = await this.chatMessagesRepository.find({
@@ -58,6 +59,7 @@ export class FindMeChatService {
             relations: [
                 "sender",
                 "receiver",
+                "photos",
             ],
         });
         await Promise.all(receivedMessages.map((message) => this.markMessageAsReceived(message)));
