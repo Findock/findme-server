@@ -13,8 +13,8 @@ import { PathConstants } from "@/find-me-commons/constants/path.constants";
 import { UnauthorizedExceptionDto } from "@/find-me-commons/dto/unauthorized-exception.dto";
 import { CurrentUser } from "@/find-me-security/decorators/find-me-current-user.decorator";
 import { JwtAuthGuard } from "@/find-me-security/guards/find-me-jwt-auth.guard";
-import { FindMeStorageCommentPhotoInterceptor }
-    from "@/find-me-storage/interceptors/find-me-storage-comment-photo.interceptor";
+import { FindMeStorageChatPhotoInterceptor }
+    from "@/find-me-storage/interceptors/find-me-storage-chat-photo.interceptor";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @ApiTags(ApiTagsConstants.CHAT_PHOTOS)
@@ -51,7 +51,7 @@ export class FindMeChatPhotosController {
     })
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
-    @UseInterceptors(FindMeStorageCommentPhotoInterceptor)
+    @UseInterceptors(FindMeStorageChatPhotoInterceptor)
     @Post(PathConstants.UPLOAD)
     public async uploadChatPhoto(
         @UploadedFile() file: Express.Multer.File,
