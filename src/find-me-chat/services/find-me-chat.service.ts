@@ -6,6 +6,7 @@ import { CreateFindMeChatMessageDto } from "@/find-me-chat/dto/create-find-me-ch
 import { GetFindMeChatListItemDto } from "@/find-me-chat/dto/get-find-me-chat-list-item.dto";
 import { FindMeChatMessage } from "@/find-me-chat/entities/find-me-chat-message.entity";
 import { FindMeChatArchiveService } from "@/find-me-chat/services/find-me-chat-archive.service";
+import { FindMeChatPhotosService } from "@/find-me-chat/services/find-me-chat-photos.service";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Injectable()
@@ -13,7 +14,8 @@ export class FindMeChatService {
     public constructor(
         @InjectRepository(FindMeChatMessage)
         private chatMessagesRepository: Repository<FindMeChatMessage>,
-        private chatArchivesService: FindMeChatArchiveService
+        private chatArchivesService: FindMeChatArchiveService,
+        private chatPhotosService: FindMeChatPhotosService
     ) { }
 
     public async createNewChatMessage(
@@ -21,8 +23,12 @@ export class FindMeChatService {
         receiver: FindMeUser,
         messageDto: CreateFindMeChatMessageDto
     ): Promise<FindMeChatMessage> {
+        const photos = await Promise.all(
+            messageDto.photosIds.map(id => this.chatPhotosService.findChatPhotoById(id))
+        );
         const message = this.chatMessagesRepository.create({
             ...messageDto,
+            photos,
             receiver,
             sender,
         });

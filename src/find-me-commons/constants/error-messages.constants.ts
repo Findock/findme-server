@@ -18,4 +18,5 @@ export class ErrorMessagesConstants {
     public static COMMENT_DOES_NOT_EXIST = "Comment does not exists";
     public static CHAT_IS_ALREADY_ARCHIVED = "Chat is already archived";
     public static CHAT_IS_NOT_ARCHIVED = "Chat is not archived";
+    public static PHOTO_DOES_NOT_EXIST = "Chat photo with this id does not exist";
 }

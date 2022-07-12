@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+import { FindMeChatPhoto } from "@/find-me-chat/entities/find-me-chat-photo.entity";
 import { FindMeUser } from "@/find-me-users/entities/find-me-user.entity";
 
 @Entity()
@@ -38,6 +39,11 @@ export class FindMeChatMessage {
         nullable: true,
     })
     public locationLon: number;
+
+    @ApiProperty()
+    @ManyToMany(() => FindMeChatPhoto)
+    @JoinTable({ name: "find-me-bind-chat-photos" })
+    public photos: FindMeChatPhoto[];
 
     @ApiProperty()
     @Column({ nullable: true })
