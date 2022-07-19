@@ -24,7 +24,7 @@ export class FindMeChatService {
         messageDto: CreateFindMeChatMessageDto
     ): Promise<FindMeChatMessage> {
         const photos = await Promise.all(
-            messageDto.photosIds.map(id => this.chatPhotosService.findChatPhotoById(id))
+            (messageDto.photosIds || []).map(id => this.chatPhotosService.findChatPhotoById(id))
         );
         const message = this.chatMessagesRepository.create({
             ...messageDto,
