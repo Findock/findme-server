@@ -116,6 +116,7 @@ export class FindMeChatService {
             relations: [
                 "sender",
                 "receiver",
+                "photos",
             ],
         });
     }
@@ -126,6 +127,7 @@ export class FindMeChatService {
             relations: [
                 "sender",
                 "receiver",
+                "photos",
             ],
         });
     }
